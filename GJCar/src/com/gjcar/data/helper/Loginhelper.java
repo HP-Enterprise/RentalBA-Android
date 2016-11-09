@@ -1,0 +1,161 @@
+package com.gjcar.data.helper;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.util.EntityUtils;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.gjcar.app.R;
+import com.gjcar.data.bean.Account;
+import com.gjcar.data.bean.CityShow;
+import com.gjcar.data.data.Public_Api;
+import com.gjcar.data.data.Public_SP;
+import com.gjcar.data.service.JSONHelper;
+import com.gjcar.utils.HandlerHelper;
+import com.gjcar.utils.HttpHelper;
+import com.gjcar.utils.SharedPreferenceHelper;
+
+public class Loginhelper {
+
+	public void login(final Context context, final JSONObject jsonObject,
+			final Handler handler, final int what) {// 1位Object,2为String
+
+		new Thread() {
+			public void run() {
+
+				HttpClient httpCLient = new DefaultHttpClient();
+				httpCLient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);
+				httpCLient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 8000);
+
+				StringEntity requestentity = null;
+				try {
+					requestentity = new StringEntity(jsonObject.toString(),
+							"utf-8");
+				} catch (UnsupportedEncodingException e1) {
+					e1.printStackTrace();
+				}// 解决中文乱码问题
+				requestentity.setContentEncoding("UTF-8");
+				requestentity.setContentType("application/json");
+
+				// 创建get请求实例
+				HttpPost httppost = new HttpPost(Public_Api.appWebSite
+						+ Public_Api.api_login);
+				httppost.setHeader("Content-Type",
+						"application/json;charset=UTF-8");
+				System.out.println("executing request " + httppost.getURI());
+				httppost.setEntity(requestentity);
+				try {
+
+					// 客户端执行get请求 返回响应实体
+					HttpResponse response = httpCLient.execute(httppost);
+
+					// 服务器响应状态行
+					System.out.println(response.getStatusLine());
+
+					Header[] heads = response.getAllHeaders();
+					// 打印所有响应头
+					for (Header h : heads) {
+						System.out.println(h.getName() + ":" + h.getValue());
+					}
+
+					// 获取响应消息实体
+					HttpEntity responseentity = response.getEntity();
+					String data = EntityUtils.toString(responseentity);
+					if (responseentity != null) {
+
+						// 响应内容
+						System.out.println(data);
+
+						// 响应内容长度
+						System.out.println("响应内容长度："
+								+ responseentity.getContentLength());
+					}
+					System.out.println("s1111s");
+					// 判断响应信息
+					org.json.JSONObject datajobject;
+					boolean status = false;
+					String message = null;
+					try {
+						datajobject = new org.json.JSONObject(data);
+						status = datajobject.getBoolean("status");
+						message = datajobject.getString("message");
+
+					} catch (org.json.JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					System.out.println("22222");
+					if (status) {
+						System.out.println("33333" + message);
+
+						// 登录成功
+						String token = new HttpHelper().getCookie(httpCLient);
+
+						Account account = JSON.parseObject(message,
+								new TypeReference<Account>() {
+								});
+
+						// 保存密码
+						SharedPreferenceHelper.putBean(context,
+								Public_SP.Account, new String[] { "uid",
+										"nickName", "loginTime", "agent",
+										"phone", "token" }, new Object[] {
+										account.uid, account.nickName,
+										account.loginTime, account.agent,
+										jsonObject.get("phone"), token },
+								new int[] { SharedPreferenceHelper.Type_Int,
+										SharedPreferenceHelper.Type_String,
+										SharedPreferenceHelper.Type_Long,
+										SharedPreferenceHelper.Type_String,
+										SharedPreferenceHelper.Type_String,
+										SharedPreferenceHelper.Type_String });
+
+						HandlerHelper.sendString(handler, what,
+								HandlerHelper.Ok);
+					} else {
+						System.out.println("登录失败");
+						HandlerHelper.sendString(handler, what,
+								HandlerHelper.Fail);
+
+					}
+
+				} catch (ClientProtocolException e) {
+					System.out.println("s555555");
+					HandlerHelper.sendString(handler, what,
+							HandlerHelper.DataFail);
+				} catch (IOException e) {
+					System.out.println("666666s");
+					HandlerHelper.sendString(handler, what,
+							HandlerHelper.DataFail);
+				} catch (JSONException e) {
+
+					HandlerHelper.sendString(handler, what,
+							HandlerHelper.DataFail);
+				} finally {
+					httpCLient.getConnectionManager().shutdown();
+					System.out.println("sssssssssss");
+				}
+			};
+		}.start();
+	}
+}

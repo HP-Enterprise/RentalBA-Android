@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f6f6f6"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/lin_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#585858"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:visibility="gone" >
+
+        <EditText
+            android:id="@+id/et_area"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@color/page_bg1"
+            android:ellipsize="end"
+            android:hint="输入地址搜寻周边商店"
+            android:lines="1"
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="10dp"
+            android:singleLine="true"
+            android:textColor="#333333"
+            android:textColorHint="#818181"
+            android:textCursorDrawable="@drawable/register_edit_corsor"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#f6f6f6" 
+        android:layout_marginTop="12dp">
+
+        <ListView
+            android:id="@+id/listview_search"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#efefef"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="1dp"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:scrollbars="none" />
+
+        <LinearLayout
+            android:id="@+id/lin_store"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#f6f6f6"
+            android:orientation="horizontal" >
+          
+            <ListView
+                android:id="@+id/listview_store"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"
+                android:background="#efefef"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="1dp"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:scrollbars="none" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

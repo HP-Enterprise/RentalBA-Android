@@ -1,0 +1,504 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/page_bg2"
+    tools:context=".BusDetailActivity1" >
+
+    <com.gjcar.view.widget.CustomerScrollview_QQ
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:id="@+id/fg5_top"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- 第一排 -->
+
+            <LinearLayout
+                android:id="@+id/fg5_top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#ffffff"
+                android:orientation="vertical" >
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/page_line1" />
+
+                <!-- 2.定位 -->
+
+                <LinearLayout
+                    android:id="@+id/my_password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="13dp" >
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:clickable="true"
+                        android:src="@drawable/freeride_frul" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="32"
+                        android:gravity="center_vertical"
+                        android:text="+86 13397163438"
+                        android:textColor="@color/page_text_normal1"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="18"
+                        android:gravity="center_vertical|right"
+                        android:text="替他人轿车"
+                        android:textColor="@color/page_text_normal3"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/mypage_arrow_width"
+                        android:layout_height="@dimen/mypage_arrow_height"
+                        android:layout_marginLeft="8dp"
+                        android:src="@drawable/go" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/page_line1" />
+            </LinearLayout>
+
+            <!-- 第二排 -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#ffffff"
+                android:orientation="vertical" >
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/page_line1" />
+                <!-- 1.账号 -->
+
+                <LinearLayout
+                    android:id="@+id/my_update"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingTop="6dp" >
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:clickable="true"
+                        android:src="@drawable/freeride_frul" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="请输入航班号"
+                            android:textColor="@color/page_text_normal1"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="若航班延误，我们会免费等待"
+                            android:textColor="@color/page_text_normal3"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="@dimen/mypage_arrow_width"
+                        android:layout_height="@dimen/mypage_arrow_height"
+                        android:layout_marginLeft="8dp"
+                        android:src="@drawable/go" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/page_line1" />
+
+                <!-- 2.定位 -->
+
+                <LinearLayout
+                    android:id="@+id/my_suggestion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="13dp" >
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:clickable="true"
+                        android:src="@drawable/freeride_frul" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="7月13日    周三"
+                            android:textColor="@color/page_text_select"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="17:20"
+                            android:textColor="@color/page_text_select"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="@dimen/mypage_arrow_width"
+                        android:layout_height="@dimen/mypage_arrow_height"
+                        android:layout_marginLeft="15dip"
+                        android:layout_weight="0.2"
+                        android:clickable="true"
+                        android:src="@drawable/go" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/page_line1" />
+            </LinearLayout>
+
+            <!-- 第三排 -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#ffffff"
+                android:orientation="vertical" >
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/page_line1" />
+                <!-- 1.账号 -->
+
+                <LinearLayout
+                    android:id="@+id/my_update"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="13dp" >
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:clickable="true"
+                        android:src="@drawable/freeride_frul" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="武汉"
+                            android:textColor="@color/page_text_normal1"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="请选择机场航班站楼"
+                            android:textColor="@color/page_text_normal3"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="@dimen/mypage_arrow_width"
+                        android:layout_height="@dimen/mypage_arrow_height"
+                        android:layout_marginLeft="8dp"
+                        android:src="@drawable/go" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/page_line1" />
+
+                <!-- 2.定位 -->
+
+                <LinearLayout
+                    android:id="@+id/my_suggestion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="13dp" >
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:clickable="true"
+                        android:src="@drawable/freeride_frul" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="武汉"
+                            android:textColor="@color/page_text_normal1"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="输入下车地点为您预估费用"
+                            android:textColor="@color/page_text_normal3"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="@dimen/mypage_arrow_width"
+                        android:layout_height="@dimen/mypage_arrow_height"
+                        android:layout_marginLeft="8dp"
+                        android:src="@drawable/go" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/page_line1" />
+            </LinearLayout>
+            <!-- 车辆 -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#ffffff"
+                android:orientation="vertical" >
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/page_line1" />
+                <!-- 1.账号 -->
+
+                <LinearLayout
+                    android:id="@+id/my_update"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingTop="6dp" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/carlist_logo" />
+
+                            <com.gjcar.view.widget.ImageView_Round
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:padding="1dp"
+                                android:src="@drawable/transfer_checker" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="公务轿车"
+                            android:textColor="@color/page_text_normal3"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/carlist_logo" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:padding="1dp"
+                                android:background="@drawable/transfer_unchecked_shape_bg" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="商务7座"
+                            android:textColor="@color/page_text_normal3"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/carlist_logo" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:padding="1dp"
+                                android:background="@drawable/transfer_unchecked_shape_bg" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="豪华轿车"
+                            android:textColor="@color/page_text_normal3"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/page_line1" />
+
+                <!-- 2.定位 -->
+
+                <LinearLayout
+                    android:id="@+id/my_suggestion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="13dp" >
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:clickable="true"
+                        android:src="@drawable/freeride_frul" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="代金券"
+                            android:textColor="@color/page_text_normal1"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:gravity="right"
+                            android:text="-30"
+                            android:textColor="@color/page_text_select"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="@dimen/mypage_arrow_width"
+                        android:layout_height="@dimen/mypage_arrow_height"
+                        android:layout_marginLeft="8dp"
+                        android:src="@drawable/go" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/page_line1" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.gjcar.view.widget.CustomerScrollview_QQ>
+
+</RelativeLayout>

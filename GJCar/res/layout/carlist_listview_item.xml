@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="#e5e5e5"
+    android:orientation="vertical"
+    android:paddingBottom="1dp"
+    android:paddingTop="1dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        android:paddingBottom="6dp"
+        android:paddingTop="12dp" >
+
+        <!-- 图片 -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/picture"
+                android:clickable="true"
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+                android:src="@drawable/carlist_logo" />
+        </LinearLayout>
+
+        <!-- 车型及价格 -->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="中华H330-1.5手动挡"
+                        android:textColor="@color/page_text_normal_bolder"
+                        android:textSize="@dimen/page_textsize" />
+
+                    <TextView
+                        android:id="@+id/box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="手动/3厢/5座"
+                        android:textColor="@color/page_text_normal_bolder"
+                        android:textSize="@dimen/page_textsize" />
+
+                    <LinearLayout
+                        android:id="@+id/activity_show"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
+
+                        <RelativeLayout
+                            android:layout_width="48dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/carlist_flag_bg" >
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:background="#F3C91D" />
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:background="#F3C91D" />
+
+                            <TextView
+                                android:id="@+id/activity_flag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:layout_centerInParent="true"
+                                android:paddingBottom="4dp"
+                                android:paddingLeft="6dp"
+                                android:paddingRight="6dp"
+                                android:paddingTop="2dp"
+                                android:text=""
+                                android:textColor="@color/white"
+                                android:textSize="12dp" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/activity_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"                           
+                            android:text=""
+                            android:textColor="@color/page_text_normal2"
+                            android:textSize="12dp" />
+
+                        <ImageView
+                            android:id="@+id/activity_arrow"
+                            android:visibility="gone"
+                            android:layout_width="12dp"
+                            android:layout_height="8dp"
+                            android:layout_marginLeft="4dp"
+                            android:src="@drawable/day_price_down" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/go"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|right"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/carlist_right" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="6dp"
+                android:background="@color/page_bg" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingTop="12dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥ "
+                    android:textColor="@color/page_text_normal"
+                    android:textSize="@dimen/page_textsize" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="68"
+                    android:textColor="@color/page_text_select"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="/日均"
+                    android:textColor="@color/page_text_normal"
+                    android:textSize="@dimen/page_textsize" />
+
+                <LinearLayout
+                    android:id="@+id/days_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingRight="10dp" >
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="10dp"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/day_price" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="每日租金"
+                        android:textColor="@color/page_text_normal"
+                        android:textSize="@dimen/page_textsize" />
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="4dp"
+                        android:src="@drawable/day_price_down" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 租金日历 -->
+
+    <LinearLayout
+        android:id="@+id/rental_lin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="26dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <LinearLayout
+                android:id="@+id/left"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/carlist_left" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/rental_time"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="2016年9月"
+                android:textColor="@color/page_text_normal1"
+                android:textSize="@dimen/page_textsize" />
+
+            <LinearLayout
+                android:id="@+id/right"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/carlist_right" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="26dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="日"
+                android:textColor="@color/page_text_normal3"
+                android:textSize="@dimen/page_textsize" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="一"
+                android:textColor="@color/page_text_normal3"
+                android:textSize="@dimen/page_textsize" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="二"
+                android:textColor="@color/page_text_normal3"
+                android:textSize="@dimen/page_textsize" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="三"
+                android:textColor="@color/page_text_normal3"
+                android:textSize="@dimen/page_textsize" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="四"
+                android:textColor="@color/page_text_normal3"
+                android:textSize="@dimen/page_textsize" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="五"
+                android:textColor="@color/page_text_normal3"
+                android:textSize="@dimen/page_textsize" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="六"
+                android:textColor="@color/page_text_normal3"
+                android:textSize="@dimen/page_textsize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <com.gjcar.view.widget.MyGridView
+                android:id="@+id/gridview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:columnWidth="10dp"
+                android:gravity="center"
+                android:horizontalSpacing="1dp"
+                android:numColumns="7"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="1dp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="26dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="保险费"
+                    android:textColor="@color/page_text_normal1"
+                    android:textSize="@dimen/page_textsize" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="￥50"
+                    android:textColor="@color/page_text_select"
+                    android:textSize="@dimen/page_textsize" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="/天"
+                    android:textColor="@color/page_text_normal1"
+                    android:textSize="@dimen/page_textsize" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:gravity="center"
+                    android:text="授权费"
+                    android:textColor="@color/page_text_normal1"
+                    android:textSize="@dimen/page_textsize" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="￥8000"
+                    android:textColor="@color/page_text_select"
+                    android:textSize="@dimen/page_textsize" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

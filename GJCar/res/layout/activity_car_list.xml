@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f6f6f6"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+  <TextView 
+	        android:id="@+id/show_msg"
+	        android:layout_marginLeft="5dp"
+			android:layout_width="wrap_content"
+	   	    android:layout_height="wrap_content"
+		    android:text="抱歉,已租满"
+		    android:layout_marginTop="20dp"
+		    android:visibility="gone"/>
+    <ListView
+            android:id="@+id/listview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#efefef"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="1dp"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none" />
+
+</LinearLayout>

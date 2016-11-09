@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#F6F8F7"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/f1_map_relative"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/mapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true" />
+
+        <ImageView
+            android:id="@+id/iv_tomylocation"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="12dp"
+            android:clickable="true"
+            android:src="@drawable/main_location_home"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/page_line1" />
+
+        <LinearLayout
+            android:id="@+id/take_doortodoor_lin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="6dp"
+            android:paddingLeft="22dp"
+            android:paddingRight="16dp"
+            android:paddingTop="6dp" 
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/take_note"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="门到门服务 "
+                android:textColor="@color/page_text_normal"
+                android:textSize="12dp" />
+
+            <ToggleButton
+                android:id="@+id/take_ok"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:background="@drawable/f1_toggle"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
+
+        <!-- 上边线 -->
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/page_line1" />
+        <!-- 取车城市 -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="22dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="6dp" >
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="6dp"
+                        android:src="@drawable/f_icon_take" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center_vertical"
+                        android:text="取车城市"
+                        android:textColor="@color/page_text_select"
+                        android:textSize="12dp" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="8dp"
+                        android:background="#D6D6D6" />
+
+                    <LinearLayout
+                        android:id="@+id/take_city_lin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/take_city"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="12dp"
+                            android:text="请选择城市"
+                            android:textColor="@color/page_text_select"
+                            android:textSize="14dp" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginRight="6dp"
+                            android:src="@drawable/f1_down" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="44dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@color/page_line1" />
+
+                <!-- 送车地点 -->
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="22dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="6dp" >
+
+                    <TextView
+                        android:id="@+id/take_address_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="22dp"
+                        android:text="送车地点"
+                        android:textColor="@color/page_text_select"
+                        android:textSize="12dp" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="8dp"
+                        android:background="#D6D6D6" />
+
+                    <EditText
+                        android:id="@+id/take_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:clickable="true"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="请选择地址"
+                        android:inputType="none"
+                        android:lines="1"
+                        android:paddingLeft="12dp"
+                        android:singleLine="true"
+                        android:textColor="@color/page_text_select"
+                        android:textColorHint="@color/page_text_select"
+                        android:textCursorDrawable="@drawable/register_edit_corsor"
+                        android:textSize="14dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <!-- 中线 -->
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/page_line1" />
+
+        <!-- 取车城市 -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="22dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="6dp" >
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="6dp"
+                        android:src="@drawable/f_icon_return" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center_vertical"
+                        android:text="还车城市"
+                        android:textColor="@color/page_text_normal"
+                        android:textSize="12dp" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="8dp"
+                        android:background="#D6D6D6" />
+
+                    <LinearLayout
+                        android:id="@+id/return_city_lin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/return_city"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="12dp"
+                            android:text="请选择城市"
+                            android:textColor="@color/page_text_normal"
+                            android:textSize="14dp" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginRight="6dp"
+                            android:src="@drawable/f1_down" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="44dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@color/page_line1" />
+
+                <!-- 送车地点 -->
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="22dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="6dp" >
+
+                    <TextView
+                        android:id="@+id/return_address_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="22dp"
+                        android:text="取车地点"
+                        android:textColor="@color/page_text_normal"
+                        android:textSize="12dp" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="8dp"
+                        android:background="#D6D6D6" />
+
+                    <EditText
+                        android:id="@+id/return_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:clickable="true"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="请选择地址"
+                        android:inputType="none"
+                        android:lines="1"
+                        android:paddingLeft="12dp"
+                        android:singleLine="true"
+                        android:textColor="@color/page_text_normal"
+                        android:textColorHint="@color/page_text_normal"
+                        android:textSize="14dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <!-- 下线 -->
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/page_line1" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="12dp"
+            android:visibility="visible" >
+
+            <LinearLayout
+                android:id="@+id/taketime_lin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="取车时间"
+                    android:textColor="@color/page_text_normal"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/take_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="04—20"
+                    android:textColor="@color/page_text_normal_bolder"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/take_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="周日  16：00"
+                    android:textColor="@color/page_text_normal"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="66dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <LinearLayout
+                    android:layout_width="110dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/order_submit_days_bg"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/time_days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:textColor="@color/page_text_select"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textColor="@color/page_text_normal"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/returntime_lin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="还车时间"
+                    android:textColor="@color/page_text_normal"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/return_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="04-21"
+                    android:textColor="@color/page_text_normal_bolder"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/return_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="周一  16：00"
+                    android:textColor="@color/page_text_normal"
+                    android:textSize="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/city_hot_item_bg"
+            android:text="立即去选车"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+</LinearLayout>

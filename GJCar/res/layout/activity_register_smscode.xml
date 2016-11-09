@@ -1,0 +1,239 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Fragment_Content" >
+
+    <!-- 导航栏 -->
+
+    <LinearLayout
+        android:id="@+id/iv_back_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/page_titlebar_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:clickable="true"
+            android:padding="10dp"
+            android:src="@drawable/titlebar_back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="短信验证"
+            android:textColor="#555555"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <!-- 第一栏：手机号 -->
+
+    <LinearLayout
+        android:id="@+id/lineone"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/register_edit_height"
+        android:layout_below="@id/iv_back_title"
+        android:layout_marginLeft="@dimen/register_edit_marginleft"
+        android:layout_marginRight="@dimen/register_edit_marginright"
+        android:layout_marginTop="@dimen/register_edit_top"
+        android:background="@drawable/register_shape_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/code_phone"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/register_edit_marginbotton"
+            android:layout_marginLeft="@dimen/register_edit_marginleft"
+            android:layout_marginTop="@dimen/register_edit_margintop"
+            android:layout_weight="9"
+            android:background="@color/register_page"
+            android:hint="手机号"
+            android:inputType="phone"
+            android:textColor="@color/register_edit_font"
+            android:textColorHint="@color/register_edit_font"
+            android:textCursorDrawable="@drawable/register_edit_corsor"
+            android:textSize="@dimen/register_font_edit" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/register_edit_marginbotton"
+            android:layout_marginRight="@dimen/register_edit_marginright"
+            android:layout_marginTop="@dimen/register_edit_margintop"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/code_phone_delete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/delete_all_text"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 第二栏：验证码 -->
+
+    <LinearLayout
+        android:id="@+id/linetwo"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/register_edit_height"
+        android:layout_below="@id/lineone"
+        android:layout_marginLeft="@dimen/register_edit_marginleft"
+        android:layout_marginRight="@dimen/register_edit_marginright"
+        android:layout_marginTop="@dimen/register_edit_middle"
+        android:background="@drawable/register_shape_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/code_code"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/register_edit_marginbotton"
+            android:layout_marginLeft="@dimen/register_edit_marginleft"
+            android:layout_marginTop="@dimen/register_edit_margintop"
+            android:layout_weight="6"
+            android:background="@color/register_page"
+            android:hint="验证码"
+            android:inputType="phone"
+            android:textColor="@color/register_edit_font"
+            android:textColorHint="@color/register_edit_font"
+            android:textCursorDrawable="@drawable/register_edit_corsor"
+            android:textSize="@dimen/register_font_edit" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/register_edit_marginbotton"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="@dimen/register_edit_margintop"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/code_code_delete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/delete_all_text"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/code_code_get"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="4"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="@dimen/register_edit_marginright"
+            android:padding="3dp"
+            android:background="@drawable/register_btn_submit"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+    </LinearLayout>
+    <!-- 密码栏 -->
+
+    <LinearLayout
+        android:id="@+id/linethree"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/register_edit_height"
+        android:layout_below="@id/linetwo"
+        android:layout_marginLeft="@dimen/register_edit_marginleft"
+        android:layout_marginRight="@dimen/register_edit_marginright"
+        android:layout_marginTop="@dimen/register_edit_middle"
+        android:background="@drawable/register_shape_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/register_pwd2"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/register_edit_marginbotton"
+            android:layout_marginLeft="@dimen/register_edit_marginleft"
+            android:layout_marginTop="@dimen/register_edit_margintop"
+            android:layout_weight="15"
+            android:background="@color/register_page"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:textColor="@color/register_edit_font"
+            android:textColorHint="@color/register_edit_font"
+            android:textCursorDrawable="@drawable/register_edit_corsor"
+            android:textSize="@dimen/register_font_edit" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/register_edit_marginbotton"
+            android:layout_marginRight="@dimen/register_edit_marginright"
+            android:layout_marginTop="@dimen/register_edit_margintop"
+            android:layout_weight="2" >
+
+            <ImageView
+                android:id="@+id/register_pwd2_delete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:src="@drawable/delete_all_text"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/register_edit_marginbotton"
+            android:layout_marginRight="@dimen/register_edit_marginright"
+            android:layout_marginTop="@dimen/register_edit_margintop"
+            android:layout_weight="3" >
+
+            <ImageView
+                android:id="@+id/register_pwd2_show"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:src="@drawable/register_pwd_hide" />
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 第三栏：提交兰 -->
+
+    <Button
+        android:id="@+id/code_next"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/register_edit_height"
+        android:layout_below="@id/linethree"
+        android:layout_marginLeft="@dimen/register_edit_marginleft"
+        android:layout_marginRight="@dimen/register_edit_marginright"
+        android:layout_marginTop="@dimen/register_edit_middle"
+        android:background="@drawable/register_btn_submit"
+        android:gravity="center"
+        android:text="提  交"
+        android:textColor="@color/register_btnfont"
+        android:textSize="16dp" />
+
+</RelativeLayout>

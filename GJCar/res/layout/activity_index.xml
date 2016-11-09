@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <com.gjcar.view.widget.RippleBackground
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            app:rb_color="#E9C12B"
+            app:rb_duration="5000"
+            app:rb_radius="26dp"
+            app:rb_rippleAmount="6"
+            app:rb_scale="6" >
+
+            <ImageView
+                android:id="@+id/centerImage"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/index_center" />
+
+        </com.gjcar.view.widget.RippleBackground>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#F7F7F7"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:paddingBottom="16dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="14dp"
+            android:text="登陆"
+            android:textColor="@color/page_text_normal_bolder"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:paddingBottom="16dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="16dp"
+            android:text="注册"
+            android:textColor="@color/page_text_normal_bolder"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,570 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/page_bg2"
+    android:orientation="vertical" >
+
+    <!-- 城市条件选择等 -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/page_line1" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="6dp"
+            android:paddingLeft="44dp"
+            android:paddingRight="16dp"
+            android:paddingTop="6dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
+                android:gravity="center_vertical"
+                android:text="取车城市"
+                android:textColor="@color/page_text_normal2"
+                android:textSize="12dp" />
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="8dp"
+                android:background="#D6D6D6" />
+
+            <LinearLayout
+                android:id="@+id/take_city_lin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/take_city"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="12dp"
+                    android:text="请选择城市"
+                    android:textColor="@color/page_text_normal2"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="44dp"
+            android:background="@color/page_line1" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="6dp"
+            android:paddingLeft="44dp"
+            android:paddingRight="16dp"
+            android:paddingTop="6dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
+                android:gravity="center_vertical"
+                android:text="取车时间"
+                android:textColor="@color/page_text_normal2"
+                android:textSize="12dp" />
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="8dp"
+                android:background="#D6D6D6" />
+
+            <LinearLayout
+                android:id="@+id/take_time_lin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/take_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="12dp"
+                    android:text="2016-07-05"
+                    android:textColor="@color/page_text_normal2"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 中线 -->
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/page_line1" />
+
+        <!-- 条件选择 -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/rental_lin"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="租期"
+                        android:textColor="@color/page_text_normal2"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/take_days"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1年"
+                        android:textColor="@color/page_text_normal2"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#D6D6D6" />
+
+                <LinearLayout
+                    android:id="@+id/model_lin"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="品牌"
+                        android:textColor="@color/page_text_normal2"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/brand"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="大众"
+                        android:textColor="@color/page_text_normal2"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#D6D6D6" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="50dp"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="用车数量"
+                        android:textColor="@color/page_text_normal2"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/count"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="8dp"
+                        android:text="10"
+                        android:textColor="@color/page_text_normal2"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#D6D6D6" />
+
+                <LinearLayout
+                    android:id="@+id/car_lin"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="车型"
+                        android:textColor="@color/page_text_normal2"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/car"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="小型车"
+                        android:textColor="@color/page_text_normal2"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/page_line1" />
+        <!-- 第三栏：提交兰 -->
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/page_line1" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp" >
+
+        <LinearLayout
+            android:id="@+id/lineone"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/longrental"
+            android:layout_marginLeft="@dimen/register_edit_marginleft"
+            android:layout_marginRight="@dimen/register_edit_marginright"
+            android:background="@drawable/register_shape_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/company"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginLeft="@dimen/register_edit_marginleft"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="9"
+                android:background="@color/register_page"
+                android:hint="企业/个人名称"
+                android:maxLength="30"
+                android:textColor="#B5B5B5"
+                android:textColorHint="#B5B5B5"
+                android:textCursorDrawable="@drawable/register_edit_corsor"
+                android:textSize="@dimen/register_font_edit" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginRight="@dimen/register_edit_marginright"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/company_delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/delete_all_text"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 第二栏：再次输入密码 -->
+
+        <LinearLayout
+            android:id="@+id/linetwo"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/longrental"
+            android:layout_below="@id/lineone"
+            android:layout_marginLeft="@dimen/register_edit_marginleft"
+            android:layout_marginRight="@dimen/register_edit_marginright"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/register_shape_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/person"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginLeft="@dimen/register_edit_marginleft"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="9"
+                android:background="@color/register_page"
+                android:hint="联系人"
+                android:textColor="#B5B5B5"
+                android:textColorHint="#B5B5B5"
+                android:textCursorDrawable="@drawable/register_edit_corsor"
+                android:textSize="@dimen/register_font_edit" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginRight="@dimen/register_edit_marginright"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/person_delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/delete_all_text"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginRight="@dimen/register_edit_marginright"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="3"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/reset_againpwd_show"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/register_pwd_hide" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linetwo"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/longrental"
+            android:layout_below="@id/lineone"
+            android:layout_marginLeft="@dimen/register_edit_marginleft"
+            android:layout_marginRight="@dimen/register_edit_marginright"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/register_shape_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginLeft="@dimen/register_edit_marginleft"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="9"
+                android:background="@color/register_page"
+                android:hint="联系电话"
+                android:inputType="phone"
+                android:textColor="#B5B5B5"
+                android:textColorHint="#B5B5B5"
+                android:textCursorDrawable="@drawable/register_edit_corsor"
+                android:textSize="@dimen/register_font_edit" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginRight="@dimen/register_edit_marginright"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/phone_delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/delete_all_text"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginRight="@dimen/register_edit_marginright"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="3"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/reset_againpwd2_show"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/register_pwd_hide" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linetwo"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/longrental"
+            android:layout_below="@id/lineone"
+            android:layout_marginLeft="@dimen/register_edit_marginleft"
+            android:layout_marginRight="@dimen/register_edit_marginright"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/register_shape_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginLeft="@dimen/register_edit_marginleft"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="9"
+                android:background="@color/register_page"
+                android:hint="邮箱"
+                android:inputType="textEmailAddress"
+                android:textColor="#B5B5B5"
+                android:textColorHint="#B5B5B5"
+                android:textCursorDrawable="@drawable/register_edit_corsor"
+                android:textSize="@dimen/register_font_edit" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginRight="@dimen/register_edit_marginright"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/email_delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/delete_all_text"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/register_edit_marginbotton"
+                android:layout_marginRight="@dimen/register_edit_marginright"
+                android:layout_marginTop="@dimen/register_edit_margintop"
+                android:layout_weight="3"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/reset_againpwd2_show"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/register_pwd_hide" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/page_line1" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="fill_parent"
+        android:layout_height="38dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/register_btn_submit"
+        android:clickable="true"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="16dp" />
+
+</LinearLayout>
