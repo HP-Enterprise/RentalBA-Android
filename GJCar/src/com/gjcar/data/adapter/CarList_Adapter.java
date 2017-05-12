@@ -75,6 +75,7 @@ public class CarList_Adapter extends BaseAdapter {
 	/*选择了第几个活动*/
 //	private int activit_position = -1;
 	private int[] activity_position;
+	private int[] activity_type;
 	
 	public CarList_Adapter(Context context, List<Model____Vendor_Store_Price> list) {
 
@@ -92,8 +93,11 @@ public class CarList_Adapter extends BaseAdapter {
 		imageLoader = ImageLoader.getInstance();
 		
 		activity_position = new int[list.size()];
+		activity_type = new int[list.size()];
+		
 		for (int i = 0; i < list.size(); i++) {
 			activity_position[i]=-1;
+			activity_type[i] = -1;
 		}
 	}
 
@@ -182,6 +186,7 @@ public class CarList_Adapter extends BaseAdapter {
 			
 			if(activity_position[position] == -1){
 				activity_position[position] = 0;
+				activity_type[position] = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow.activityTypeShow.hostType;
 			}
 			
 			holder.activity_show.setVisibility(View.VISIBLE);
@@ -406,6 +411,7 @@ public class CarList_Adapter extends BaseAdapter {
 				/*注意*/
 				//Public_Param.order_paramas.activityId = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow.id;	
 				Public_Param.order_paramas.activityId = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).id;
+				Public_Param.order_paramas.activityHostType = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).activityTypeShow.hostType;
 				Public_Param.order_paramas.isHasActivity = true;
 				
 				//Public_Param.order_paramas.activityShow = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow;
@@ -415,6 +421,7 @@ public class CarList_Adapter extends BaseAdapter {
 			}else{
 				
 				Public_Param.order_paramas.activityId = 0;	
+				Public_Param.order_paramas.activityHostType = 0;
 				Public_Param.order_paramas.isHasActivity = false;
 			}
 				
@@ -521,7 +528,7 @@ public class CarList_Adapter extends BaseAdapter {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int myposition,
 					long arg3) {
-				activity_position[position] = myposition;
+				activity_position[position] = myposition;				
 				//view.setBackgroundResource(context.getResources().getColor(R.color.page_text_select));
 			}
 		});

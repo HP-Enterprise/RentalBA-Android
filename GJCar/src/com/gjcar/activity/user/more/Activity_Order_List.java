@@ -53,9 +53,15 @@ public class Activity_Order_List extends Activity{
 	
 	/*Handler*/
 	private Handler handler;
-	private final static int Request = 1;	
+	
 	private final static int Click = 2;
 	private final static int Show = 3;
+	
+	private final static int Request_door = 5;
+	private final static int Request_doortodoor = 6;
+	private final static int Request_freeride = 7;
+	private int Request_Code;
+	
 	/*数据*/
 	private ArrayList<Order> orderlist = new ArrayList<Order>();
 	
@@ -112,16 +118,32 @@ public class Activity_Order_List extends Activity{
 
 		String userId = new Integer(SharedPreferenceHelper.getUid(this)).toString();
 		
-		String api = "api/user/"+userId+"/order?currentPage=1&pageSize=100";
-		
-		if(getIntent().getStringExtra("way").equals("doortodoor")){
-			api = "api/user/"+userId+"/doortodoororder?currentPage=1&pageSize=100";
-		}else{
-			if(getIntent().getStringExtra("way").equals("freeride")){
-				api = "api/user/"+userId+"/freeRideOrder?currentPage=1&pageSize=100";
-			}
+		System.out.println("--------------"+getIntent().getStringExtra("way"));
+		if(getIntent().getStringExtra("way").equals("order")){
+			
+			String api = "api/user/"+userId+"/order?currentPage=1&pageSize=100";
+			Request_Code = Request_door;
+			new HttpHelper().initData(HttpHelper.Method_Get, this, api, null, null, handler, Request_Code, 1, new TypeReference<ArrayList<Order>>() {});
+			
+			return;
 		}
-		new HttpHelper().initData(HttpHelper.Method_Get, this, api, null, null, handler, Request, 1, new TypeReference<ArrayList<Order>>() {});
+		if(getIntent().getStringExtra("way").equals("doortodoor")){
+			
+			String api = "api/door/user/orders?currentPage=1&pageSize=100&userId="+userId;
+			Request_Code = Request_doortodoor;
+			new CarList_Helper().initData(HttpHelper.Method_Get, this, api, null, null, handler, Request_Code, 1, new TypeReference<ArrayList<Order>>() {});
+			
+			return;
+		}
+		
+		if(getIntent().getStringExtra("way").equals("freeride")){
+			
+			String api = "api/user/"+userId+"/freeRideOrder?currentPage=1&pageSize=100";
+			Request_Code = Request_freeride;
+			new HttpHelper().initData(HttpHelper.Method_Get, this, api, null, null, handler, Request_Code, 1, new TypeReference<ArrayList<Order>>() {});
+			
+			return;
+		}
 		
 	}
 	
@@ -134,7 +156,7 @@ public class Activity_Order_List extends Activity{
 
 				switch (msg.what) {
 
-					case Request:
+					case Request_door:
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
 							
@@ -158,6 +180,54 @@ public class Activity_Order_List extends Activity{
 																								
 						break;
 					
+					case Request_doortodoor:
+						
+						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
+							
+							//orderlist = OrderListHelper.getList((ArrayList<Order>)msg.obj, getIntent().getStringExtra("way").equals("doortodoor"));
+				           	
+							orderlist = (ArrayList<Order>)msg.obj;
+							System.out.println("size"+orderlist.size());	      
+				            //	System.out.println("解析结束"+orderlist.get(0).model );	
+				           	if(orderlist.size() == 0){
+				           		LoadAnimateHelper.load_empty_animation();
+				           	}
+				           	handler.sendEmptyMessage(Show);
+				           	return;
+						}
+						if(HandlerHelper.getString(msg).equals(HandlerHelper.Empty)){
+							LoadAnimateHelper.load_empty_animation();
+				           	return;
+						}
+						LoadAnimateHelper.load_fail_animation();
+						System.out.println("请求失败");	 
+																								
+						break;
+						
+					case Request_freeride:
+						
+						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
+							
+//							orderlist = OrderListHelper.getList((ArrayList<Order>)msg.obj, getIntent().getStringExtra("way").equals("doortodoor"));
+				           	
+							orderlist = (ArrayList<Order>)msg.obj;
+							System.out.println("size"+orderlist.size());	      
+				            //	System.out.println("解析结束"+orderlist.get(0).model );	
+				           	if(orderlist.size() == 0){
+				           		LoadAnimateHelper.load_empty_animation();
+				           	}
+				           	handler.sendEmptyMessage(Show);
+				           	return;
+						}
+						if(HandlerHelper.getString(msg).equals(HandlerHelper.Empty)){
+							LoadAnimateHelper.load_empty_animation();
+				           	return;
+						}
+						LoadAnimateHelper.load_fail_animation();
+						System.out.println("请求失败");	 
+																								
+						break;
+						
 					case Click:
 						initData();
 						break;
@@ -178,7 +248,7 @@ public class Activity_Order_List extends Activity{
 								Class<?> cls = null;
 								if(getIntent().getStringExtra("way").equals("freeride")){
 									cls = Activity_FreeRide_Order_Detail.class;
-								}else{
+								}else{								
 									cls = Activity_Order_Detail.class;
 								}
 								Intent intent = new Intent(Activity_Order_List.this, cls);//跳转				

@@ -102,6 +102,7 @@ public class Activity_Store_Select extends Activity{
 	}
 	
 	private void Request_Store() {
+																		
 		new HttpHelper().initData(HttpHelper.Method_Get, this, "api/china/province/city/"+getIntent().getIntExtra("cityId", 0)+"/store?available=1", null, null, handler, Request_Store, 1, new TypeReference<ArrayList<StoreShows>>() {});
 	}
 	/*≥ı ºªØHandler*/
@@ -134,8 +135,7 @@ public class Activity_Store_Select extends Activity{
 						break;
 					
 					case Data_Show:
-						
-						
+												
 						ListViewHelper.SimpleAdapter(Activity_Store_Select.this, listview_store, (List<Map<String,Object>>)msg.obj, R.layout.listview_area_item, new String[]{"title", "address"}, new int[]{R.id.title,R.id.address});						
 	
 						ListenerHelper.setListener(listview_store, ListenerHelper.Listener_ListView_OnItemClick, handler, ItmeClick);
@@ -146,7 +146,7 @@ public class Activity_Store_Select extends Activity{
 					
 					case ItmeClick:						
 						int position = msg.getData().getInt("message");
-						IntentHelper.setResultStringExtras(Activity_Store_Select.this, 0, new String[]{"Id","Name","Address","StartTime","EndTime"}, new String[]{list_store.get(position).id.toString(), list_store.get(position).storeName,list_store.get(position).storeAddr,list_store.get(position).businessHoursStart,list_store.get(position).businessHoursEnd});
+						IntentHelper.setResultStringExtras(Activity_Store_Select.this, 0, new String[]{"Id","Name","Address","StartTime","EndTime"}, new String[]{list_store.get(position).id.toString(), list_store.get(position).storeName,list_store.get(position).detailAddress,list_store.get(position).businessHoursStart,list_store.get(position).businessHoursEnd});
 						break;
 						
 					case KeyWord:

@@ -202,7 +202,7 @@
                         android:ellipsize="end"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:hint="请选择地址"
+                        android:hint="请选择取车地址"
                         android:inputType="none"
                         android:lines="1"
                         android:paddingLeft="12dp"
@@ -338,7 +338,7 @@
                         android:ellipsize="end"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:hint="请选择地址"
+                        android:hint="请选择还车地址"
                         android:inputType="none"
                         android:lines="1"
                         android:paddingLeft="12dp"
@@ -472,7 +472,7 @@
             android:layout_marginRight="30dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/city_hot_item_bg"
-            android:text="立即去选车"
+            android:text="立即选车"
             android:textColor="@color/white"
             android:textSize="16dp" />
     </LinearLayout>

@@ -32,7 +32,7 @@ public class Store_SelectHelper {
 			
 			Map<String,Object> map = new HashMap<String ,Object>();
 			map.put(keys[0], mylist.get(i).storeName);System.out.println("name"+mylist.get(i).storeName);
-			map.put(keys[1], mylist.get(i).storeAddr);System.out.println("address"+mylist.get(i).storeAddr);
+			map.put(keys[1], mylist.get(i).detailAddress);System.out.println("address"+mylist.get(i).detailAddress);
 			
 			list.add(map);
 		}

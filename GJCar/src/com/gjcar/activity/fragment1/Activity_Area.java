@@ -45,7 +45,7 @@ public class Activity_Area extends Activity{
 		
 		super.onCreate(savedInstanceState);
 		AnnotationViewUtils.injectObject(this, this);
-		
+
 		Public_Param.list_area_activity.add(this);
 		
 		/*handler*/
@@ -62,6 +62,7 @@ public class Activity_Area extends Activity{
 
 		/*设置点击事件*/
 		ListenerHelper.setListener(listview, ListenerHelper.Listener_ListView_OnItemClick, handler, ItemClick);
+		
 	}
 	
 	@Override
@@ -95,13 +96,13 @@ public class Activity_Area extends Activity{
 						listview.setVisibility(View.GONE);
 						TencentMapHelper.suggestion(Activity_Area.this, getIntent().getStringExtra("cityName"), msg.getData().getString("message"), handler, Search);
 						break;
-					
+						
 					case Search:
 						if(msg.getData().getString("message").equals(HandlerHelper.NoNet)){
 							LoadAnimateHelper.load_noNetwork_animation();
 							return;
 						}
-
+							
 						if(msg.getData().getString("message").equals(HandlerHelper.Ok)){
 							LoadAnimateHelper.load_success_animation();
 							list_area = (List<Map<String,Object>>)msg.obj;System.out.println("oka");
@@ -113,7 +114,7 @@ public class Activity_Area extends Activity{
 						LoadAnimateHelper.load_fail_animation();
 						
 						break;
-					
+						
 					case ItemClick:
 						int position = msg.getData().getInt("message");
 						IntentHelper.setResultExtras(Activity_Area.this, 0, new String[]{"Address","latitude","longitude"}, new Object[]{list_area.get(position).get("title"),list_area.get(position).get("latitude"),list_area.get(position).get("longitude")}, new int[]{IntentHelper.Type_String,IntentHelper.Type_Double,IntentHelper.Type_Double});							

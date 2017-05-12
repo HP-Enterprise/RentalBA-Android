@@ -40,6 +40,7 @@ public class Public_Param {
 	public static int loginFrom = 0;//登录页面从哪里来的：
 	public static int loginFrom_LoginOut = 1;	
 	public static int loginFrom_NotLogin = 2;
+	public static int send_toWeb = 1;//默认1，进入2，出来3
 	
 	/**选择区域*/
 	public static List<Activity> list_area_activity = new ArrayList<Activity>();

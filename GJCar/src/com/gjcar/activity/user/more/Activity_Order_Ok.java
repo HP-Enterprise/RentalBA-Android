@@ -1,5 +1,6 @@
 package com.gjcar.activity.user.more;
 
+import com.alibaba.fastjson.JSONObject;
 import com.gjcar.annotation.ContentView;
 import com.gjcar.annotation.ContentWidget;
 import com.gjcar.app.R;
@@ -7,6 +8,7 @@ import com.gjcar.data.data.Public_BaiduTJ;
 import com.gjcar.data.data.Public_Param;
 import com.gjcar.fragwork.alipay.AlipayHelper;
 import com.gjcar.utils.AnnotationViewUtils;
+import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.IntentHelper;
 import com.gjcar.view.helper.TitleBarHelper;
 import com.gjcar.view.helper.ViewHelper;
@@ -189,4 +191,5 @@ public class Activity_Order_Ok extends Activity{
 		isOut = true;
 		super.onDestroy();
 	}
+	
 }

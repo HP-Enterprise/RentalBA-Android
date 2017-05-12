@@ -192,6 +192,6 @@ public class Activity_Level extends Activity{
 		webSet.setSupportMultipleWindows(true);
 //		webSet.setUseWideViewPort(true);//设置此属性，可任意比例缩放。 
 		
-		wb_aboutus.loadUrl("file:///android_asset/copy.html");
+		wb_aboutus.loadUrl("file:///android_asset/level.html");
 	}
 }

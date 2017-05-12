@@ -18,6 +18,7 @@ import com.gjcar.data.bean.StoreShows;
 import com.gjcar.data.bean.TradeAreaShow;
 import com.gjcar.data.data.Public_Api;
 import com.gjcar.data.data.Public_BaiduTJ;
+import com.gjcar.data.data.Public_Data;
 import com.gjcar.data.data.Public_Msg;
 import com.gjcar.data.data.Public_Param;
 import com.gjcar.data.data.Public_SP;
@@ -36,13 +37,17 @@ import com.gjcar.utils.ValidateHelper;
 import com.gjcar.view.dialog.DateTimePickerDialog;
 import com.gjcar.view.helper.LoadAnimateHelper;
 import com.gjcar.view.helper.ViewInitHelper;
+import com.gjcar.view.widget.CustomDialog;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +61,7 @@ import android.widget.ToggleButton;
 public class Fragment1 extends Fragment  {
 	
 	/*控件*/
+	@ContentWidget(click = "onClick") LinearLayout menu_out;/*头像*/
 	@ContentWidget(id = R.id.mapView) MapView mapView;/*地图*/
 		
 	@ContentWidget(id = R.id.take_date) TextView take_date;/*时间选择*/
@@ -76,10 +82,10 @@ public class Fragment1 extends Fragment  {
 	@ContentWidget(click = "onClick") ImageView iv_tomylocation;
 	@ContentWidget(click = "onClick") EditText take_address, return_address;
 	@ContentWidget(click = "onClick") Button ok;
-
+	
 	/*Handler*/
 	private Handler handler;
-
+	
 	private final static int Location = 1;//定位
 	private final static int ReverseGeoCode = 2;//地理编码
 	private final static int FindCity = 3;//请求商店
@@ -216,24 +222,27 @@ public class Fragment1 extends Fragment  {
 				returnCarStoreId = "-1";
 				returnCarAddress = "";
 				returnCarAddress_Store = "";
-				
-				if(take_ok.isChecked()){
-					
-					/*搜索门到门服务范围*/
-					new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+take_cityId, null, null, handler, Request_Points, 1, new TypeReference<CityPointBounds>() {});								
-					
-					take_address.setText("请选择地址");
-					return_address.setText("请选择地址");
-					
-				}else{
-					take_time.setText("");
-					return_time.setText("");
-					
-					take_address.setText("请选择门店");
-					return_address.setText("请选择门店");
-					
-					Request_Store();
-				}
+
+				/*搜索门到门服务范围*/
+				new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+show.id.intValue(), null, null, handler, Request_Loc_Points, 1, new TypeReference<CityPointBounds>() {});								
+
+//				if(take_ok.isChecked()){
+//					
+//					/*搜索门到门服务范围*/
+//					new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+take_cityId, null, null, handler, Request_Points, 1, new TypeReference<CityPointBounds>() {});								
+//					
+//					take_address.setText("请选择地址");
+//					return_address.setText("请选择地址");
+//					
+//				}else{
+////					take_time.setText("");
+////					return_time.setText("");
+//					
+//					take_address.setText("请选择门店");
+//					return_address.setText("请选择门店");
+//					
+//					Request_Store();
+//				}
 				
 				break;
 			
@@ -274,7 +283,7 @@ public class Fragment1 extends Fragment  {
 					
 				}else{
 					
-					return_time.setText("");
+//					return_time.setText("");
 					return_address.setText("请选择门店");
 				}
 				
@@ -296,8 +305,8 @@ public class Fragment1 extends Fragment  {
 				return_cityId = take_cityId;
 				return_cityName = take_cityName;
 				return_city.setText(take_cityName);
-				
-				ViewInitHelper.init_f1_DateTime(new TextView[]{take_date,take_time,return_date,return_time},""+data.getCharSequenceExtra("StartTime"));
+
+				ViewInitHelper.init_f1_ChangeDateTime(new TextView[]{take_date,take_time,return_date,return_time},""+data.getCharSequenceExtra("StartTime"),""+data.getCharSequenceExtra("EndTime"));		
 				ViewInitHelper.init_take(TimeHelper.getTime2_Number(""+data.getCharSequenceExtra("StartTime")), TimeHelper.getTime2_Number(""+data.getCharSequenceExtra("EndTime")));
 				ViewInitHelper.init_return(TimeHelper.getTime2_Number(""+data.getCharSequenceExtra("StartTime")), TimeHelper.getTime2_Number(""+data.getCharSequenceExtra("EndTime")));
 				break;
@@ -309,11 +318,11 @@ public class Fragment1 extends Fragment  {
 				returnCarAddress = ""+data.getCharSequenceExtra("Name");
 				returnCarAddress_Store = ""+data.getCharSequenceExtra("Address");
 				
-				ViewInitHelper.init_f1_DateTime_return(new TextView[]{return_date,return_time},""+data.getCharSequenceExtra("StartTime"));
+				ViewInitHelper.init_f1_DateTime_ChangeReturn(new TextView[]{return_date,return_time},""+data.getCharSequenceExtra("StartTime"),""+data.getCharSequenceExtra("EndTime"));						
 				ViewInitHelper.init_return(TimeHelper.getTime2_Number(""+data.getCharSequenceExtra("StartTime")), TimeHelper.getTime2_Number(""+data.getCharSequenceExtra("EndTime")));
 				
 				break;
-			
+				
 			case RequestCode_takeaddress://"Address","latitude","longitude"
 				System.out.println(""+data.getCharSequenceExtra("Address"));
 				takeCarStoreId = "-1";				
@@ -358,12 +367,12 @@ public class Fragment1 extends Fragment  {
 
 					case Location:
 						if(msg.getData().getString("message").equals("ok")){
-
+								
 							LocationMessage locMessage= (LocationMessage)msg.obj;
 							loc_latlng = new LatLng(locMessage.Latitude, locMessage.Longitude);
 							loc_address = locMessage.address;
 							new BaiduMapHelper().ShowMap(loc_latlng, mapView.getMap());
-							new BaiduMapHelper().ShowLocation(loc_latlng, mapView.getMap());
+							new BaiduMapHelper().ShowLocation(loc_latlng, mapView.getMap());//显示定位
 							new BaiduMapHelper().startGeoCoder(loc_latlng, handler, ReverseGeoCode);
 						}else{
 							//xx定位失败
@@ -375,9 +384,9 @@ public class Fragment1 extends Fragment  {
 					case ReverseGeoCode:
 						if(msg.getData().getString("message").equals("ok")){
 							
-							System.out.println(""+msg.getData().getString("data"));
+							System.out.println("城市名称2："+msg.getData().getString("data"));
 							
-							take_ok.setChecked(true);
+							//take_ok.setChecked(true);//这个地方有可能是危险代码
 							
 							/*查询城市id*/
 							new Fragment1_Helper().searchCity(msg.getData().getString("data"), handler, FindCity);
@@ -411,21 +420,27 @@ public class Fragment1 extends Fragment  {
 							
 							SharedPreferenceHelper.putBean(getActivity(), Public_SP.City, new String[]{"id","cityName","latitude","longitude"}, new Object[]{loc_cityId,loc_cityName,(float)loc_latlng.latitude,(float)loc_latlng.longitude}, new int[]{SharedPreferenceHelper.Type_Int,SharedPreferenceHelper.Type_String,SharedPreferenceHelper.Type_Float,SharedPreferenceHelper.Type_Float});
 							
+							/*搜索门到门服务范围*/
+							new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+loc_cityId, null, null, handler, Request_Loc_Points, 1, new TypeReference<CityPointBounds>() {});								
+
 							System.out.println("f1---保存定位的城市--成功");
-							if(take_ok.isChecked()){
-								
-								/*搜索门到门服务范围*/
-								new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+loc_cityId, null, null, handler, Request_Loc_Points, 1, new TypeReference<CityPointBounds>() {});								
-							}else{
-								Request_Store();//加载门店
-							}
+//							if(take_ok.isChecked()){
+//								
+//								/*搜索门到门服务范围*/
+//								new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+loc_cityId, null, null, handler, Request_Loc_Points, 1, new TypeReference<CityPointBounds>() {});								
+//							}else{
+//								
+//								Request_Store();//加载门店
+//							}
 							
 						}else{
 							
 							take_ok.setChecked(false);
 							
 							if(msg.getData().getString("message").equals(HandlerHelper.Empty)){
+								
 								take_address.setText("当前城市没有租车门店");//没有找到当前城市
+								return_address.setText("请选择还车门店");//没有找到当前城市
 							}else{
 								//new Fragment1_Helper().searchCity(msg.getData().getString("data"), handler, FindCity);//重新找城市
 							}
@@ -445,8 +460,8 @@ public class Fragment1 extends Fragment  {
 						    	
 						    	new BaiduMapHelper().DrawPolygon(points, mapView.getMap());
 						    	
-						    	if(new BaiduMapHelper().isPolygon(points, loc_latlng)){
-						    		
+						    	if(new BaiduMapHelper().isPolygon(points, loc_latlng)){//判断定位地址是否在其中
+						    			
 						    		/*搜索地址信息*/
 						    		if(loc_address != null && !loc_address.equals("")){
 						    			
@@ -463,19 +478,30 @@ public class Fragment1 extends Fragment  {
 										return_address.setText(loc_address);
 						    		}
 									
+						    	}else{
+						    		
+						    		take_address.setText("请选择取车地址");
+						    		return_address.setText("请选择还车地址");
 						    	}
 						    }else{
+						    	
+						    	take_time.setText("");
+								return_time.setText("");
+								
+								take_address.setText("请选择门店");
+								return_address.setText("请选择门店");
+						    	
 						    	take_doortodoor_lin.setVisibility(View.GONE);
 								take_ok.setChecked(false);
+								
+								Request_Store();//加载门店
 						    }    
 							
 						}else{
 							take_doortodoor_lin.setVisibility(View.GONE);
 							take_ok.setChecked(false);
-//							if(msg.getData().getString("message").equals(HandlerHelper.Fail)){//不开通服务
-//								take_doortodoor_lin.setVisibility(View.GONE);
-//								take_ok.setChecked(false);
-//							}
+							
+							Request_Store();//加载门店
 						}
 						break;	
 						
@@ -505,7 +531,7 @@ public class Fragment1 extends Fragment  {
 							}
 						}
 						break;
-	
+						
 					case ToggleChanged:
 						if(msg.getData().getString("message").equals(Public_Msg.Msg_UnChecked)){
 							
@@ -515,8 +541,8 @@ public class Fragment1 extends Fragment  {
 							take_address_name.setText("取车门店");
 							return_address_name.setText("还车门店");
 							
-							take_time.setText("");
-							return_time.setText("");
+//							take_time.setText("");
+//							return_time.setText("");
 							
 							if(take_cityId == -1){
 								take_address.setText("请选择门店");
@@ -544,8 +570,7 @@ public class Fragment1 extends Fragment  {
 								
 								new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+take_cityId, null, null, handler, Request_Points, 1, new TypeReference<CityPointBounds>() {});								
 							}
-							
-							
+							 
 							ViewInitHelper.init_f1_DateTime(new TextView[]{take_date,take_time,return_date,return_time},"10:00");
 							ViewInitHelper.init_take(8, 20);
 							ViewInitHelper.init_return(8, 20);
@@ -563,16 +588,16 @@ public class Fragment1 extends Fragment  {
 							return_address.setText(stores.get(0).storeName);
 							
 							takeCarAddress = stores.get(0).storeName;
-							takeCarAddress_Store = stores.get(0).storeAddr;
+							takeCarAddress_Store = stores.get(0).detailAddress;
 							takeCarStoreId = stores.get(0).id.toString();
 							returnCarAddress = stores.get(0).storeName;
-							returnCarAddress_Store = stores.get(0).storeAddr;
+							returnCarAddress_Store = stores.get(0).detailAddress;
 							returnCarStoreId = stores.get(0).id.toString();
-							
-							ViewInitHelper.init_f1_DateTime(new TextView[]{take_date,take_time,return_date,return_time},stores.get(0).businessHoursStart);
+														
+							ViewInitHelper.init_f1_ChangeDateTime(new TextView[]{take_date,take_time,return_date,return_time},stores.get(0).businessHoursStart,stores.get(0).businessHoursEnd);
 							ViewInitHelper.init_take(TimeHelper.getTime2_Number(stores.get(0).businessHoursStart), TimeHelper.getTime2_Number(stores.get(0).businessHoursEnd));
 							ViewInitHelper.init_return(TimeHelper.getTime2_Number(stores.get(0).businessHoursStart), TimeHelper.getTime2_Number(stores.get(0).businessHoursEnd));
-							
+							System.out.println("上班时间--------"+stores.get(0).businessHoursStart);
 						}
 						break;
 						
@@ -592,7 +617,16 @@ public class Fragment1 extends Fragment  {
 		}
 		
 		switch (view.getId()) {
-		
+		case R.id.menu_out:
+			
+			final SlidingPaneLayout slidingPaneLayout = (SlidingPaneLayout)getActivity().findViewById(R.id.slidingpanellayout);
+			if(slidingPaneLayout.isOpen()){
+				slidingPaneLayout.closePane();
+			}else{
+				slidingPaneLayout.openPane();
+			}			
+			break;
+			
 			case R.id.taketime_lin:
 				
 				if(!take_ok.isChecked() && (take_time.getText().toString().equals("")||take_time.getText().toString()==null)){
@@ -630,7 +664,7 @@ public class Fragment1 extends Fragment  {
 				break;
 			
 //			case R.id.return_city_lin:
-//				//IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), this, Activity_City_List.class,RequestCode_returncity, new String[]{"loc_cityId","loc_cityName","loc_latitude","loc_longitude"}, new Object[]{loc_cityId, loc_cityName,loc_latlng.latitude,loc_latlng.longitude}, new int[]{IntentHelper.Type_Int, IntentHelper.Type_String,IntentHelper.Type_Double,IntentHelper.Type_Double});
+//				IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), this, Activity_City_List.class,RequestCode_returncity, new String[]{"loc_cityId","loc_cityName","loc_latitude","loc_longitude"}, new Object[]{loc_cityId, loc_cityName,loc_latlng.latitude,loc_latlng.longitude}, new int[]{IntentHelper.Type_Int, IntentHelper.Type_String,IntentHelper.Type_Double,IntentHelper.Type_Double});
 //				break;
 			
 			case R.id.take_address:
@@ -651,23 +685,55 @@ public class Fragment1 extends Fragment  {
 				}
 				break;
 				
-//			case R.id.return_address:
+			case R.id.return_address:
 				
-//				if(return_cityId == -1){//当城市没哟加载进来
-//					ToastHelper.showToastShort(getActivity(), "请选择城市");
-//					return;
-//				}
-//				
-//				if(take_ok.isChecked()){
-//					
-//					IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), this, Activity_Map_Area.class,RequestCode_returnaddress, new String[]{"cityId","latitude","longitude","cityName"}, new Object[]{return_cityId,return_latitude, return_longitude,return_cityName}, new int[]{IntentHelper.Type_Int,IntentHelper.Type_Double, IntentHelper.Type_Double,IntentHelper.Type_String});					
-//				}else{
-//					
-//					IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), this, Activity_Store_Select.class,RequestCode_returnstore, new String[]{"cityId"}, new Object[]{return_cityId}, new int[]{IntentHelper.Type_Int});								
-//				}
-//				break;
+				if(!take_ok.isChecked()){//没有被选中
+					
+					return;
+				}
 				
-			case R.id.ok:				
+				if(return_cityId == -1){//当城市没有加载进来
+					ToastHelper.showToastShort(getActivity(), "请选择城市");
+					return;
+				}
+				
+				if(take_ok.isChecked()){
+					
+					IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), this, Activity_Map_Area.class,RequestCode_returnaddress, new String[]{"cityId","latitude","longitude","cityName"}, new Object[]{return_cityId,return_latitude, return_longitude,return_cityName}, new int[]{IntentHelper.Type_Int,IntentHelper.Type_Double, IntentHelper.Type_Double,IntentHelper.Type_String});					
+				}else{
+					
+					IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), this, Activity_Store_Select.class,RequestCode_returnstore, new String[]{"cityId"}, new Object[]{return_cityId}, new int[]{IntentHelper.Type_Int});								
+				}
+				break;
+				
+			case R.id.ok:
+				/*春节判断:*/
+				if(TimeHelper.isTimeOfSpring("2017-01-27", "2017-01-30", take_time.getTag().toString()) && (take_cityId != 235 && take_cityId != 234)){
+					
+					final CustomDialog.Builder ibuilder;
+					ibuilder = new CustomDialog.Builder(getActivity());
+					ibuilder.setTitle("提示");
+					ibuilder.setMessage("新年期间(1月27日至1月30日)暂不接受此时间取还车业务");
+					ibuilder.setPositiveButton("确定", null);
+					
+					ibuilder.create().show();
+					
+					return;
+				}
+
+				if(TimeHelper.isTimeOfSpring("2017-01-27", "2017-01-30", return_time.getTag().toString()) && (take_cityId != 235 && take_cityId != 234)){
+					
+					final CustomDialog.Builder ibuilder;
+					ibuilder = new CustomDialog.Builder(getActivity());
+					ibuilder.setTitle("提示");
+					ibuilder.setMessage("新年期间(1月27日至1月30日)暂不接受此时间取还车业务");
+					ibuilder.setPositiveButton("确定", null);
+					
+					ibuilder.create().show();
+					
+					return;
+				}
+				
 				/*设置参数*/
 				Public_Param.order_paramas.takeCarDate = take_time.getTag().toString();System.out.println("取车时间"+take_time.getTag().toString());
 				Public_Param.order_paramas.returnCarDate = return_time.getTag().toString();System.out.println("换车时间"+return_time.getTag().toString());

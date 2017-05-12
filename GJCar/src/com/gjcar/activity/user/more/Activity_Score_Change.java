@@ -131,7 +131,7 @@ public class Activity_Score_Change extends Activity{
 		/*获取列表*/
 		LoadAnimateHelper.start_animation();
 		String api = "api/me/couponType?currentPage=1&pageSize=20";
-					  
+			  
 		new TicketList_Helper().initDataList(HttpHelper.Method_Get, this, api, null, null, handler, List_Data, 1, new TypeReference<ArrayList<ScoreChange>>() {});
 	}
 	

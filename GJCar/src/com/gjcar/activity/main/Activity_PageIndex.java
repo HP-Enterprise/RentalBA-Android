@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -20,9 +21,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.gjcar.app.R;
 import com.gjcar.data.data.Public_BaiduTJ;
+import com.gjcar.data.data.Public_Platform;
 import com.gjcar.data.data.Public_SP;
 import com.gjcar.data.service.RightHelper;
 import com.gjcar.utils.HandlerHelper;
+import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.NetworkHelper;
 import com.gjcar.utils.SystemUtils;
 import com.gjcar.utils.ToastHelper;
@@ -36,6 +39,7 @@ public class Activity_PageIndex extends Activity{
 	private Handler handler;
 
 	private final static int Request_Login = 1;
+	private final static int Request_Submit = 2;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +50,10 @@ public class Activity_PageIndex extends Activity{
 		
 		initData();
 		
+		Request_Submit();
+		
 		Public_BaiduTJ.start(this);
-		//3333333333333333333333333333333333
+		
 	}
 	
 	@Override
@@ -135,5 +141,33 @@ public class Activity_PageIndex extends Activity{
 		new RightHelper().LoginByToken(Activity_PageIndex.this, handler, Request_Login);
 	}
 	
-	
+	/** 提交信息  */
+	private void  Request_Submit(){
+		
+		/*获取参数*/
+		String mediaId = Public_Platform.M_Media3;//腾讯新闻，新浪微博等
+		String deviceId = ((TelephonyManager) this.getSystemService(TELEPHONY_SERVICE)).getDeviceId();
+		String appid = "1028405";//由飓风平台发放	
+		String pkg = "com.gjcar.app";
+		System.out.println("deviceId"+deviceId);
+		String privateKey = "cb13cc8b69156692";
+		int appVersion = SystemUtils.getVersionCode(this);
+		String channel = Public_Platform.C_JuFeng;
+		
+		/*参数*/
+		JSONObject jsonObject = new JSONObject(); //**********************注意json发送数据时，要这样
+		
+		jsonObject.put("mediaId", mediaId);
+		jsonObject.put("deviceId", deviceId);
+		jsonObject.put("appid", appid);
+		jsonObject.put("pkg", pkg);
+		
+		jsonObject.put("privateKey", privateKey);
+		jsonObject.put("appVersion", appVersion);
+		jsonObject.put("channel", channel);
+		
+		/*提交*/
+		new HttpHelper().initData(HttpHelper.Method_Post, this, "api/advertise/jf/android/active", jsonObject, null, handler, Request_Submit, 2, null);
+		
+	}
 }

@@ -18,8 +18,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.gjcar.app.R;
 import com.gjcar.data.data.Public_Api;
+import com.gjcar.data.data.Public_SP;
 import com.gjcar.utils.HandlerHelper;
+import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.NetworkHelper;
+import com.gjcar.utils.SharedPreferenceHelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -36,6 +39,8 @@ public class CarList_Helper {
 		httpClient.setTimeout(100000);
 		
 		String url = Public_Api.appWebSite + api;
+		
+		HttpHelper.AddCookies(httpClient, context);
 		
 		httpClient.get(url, params, new AsyncHttpResponseHandler() {
 			
@@ -96,5 +101,5 @@ public class CarList_Helper {
 			}
 		});	
 	}
-	
+
 }

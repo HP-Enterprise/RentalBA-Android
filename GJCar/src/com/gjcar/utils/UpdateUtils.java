@@ -130,7 +130,7 @@ public class UpdateUtils{
     private Thread downLoadThread;
     private boolean interceptFlag = false;
     private Handler mHandler;
-    public boolean force_update = true;	//是否强制更新
+    public boolean force_update = false;	//是否强制更新
     private String server_version= "";			//服务器版本号
 	private String low_version;				//最低版本号
 	private ProgressDialog tip;
@@ -140,12 +140,13 @@ public class UpdateUtils{
 	public boolean isJump = false;
 	
 	/** 构造函数*/
-    public UpdateUtils(final Activity activity,String apkUrl,String size)
+    public UpdateUtils(final Activity activity,String apkUrl,String size, boolean isfourceupdate)
     {
     	this.activity = activity;
     	this.apkUrl = apkUrl;
     	this.apkSize = Long.parseLong(size);	
-    			
+    	this.force_update = isfourceupdate;
+    	
     	mHandler = new Handler(){
 	    	public void handleMessage(Message msg){
 	    		switch (msg.what) {
@@ -231,7 +232,6 @@ public class UpdateUtils{
 
     /**1.开始 */
 	public void UpdateManager_do(){
-		force_update = true;
 		checkApkUpdate();
 	}
     

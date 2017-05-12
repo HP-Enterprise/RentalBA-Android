@@ -57,7 +57,7 @@ public class Activity_DrvieOther_Submit extends Activity{
 	@ContentWidget(id = R.id.u_name) EditText u_name;
 	@ContentWidget(id = R.id.u_phone) EditText u_phone;
 	@ContentWidget(id = R.id.u_note) EditText u_note;
-	
+
 	@ContentWidget(id = R.id.f_usecar) TextView f_usecar;
 	@ContentWidget(id = R.id.f_usecar_all) TextView f_usecar_all;
 	@ContentWidget(id = R.id.f_out) TextView f_out;

@@ -49,6 +49,8 @@ import android.widget.ToggleButton;
 public class Activity_Service extends Activity{
 	
 	@ContentWidget(id = R.id.listview) ListView listview;//
+	
+	@ContentWidget(id = R.id.preAmount_tv) TextView preAmount_tv;//preAmount_tv
 	@ContentWidget(id = R.id.mustAmount_lin) LinearLayout mustAmount_lin;//
 	
 	@ContentWidget(id = R.id.money_baoxian_detail) TextView money_baoxian_detail;
@@ -59,6 +61,8 @@ public class Activity_Service extends Activity{
 	
 	@ContentWidget(click = "onClick") TextView payway_online;
 	@ContentWidget(click = "onClick") TextView payway_store;
+	
+	@ContentWidget(id = R.id.tip) TextView tip;//在线支付提示
 	
 	@ContentWidget(click = "onClick")  Button ok;
 	
@@ -140,24 +144,34 @@ public class Activity_Service extends Activity{
 					
 				}
 				
-				/*门到门:上门送出，取车上门*/
-				if(Public_Param.order_paramas.isDoorToDoor.intValue() == 1 && orderPrice.doorToDoor != null && orderPrice.doorToDoor.size() != 0){
+				/*异店异地*/
+				if(orderPrice.doorToDoor != null && orderPrice.doorToDoor.size() != 0){
+				
 					for (int i = 0; i < orderPrice.doorToDoor.size(); i++) {
 						Public_Param.order_paramas.all_list.add(orderPrice.doorToDoor.get(i));
 					}
 					
 				}
+//				/*门到门:上门送出，取车上门*/
+//				if(Public_Param.order_paramas.isDoorToDoor.intValue() == 1 && orderPrice.doorToDoor != null && orderPrice.doorToDoor.size() != 0){
+//					for (int i = 0; i < orderPrice.doorToDoor.size(); i++) {
+//						Public_Param.order_paramas.all_list.add(orderPrice.doorToDoor.get(i));
+//					}
+//					
+//				}
 				
 				IntentHelper.startActivity(Activity_Service.this, Activity_Order_Submit.class);
 				break;
 
 			case R.id.payway_online:
 				payWay = 3;
+				tip.setVisibility(View.VISIBLE);
 				ViewHelper.ClickOneFromAll(new TextView[]{payway_online,payway_store},0,R.drawable.service_bg_normal, R.drawable.service_bg_select, R.color.page_text_normal2, R.color.page_text_select);
 				break;
 			
 			case R.id.payway_store:
 				payWay = 0;
+				tip.setVisibility(View.GONE);
 				ViewHelper.ClickOneFromAll(new TextView[]{payway_online,payway_store},1,R.drawable.service_bg_normal, R.drawable.service_bg_select, R.color.page_text_normal2, R.color.page_text_select);				
 				break;
 					
@@ -224,6 +238,8 @@ public class Activity_Service extends Activity{
 							init_View_Price(orderPrice);
 				           	System.out.println("size"+orderPrice.averagePrice);	  
 				           	
+				           	initPayWay(orderPrice.payment.intValue());//设置支付方式
+				            
 				    		Request_ServiceAmount();//请求服务费
 				           	return;
 						}
@@ -232,12 +248,18 @@ public class Activity_Service extends Activity{
 						break;
 						
 					case Request_ServiceData:
-						
+								
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
 							service_list = (ArrayList<ServiceAmount>)msg.obj;
-							
+										
 							if(service_list != null && service_list.size() != 0){
-								mustAmount_lin.setVisibility(View.VISIBLE);
+																
+								if(Public_Param.order_paramas.activityHostType.intValue() == 8){
+									mustAmount_lin.setVisibility(View.GONE);         
+								}else{
+									mustAmount_lin.setVisibility(View.VISIBLE);
+								}
+								
 								ServiceList_Adapter adapter = new ServiceList_Adapter(Activity_Service.this, service_list, handler, ToggleChanged,orderPrice.daySum.intValue());
 								listview.setAdapter(adapter);
 								
@@ -266,11 +288,37 @@ public class Activity_Service extends Activity{
 						break;
 				}
 			}
-
 			
 		};
 	}
 	
+	private void initPayWay(int mypayway){//1.在线；2.门店3.所有
+		
+		switch (mypayway) {
+			case 1:
+				payway_store.setVisibility(View.GONE);
+				payWay = 3;
+				tip.setVisibility(View.VISIBLE);
+				ViewHelper.ClickOneFromAll(new TextView[]{payway_online,payway_store},0,R.drawable.service_bg_normal, R.drawable.service_bg_select, R.color.page_text_normal2, R.color.page_text_select);				
+				break;
+	
+			case 2:
+				payway_online.setVisibility(View.GONE);	
+				payWay = 0;
+				tip.setVisibility(View.GONE);
+				ViewHelper.ClickOneFromAll(new TextView[]{payway_online,payway_store},1,R.drawable.service_bg_normal, R.drawable.service_bg_select, R.color.page_text_normal2, R.color.page_text_select);				
+				break;
+							
+			case 3:
+				//默认保持不变
+				break;
+				
+			default:
+				
+				break;
+		}
+		
+	}
 	
 	private void init_View_Price(OrderPrice orderPrice) {
 		money_baoxian_detail.setText("￥"+orderPrice.basicInsuranceAmount.intValue()+"X"+orderPrice.daySum);
@@ -278,5 +326,7 @@ public class Activity_Service extends Activity{
 		
 		poundageAmount_detail.setText("￥"+orderPrice.poundageAmount.details.get(0).price);
 		poundageAmount_all.setText("￥"+orderPrice.poundageAmount.details.get(0).price);
+		
+		preAmount_tv.setText("预授权"+orderPrice.preAuthorization+"元(可退)");
 	}
 }

@@ -103,10 +103,21 @@ public class FreeRide_List_Adapter extends BaseAdapter {
 		ImageLoader.getInstance().displayImage(Public_Api.appWebSite + list.get(position).vehicleShow.vehicleModelShow.picture, holder.a_picture, ImageLoaderHelper.initDisplayImageOptions());
 		holder.a_model.setText(list.get(position).vehicleShow.vehicleModelShow.model);	
 		
-		String carGroup = StringHelper.getCarGroup(list.get(position).vehicleShow.vehicleModelShow.carGroup);
-		String carTrunk = StringHelper.getCarTrunk(list.get(position).vehicleShow.vehicleModelShow.carTrunk);
+		String carGroup = "";
+		if(list.get(position).vehicleShow.vehicleModelShow.carGroup != null){
+			carGroup = StringHelper.getCarGroup(list.get(position).vehicleShow.vehicleModelShow.carGroup);
+		}
+		
+		String carTrunk = "";
+		if(list.get(position).vehicleShow.vehicleModelShow.carTrunk != null){
+			carTrunk = StringHelper.getCarTrunk(list.get(position).vehicleShow.vehicleModelShow.carTrunk);
+		}
 
+		if(carTrunk.equals("1")){
+			carTrunk = "3";
+		}
 		String seats = list.get(position).vehicleShow.vehicleModelShow.seats.toString();
+
 		holder.a_note.setText(carGroup+"/"+carTrunk+"Ïá"+seats+"×ù");
 
 		holder.b_take_city.setText(list.get(position).takeCarCityShow.cityName);	

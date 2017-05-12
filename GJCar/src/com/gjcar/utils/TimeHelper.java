@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.support.v4.util.TimeUtils;
+import android.widget.TextView;
 
 public class TimeHelper {
 	
@@ -42,7 +43,7 @@ public class TimeHelper {
 	public static String getDateTime_YM(String time) {
 
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date date = sdf.parse(time);
 
 			SimpleDateFormat format = new SimpleDateFormat("MM-dd");
@@ -237,7 +238,7 @@ public class TimeHelper {
 	 */
 	public static String getSearchTime_Mis(String datetime) {
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		long starttime = 0;
 		try {
 			starttime = format.parse(datetime).getTime();
@@ -471,7 +472,7 @@ public class TimeHelper {
 //		Date date = new Date();
 //		date.setDate(date.getDate() + addDays);
 //
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //		String str_time = format.format(date);
 //
 //		String time = getHourTime_ten(str_time,hourTime);
@@ -555,7 +556,7 @@ public class TimeHelper {
 	public static String get_YMD_Time(String time) {
 
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date date = sdf.parse(time);
 
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -579,7 +580,7 @@ public class TimeHelper {
 	public static String get_YMD_Time2(String time) {
 
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date date = sdf.parse(time);
 
 			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
@@ -603,7 +604,7 @@ public class TimeHelper {
 	public static String getDateTime(String time) {
 
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = sdf.parse(time);
 
 			SimpleDateFormat format = new SimpleDateFormat("MM-dd");
@@ -626,7 +627,7 @@ public class TimeHelper {
 	public static String getHourTime_ten(String time,String hourTime) {
 
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date date = sdf.parse(time);
 
 			Calendar cal = Calendar.getInstance();
@@ -690,10 +691,10 @@ public class TimeHelper {
 	public static String getHourTime(String time) {
 
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = sdf.parse(time);
 
-			SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 			String str_hour = format.format(date);
 
 			Calendar cal = Calendar.getInstance();
@@ -749,12 +750,12 @@ public class TimeHelper {
 	}
 
 	/**
-	 * 获取各种格式的时间：yyyy-MM-dd hh:mm:ss
+	 * 获取各种格式的时间：yyyy-MM-dd HH:mm:ss
 	 * 
 	 * @param date
 	 *            :日期
 	 * @param str_format
-	 *            :yyyy-MM-dd hh:mm:ss
+	 *            :yyyy-MM-dd HH:mm:ss
 	 * @return
 	 */
 	public static String getDateTime(Date date, String str_format) {
@@ -798,6 +799,37 @@ public class TimeHelper {
 	 * @return
 	 */
 	public static boolean isTimeOfRental(String start,String end,String time){
+		
+		boolean isTime = false;
+		
+		/* 获取时间 */
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date startDate = null;
+		Date endDate = null;
+		Date timeDate = null;
+		
+		try {
+			startDate = format.parse(start);
+			endDate = format.parse(end);
+			timeDate = format.parse(time);
+
+			if((timeDate.getTime()-startDate.getTime() >= 0) && (timeDate.getTime()-endDate.getTime() <= 0)){
+				isTime = true;
+			}
+			
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return isTime;
+	}
+	
+	/**
+	 * 时间是否位于2个时间
+	 * @return
+	 */
+	public static boolean isTimeOfSpring(String start,String end,String time){
 		
 		boolean isTime = false;
 		
@@ -1113,28 +1145,132 @@ public class TimeHelper {
 	}
 	
 	/**
-	 * 如果时间小于10:00,就显示10:00
+	 * 时间为于x-y之间不变，如果不是，则0-x变x,y-24变y
 	 * @return
 	 */
-	public static String getInitTime_10(String time) {
+	public static String getInitTime_8_20(String time, String startTime, String endTime) {
 
-		String mytime = "10:00";
-		
 		Date nowDate;
+		Date startDate;
+		Date endDate;
+		
 		SimpleDateFormat format_now = new SimpleDateFormat("HH:mm");
 		try {
 			nowDate = format_now.parse(time);
-			int hour = nowDate.getHours();
-			System.out.println("时间"+hour);
+			startDate = format_now.parse(startTime);
+			endDate = format_now.parse(endTime);
+
+			int nowHour = nowDate.getHours();
+			int startHour = startDate.getHours();
+			int endHour = endDate.getHours() == 0 ? 24 : endDate.getHours();
 			
-			if(hour < 10){
-				return mytime;
+			if(nowHour <= startHour){
+				
+				return startTime;
 			}else{
-				return time;
+				
+				if(nowHour >= endHour){
+					
+					return endTime;
+				}else{
+					
+					return time;
+				}
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
+			return time;
+			
+		}
+
+	}
+		
+	public static String getStoreTagTime(String hourTime, TextView tv) {
+		
+		Date tagDate;
+		String time = tv.getTag().toString();
+		
+		SimpleDateFormat format_now = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			tagDate = format_now.parse(time);
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String str_time = format.format(tagDate)+" "+hourTime;
+
+			return str_time;
+			
+		}catch (ParseException e) {
+			
+			e.printStackTrace();
+			return time;
+			
+		}
+
+	}
+	
+	public static String getStoreWeekTime(String hourTime, TextView tv) {
+		
+		Date tagDate;
+		String time = tv.getTag().toString();
+		
+		SimpleDateFormat format_now = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			tagDate = format_now.parse(time);
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			
+			String str_time = format.format(tagDate)+" "+hourTime;
+			
+			String mytime = getHourTime_ten(str_time, hourTime);
+			
 			return mytime;
+			
+		}catch (ParseException e) {
+			
+			e.printStackTrace();
+			return "";
+			
+		}
+
+	}
+	
+	public static String getStoreShowTime(TextView tv) {
+		
+		Date tagDate;
+		String time = tv.getTag().toString();
+		
+		SimpleDateFormat format_now = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			tagDate = format_now.parse(time);
+			SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+			String str_time = format.format(tagDate);
+
+			return str_time;
+			
+		}catch (ParseException e) {
+			
+			e.printStackTrace();
+			return time;
+			
+		}
+
+	}
+	
+	public static String getStoreHourTime(TextView tv) {
+		
+		Date tagDate;
+		String time = tv.getTag().toString();
+		
+		SimpleDateFormat format_now = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		try {
+			tagDate = format_now.parse(time);
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+			String str_time = format.format(tagDate);
+
+			return str_time;
+			
+		}catch (ParseException e) {
+			
+			e.printStackTrace();
+			return time;
 			
 		}
 

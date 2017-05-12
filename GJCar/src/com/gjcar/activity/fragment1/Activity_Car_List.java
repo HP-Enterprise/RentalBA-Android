@@ -68,7 +68,7 @@ public class Activity_Car_List extends Activity{
 		
 		/*标题*/
 		TitleBarHelper.Back(this, "车型列表", 0);
-
+		
 		/*加载动画*/
 		LoadAnimateHelper.Search_Animate(this, R.id.activity, handler, 0, true,true,1);
 		

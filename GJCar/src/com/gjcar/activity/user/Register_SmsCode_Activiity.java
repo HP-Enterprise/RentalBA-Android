@@ -20,10 +20,14 @@ import com.gjcar.app.R;
 import com.gjcar.data.data.Public_Api;
 import com.gjcar.data.data.Public_BaiduTJ;
 import com.gjcar.data.data.Public_Param;
+import com.gjcar.data.data.Public_Platform;
 import com.gjcar.data.helper.Loginhelper;
 import com.gjcar.data.service.JSONHelper;
+import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.NetworkHelper;
+import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.StringHelper;
+import com.gjcar.utils.SystemUtils;
 import com.gjcar.utils.ToastHelper;
 import com.gjcar.view.dialog.SubmitDialog;
 import com.loopj.android.http.AsyncHttpClient;
@@ -33,17 +37,15 @@ import com.loopj.android.http.RequestParams;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -89,6 +91,8 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 	private final static int sendRegisterFail = 8;//失败
 	private final static int sendRegisterDataFail = 9;//请求失败
 	
+	private final static int Request_Submit = 12;
+	
 	/*发送验证码*/
 	private int time = 120;
 
@@ -100,6 +104,8 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 	/*其它*/
 	private String errorMsg = "";
 	private String phone = "";//获取短信成功后，记住手机号
+	
+	private String uid = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +119,7 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 		initSmsConfig();
 		
 		initTitleBar();
-
+		
 		initView();
 		
 		initListener();
@@ -470,19 +476,23 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 																
 					case sendRegisterOk:		
 						SubmitDialog.closeSubmitDialog();
+						
 						Public_Param.isRegisterOk = true;
 						Public_Param.phone = code_phone.getText().toString();
 						Public_Param.password = register_pwd2.getText().toString();
+						
+						Request_Submit();//飓风广告
+						
 						finish();
 						break;
 						
 					case sendRegisterFail:
 						SubmitDialog.closeSubmitDialog();
 						ToastHelper.showToastLong(
-								Register_SmsCode_Activiity.this,"验证码错误");//显示发送失败的原因
+								Register_SmsCode_Activiity.this,"手机验证码错误");//显示发送失败的原因
 
 						break;
-												
+																							
 					case sendRegisterDataFail:
 						SubmitDialog.closeSubmitDialog();
 						ToastHelper.showSendDataFailToast(Register_SmsCode_Activiity.this);
@@ -775,6 +785,7 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 		jsonObject.put("target", phone);
 		jsonObject.put("channel", "sms");
 		jsonObject.put("purpose", "register");
+//		jsonObject.put("purpose", "");
 
 		StringEntity requestentity = null;
 		try {
@@ -863,12 +874,18 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 
 			// 创建默认的客户端实例  
 			HttpClient httpCLient = new DefaultHttpClient();
-
+			
 			JSONObject jsonObject = new JSONObject();  
             jsonObject.put("phone", code_phone.getText().toString());  
             jsonObject.put("code", code_code.getText().toString());
-            jsonObject.put("password", StringHelper.encryption(register_pwd2.getText().toString()));  
-            jsonObject.put("registerWay", "3");
+            jsonObject.put("password", StringHelper.encryption(register_pwd2.getText().toString())); 
+//			jsonObject.put("realName", "");
+//			jsonObject.put("phone", "13397163438");  
+//            jsonObject.put("code", code_code.getText().toString());
+//            jsonObject.put("onePassword", "gu123456"); 
+//            jsonObject.put("password", "b01422c31985d4580cb01c0972faec26"); 
+                         
+//            jsonObject.put("registerWay", Public_Platform.P_Android);
 //           jsonObject.put("terminalType", "1"); 
 System.out.println("phone"+phone);
 System.out.println("code"+code_code.getText().toString());
@@ -881,13 +898,13 @@ System.out.println("password:"+StringHelper.encryption(register_pwd2.getText().t
 			}//解决中文乱码问题    
 			requestentity.setContentEncoding("UTF-8");
 			requestentity.setContentType("application/json");
-
+			
 			// 创建get请求实例  
 			HttpPost httppost = new HttpPost(Public_Api.appWebSite
-					+ Public_Api.api_register);//**********************注意请求方法  
-
+					+ Public_Api.api_register + "?registerWay=4");//**********************注意请求方法  
+			
 			httppost.setHeader("Content-Type", "application/json;charset=UTF-8");
-
+			
 			httppost.setEntity(requestentity);
 			try {
 
@@ -898,6 +915,13 @@ System.out.println("password:"+StringHelper.encryption(register_pwd2.getText().t
 					// 获取响应消息实体  
 					HttpEntity responseentity = response.getEntity();
 					String data = EntityUtils.toString(responseentity);
+					
+					if(data==null ||data.equals("")){
+						handler.sendEmptyMessage(sendRegisterDataFail);
+						System.out.println("返回值为null");
+						return;
+					}
+					
 					System.out.println("返回值"+data);
 					//判断响应信息
 					JSONObject datajobject = JSONObject.parseObject(data);
@@ -905,7 +929,7 @@ System.out.println("password:"+StringHelper.encryption(register_pwd2.getText().t
 					System.out.println("22222");
 					if (datajobject.containsKey("uid")) {
 						System.out.println("33333");
-
+						uid = datajobject.getString("uid");	
 						//修改密码成功	
 						handler.sendEmptyMessage(sendRegisterOk);
 
@@ -946,5 +970,35 @@ System.out.println("password:"+StringHelper.encryption(register_pwd2.getText().t
 			}
 	    } 
 
-	
+	 /** 提交信息  */
+	private void  Request_Submit(){
+		
+		/*获取参数*/
+		String mediaId = Public_Platform.M_Media3;//腾讯新闻，新浪微博等
+		String deviceId = ((TelephonyManager) this.getSystemService(TELEPHONY_SERVICE)).getDeviceId();
+		String appid = "1028405";//由飓风平台发放
+		String pkg = "com.gjcar.app";
+		
+		String privateKey = "cb13cc8b69156692";
+		String userId = uid;
+		int appVersion = SystemUtils.getVersionCode(this);
+		String channel = Public_Platform.C_JuFeng;
+		
+		/*参数*/
+		JSONObject jsonObject = new JSONObject(); //**********************注意json发送数据时，要这样
+		
+		jsonObject.put("mediaId", mediaId);
+		jsonObject.put("deviceId", deviceId);
+		jsonObject.put("appid", appid);
+		jsonObject.put("pkg", pkg);
+		
+		jsonObject.put("privateKey", privateKey);
+		jsonObject.put("userId", userId);		
+		jsonObject.put("appVersion", appVersion);
+		jsonObject.put("channel", channel);
+		
+		/*提交*/
+		new HttpHelper().initData(HttpHelper.Method_Post, this, "api/advertise/jf/android/register", jsonObject, null, handler, Request_Submit, 2, null);
+		
+	}
 }

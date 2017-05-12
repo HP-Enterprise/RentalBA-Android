@@ -6,4 +6,7 @@ public class Account {
 	public String nickName;
 	public Long loginTime;
 	public String agent;
+	
+	public String phone;
+	public String userName;
 }

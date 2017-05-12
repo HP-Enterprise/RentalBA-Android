@@ -121,15 +121,20 @@
                 android:textSize="14dp" />
         </LinearLayout>
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/page_line1" />
+
         <TextView
+            android:id="@+id/preAmount_tv"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:text="必选部分，客户只需承担1500元以内的车辆损失费"
+            android:text=""
             android:textColor="@color/page_text_normal"
-            android:textSize="12dp" 
-            android:visibility="gone"/>
+            android:textSize="12dp" />
     </LinearLayout>
 
     <View
@@ -143,8 +148,8 @@
         android:id="@+id/mustAmount_lin"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" 
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <TextView
             android:layout_width="fill_parent"
@@ -162,18 +167,18 @@
             android:layout_height="1dp"
             android:background="@color/page_line1" />
 
-         <ListView
+        <ListView
             android:id="@+id/listview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-       		android:paddingRight="16dp"
             android:background="@color/white"
             android:cacheColorHint="@android:color/transparent"
             android:divider="@color/page_line1"
             android:dividerHeight="1dp"
             android:fadingEdge="none"
             android:listSelector="@android:color/transparent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:scrollbars="none" />
 
         <View
@@ -201,10 +206,10 @@
 
         <TextView
             android:id="@+id/payway_online"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/service_bg_normal"
+            android:clickable="true"
             android:gravity="center"
             android:paddingBottom="6dp"
             android:paddingLeft="20dp"
@@ -215,11 +220,11 @@
 
         <TextView
             android:id="@+id/payway_store"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:background="@drawable/service_bg_select"
+            android:clickable="true"
             android:gravity="center"
             android:paddingBottom="6dp"
             android:paddingLeft="20dp"
@@ -228,14 +233,26 @@
             android:text="门店支付"
             android:textColor="@color/page_text_select" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="18dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:text="提示 : 在线支付订单请2小时内付款,逾期订单将自动取消"
+        android:textColor="@color/page_text_select"
+        android:textSize="12dp"
+        android:visibility="gone" />
     <!-- 下一步 -->
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:background="@color/page_line1" 
-        android:visibility="gone"/>
+        android:background="@color/page_line1"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -243,8 +260,8 @@
         android:background="#ffffff"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp" 
-        android:visibility="gone">
+        android:paddingRight="16dp"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -292,8 +309,8 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@color/page_line1" 
-        android:visibility="gone"/>
+        android:background="@color/page_line1"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/ok"

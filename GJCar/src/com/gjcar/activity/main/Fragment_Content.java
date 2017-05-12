@@ -9,6 +9,7 @@ import com.gjcar.activity.fragment4.Fragment4;
 import com.gjcar.activity.fragment5.Fragment5;
 import com.gjcar.activity.fragment6.Fragment6;
 import com.gjcar.app.R;
+import com.gjcar.data.data.Public_Param;
 import com.gjcar.view.widget.MyTabWidget;
 import com.gjcar.view.widget.MyTabWidget.OnTabChangedListener;
 
@@ -63,6 +64,21 @@ public class Fragment_Content extends Fragment {
 		initFragment();
 		
 		return view;
+	}
+	
+	@Override
+	public void onResume() {
+		
+		if(Public_Param.send_toWeb == 3){
+			
+			if(index != 0){
+				
+				index = 0;
+				switchContent(fragment1);
+				tab.setTabTextBg(getActivity(), 0);
+			}
+		}
+		super.onResume();
 	}
 	
 	private void initMenuOut(View view) {

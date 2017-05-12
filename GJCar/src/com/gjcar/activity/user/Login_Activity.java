@@ -3,16 +3,19 @@ package com.gjcar.activity.user;
 
 import java.sql.Date;
 
+import com.alibaba.fastjson.JSONObject;
 import com.gjcar.annotation.ContentView;
 import com.gjcar.annotation.ContentWidget;
 import com.gjcar.app.R;
 import com.gjcar.data.data.Public_BaiduTJ;
 import com.gjcar.data.data.Public_Param;
+import com.gjcar.data.data.Public_Platform;
 import com.gjcar.data.data.Public_SP;
 import com.gjcar.data.helper.Loginhelper;
 import com.gjcar.data.service.JSONHelper;
 import com.gjcar.utils.AnnotationViewUtils;
 import com.gjcar.utils.HandlerHelper;
+import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.IntentHelper;
 import com.gjcar.utils.NetworkHelper;
 import com.gjcar.utils.SQL_Dao;
@@ -20,6 +23,7 @@ import com.gjcar.utils.SQL_OpenHelper;
 import com.gjcar.utils.SQL_TableHelper;
 import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.StringHelper;
+import com.gjcar.utils.SystemUtils;
 import com.gjcar.utils.ToastHelper;
 import com.gjcar.view.dialog.SubmitDialog;
 import com.gjcar.view.helper.EditTextHelper;
@@ -29,6 +33,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -125,6 +130,7 @@ public class Login_Activity extends Activity{
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
 							System.out.println("登录成功了");
+							
 							finish();
 							//保存用户信息
 							return;            
@@ -184,5 +190,6 @@ public class Login_Activity extends Activity{
 				break;
 		}
 	}
-		
+	
+	
 }

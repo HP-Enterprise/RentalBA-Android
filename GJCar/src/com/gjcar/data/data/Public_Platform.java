@@ -11,4 +11,9 @@ public class Public_Platform {
 	public static final String P_XieCheng = "7";//携程
 	public static final String P_BaoJia = "8";//宝驾
 	
+//	public static final String M_Media1 = "媒体001";
+//	public static final String M_Media2 = "媒体002";
+	public static final String M_Media3 = "媒体003";
+	
+	public static final String C_JuFeng = "01";//飓风
 }

@@ -20,6 +20,8 @@ public class Order{
 	public	String	returnCarDate;	/*2016-04-11 15:00:00*/
 	public	String	takeCarCity;	/*Œ‰∫∫*/
 	public	String	returnCarCity;	/*Œ‰∫∫*/
+	public	String	takeCarCityName;
+	public	String	returnCarCityName;
 	public	String	takeCarAddress;	/*π‚π»»Ìº˛‘∞*/
 	public	String	returnCarAddress;	/*π‚π»»Ìº˛‘∞*/
 	public	Integer	payWay;	/*1*/
@@ -51,7 +53,7 @@ public class Order{
 	public  String  reduce;
 	public  Activity_Order_Info couponShowForAdmin;
 	public  ActivityShow activityShow;
-	
+	public  VehicleModelShows vehicleModelShow;
 	public	Integer	serviceType;	/*0*/
 	public	Integer	modelId;	/*1*/	
 	public	String	model;	/*±¶¬ÌX6*/
@@ -69,7 +71,7 @@ public class Order{
 	public  Integer totalTimeoutPrice;
 	public  Integer averagePrice;
 	public  Integer totalTasicInsuranceAmount;
-	
+	public  Integer toStoreReduce;
 	public  Integer hasContract;
 	
 	public	User	userShow;	/*UserShow*/

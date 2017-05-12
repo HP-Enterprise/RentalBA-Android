@@ -15,19 +15,23 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.gjcar.activity.fragment1.Activity_Car_List;
+import com.gjcar.activity.fragment3.Activity_FreeRide_Order_Submit;
 import com.gjcar.activity.user.ValidationHelper;
 import com.gjcar.annotation.ContentView;
 import com.gjcar.annotation.ContentWidget;
 import com.gjcar.app.R;
 import com.gjcar.data.bean.BrandModelShow;
 import com.gjcar.data.bean.CityShow;
+import com.gjcar.data.bean.FreeRide;
 import com.gjcar.data.bean.VehicleBrandShow;
 import com.gjcar.data.data.Public_Param;
+import com.gjcar.data.data.Public_Platform;
 import com.gjcar.utils.AnnotationViewUtils;
 import com.gjcar.utils.HandlerHelper;
 import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.IntentHelper;
 import com.gjcar.utils.NetworkHelper;
+import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.TimeHelper;
 import com.gjcar.utils.ToastHelper;
 import com.gjcar.utils.ValidateHelper;
@@ -124,6 +128,7 @@ public class Activity_LongRental_Content extends Activity{
 				SubmitDialog.showSubmitDialog(this);
 				
 				Request_Submit();
+				
 				break;
 				
 			default:
@@ -160,7 +165,7 @@ public class Activity_LongRental_Content extends Activity{
 		jsonObject.put("vehicleBrandId", getIntent().getStringExtra("brandId"));System.out.println("vehicleBrandId"+getIntent().getStringExtra("brandId"));
 		jsonObject.put("vehicleModelId", getIntent().getStringExtra("carId"));System.out.println("vehicleModelId"+getIntent().getStringExtra("carId"));
 
-		jsonObject.put("source","2");
+		jsonObject.put("source",Public_Platform.P_Android);
 		/*提交*/
 		new HttpHelper().initData(HttpHelper.Method_Post, this, "api/longRentalAsk", jsonObject, null, handler, Request_Submit, 2, null);
 		
@@ -174,7 +179,7 @@ public class Activity_LongRental_Content extends Activity{
 				super.handleMessage(msg);
 
 				switch (msg.what) {
-
+								
 					case Request_Submit:
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){

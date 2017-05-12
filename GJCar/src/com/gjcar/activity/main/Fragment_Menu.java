@@ -22,6 +22,7 @@ import com.gjcar.data.data.Public_Data;
 import com.gjcar.data.data.Public_Msg;
 import com.gjcar.data.data.Public_Param;
 import com.gjcar.data.data.Public_SP;
+import com.gjcar.data.service.CarList_Helper;
 import com.gjcar.data.service.RightHelper;
 import com.gjcar.utils.HandlerHelper;
 import com.gjcar.utils.HttpHelper;
@@ -257,8 +258,9 @@ public class Fragment_Menu extends Fragment implements OnClickListener{
 		
 		new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/user/"+userId+"/order?currentPage=1&pageSize=100", null, null, handler, Request_Order_Count, 1, new TypeReference<ArrayList<Order>>() {});
 		
-		new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/user/"+userId+"/doortodoororder?currentPage=1&pageSize=100", null, null, handler, Request_doortodoor_Count, 1, new TypeReference<ArrayList<Order>>() {});
-		
+		String api_door = "api/door/user/orders?currentPage=1&pageSize=100&userId="+userId;
+		new CarList_Helper().initData(HttpHelper.Method_Get, getActivity(), api_door, null, null, handler, Request_doortodoor_Count, 1, new TypeReference<ArrayList<Order>>() {});
+
 		new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/user/"+userId+"/freeRideOrder?currentPage=1&pageSize=100", null, null, handler, Request_wind_Count, 1, new TypeReference<ArrayList<Order>>() {});
 		
 	}

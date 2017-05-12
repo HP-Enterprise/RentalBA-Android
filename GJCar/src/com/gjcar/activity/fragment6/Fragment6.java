@@ -75,7 +75,13 @@ public class Fragment6 extends Fragment{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
-				IntentHelper.startActivity_StringExtras(getActivity(), WebActivity.class, new String[]{"title","fragment","url"}, new String[]{"活动详情","action_detail",list.get(position).link});
+				if(list.get(position).phoneLink != null && !list.get(position).phoneLink.equals("")){
+					
+					IntentHelper.startActivity_StringExtras(getActivity(), WebActivity.class, new String[]{"title","fragment","url"}, new String[]{"活动详情","action_detail",list.get(position).phoneLink});
+					Public_Param.send_toWeb = 2;
+				
+				}
+				
 			}
 			
 		});

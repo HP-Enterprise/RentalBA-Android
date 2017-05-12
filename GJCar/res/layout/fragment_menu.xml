@@ -207,8 +207,8 @@
                     android:paddingBottom="4dp"
                     android:paddingLeft="46dp"
                     android:paddingTop="4dp"
-                    android:visibility="gone" >
-
+                    android:visibility="gone">
+					
                     <TextView
                         android:id="@+id/order_wind"
                         android:layout_width="wrap_content"

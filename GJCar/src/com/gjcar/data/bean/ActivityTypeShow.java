@@ -4,7 +4,7 @@ public class ActivityTypeShow {
 
 	public Integer id;
 	
-	public String hostType;
+	public Integer hostType;
 	public String hostTypeDascribe;
 	public String meet;
 	public String meetDascribe;

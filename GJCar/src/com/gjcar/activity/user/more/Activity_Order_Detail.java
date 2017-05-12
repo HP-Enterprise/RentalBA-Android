@@ -84,6 +84,10 @@ public class Activity_Order_Detail extends Activity{
 	@ContentWidget(id = R.id.d_activity_detail) TextView d_activity_detail;
 	@ContentWidget(id = R.id.d_activity_all) TextView d_activity_all;
 	
+	@ContentWidget(id = R.id.d_storereduce_lin) LinearLayout d_storereduce_lin;	//到店取车
+	@ContentWidget(id = R.id.d_storereduce) TextView d_storereduce;
+	@ContentWidget(id = R.id.d_storereduce_all) TextView d_storereduce_all;
+	
 	@ContentWidget(id = R.id.d_listview_lin) LinearLayout d_listview_lin;
 	@ContentWidget(id = R.id.listview) MyListView listview;//可选服务
 	
@@ -135,16 +139,16 @@ public class Activity_Order_Detail extends Activity{
 		Public_BaiduTJ.pageEnd(this, Public_BaiduTJ.Activity_Order_Detail);	
 	}
 
-	/*请求费用*/
+	/*请求订单详情*/
 	private void Request_AmountDetail() {
 			
 		/*加载费用*/
 		String userId = new Integer(SharedPreferenceHelper.getUid(this)).toString();
-		
-		String api = "api/user/"+ userId +"/doorToDoorOrder/"+Public_Param.order.orderId;
+
+		String api = "api/door/user/"+ Public_Param.order.orderId +"/order";
 		System.out.println("way:"+getIntent().getStringExtra("way"));
 		if(getIntent().getStringExtra("way").equals("order")){System.out.println("orderId:"+Public_Param.order.orderId);
-			
+		
 			api = "api/user/"+ userId +"/order/"+Public_Param.order.orderId;
 		}
 		
@@ -183,26 +187,51 @@ public class Activity_Order_Detail extends Activity{
 		if(Public_Param.order.userShow.credentialType !=null){pay_card.setText(StringHelper.getcredentialType(Public_Param.order.userShow.credentialType));}	System.out.println("3");	
 		pay_money.setText("￥"+StringHelper.getMoney(Public_Param.order.payAmount));System.out.println("4");
 
-		ImageLoader.getInstance().displayImage(Public_Api.appWebSite + Public_Param.order.picture, a_picture, ImageLoaderHelper.initDisplayImageOptions());		
-		a_orderId.setText(Public_Param.order.orderId.toString());
-		a_model.setText(Public_Param.order.model);	System.out.println("5");	
-	
-		String carGroup = Public_Param.order.carGroupstr;
-		if(Public_Param.order.carGroupstr == null){
-			carGroup = "";
+		
+		if(getIntent().getStringExtra("way").equals("doortodoor")){
+			
+			ImageLoader.getInstance().displayImage(Public_Api.appWebSite + Public_Param.order.vehicleModelShow.picture, a_picture, ImageLoaderHelper.initDisplayImageOptions());
+			a_orderId.setText(Public_Param.order.orderId.toString());
+			a_model.setText(Public_Param.order.vehicleModelShow.model);System.out.println("modela");
+			
+			String carGroup = StringHelper.getCarGroup(Public_Param.order.vehicleModelShow.carGroup);
+			
+			String carTrunk = Public_Param.order.vehicleModelShow.carTrunk+"厢";
+
+			String seats = Public_Param.order.vehicleModelShow.seats+"座";
+
+			a_note.setText(carGroup+"/"+carTrunk+"/"+seats);System.out.println("modelb");
+			
+			c_city.setText(Public_Param.order.takeCarCityName);
+			c_r_city.setText(Public_Param.order.returnCarCityName);System.out.println("modelh");
+
+		}else{
+			
+			ImageLoader.getInstance().displayImage(Public_Api.appWebSite + Public_Param.order.picture, a_picture, ImageLoaderHelper.initDisplayImageOptions());		
+			a_orderId.setText(Public_Param.order.orderId.toString());
+			a_model.setText(Public_Param.order.model);	System.out.println("5");	
+		
+			String carGroup = Public_Param.order.carGroupstr;
+			if(Public_Param.order.carGroupstr == null){
+				carGroup = "";
+			}
+			
+			String carTrunk = Public_Param.order.carTrunkStr;
+			if(Public_Param.order.carTrunkStr == null){
+				carTrunk = "";
+			}
+
+			String seats = Public_Param.order.seatsStr;
+			if(Public_Param.order.seatsStr == null){
+				seats = "";
+			}
+
+			a_note.setText(carGroup+"/"+carTrunk+"/"+seats);
+
+			c_city.setText(Public_Param.order.takeCarCity);
+			c_r_city.setText(Public_Param.order.returnCarCity);System.out.println("11");
 		}
 		
-		String carTrunk = Public_Param.order.carTrunkStr;
-		if(Public_Param.order.carTrunkStr == null){
-			carTrunk = "";
-		}
-
-		String seats = Public_Param.order.seatsStr;
-		if(Public_Param.order.seatsStr == null){
-			seats = "";
-		}
-
-		a_note.setText(carGroup+"/"+carTrunk+"/"+seats);
 
 		b_take_date.setText(TimeHelper.getDateTime_YM(TimeHelper.getTimemis_to_StringTime(Public_Param.order.takeCarDate)));System.out.println("b");
 		b_take_time.setText(TimeHelper.getWeekTime(TimeHelper.getTimemis_to_StringTime(Public_Param.order.takeCarDate)));System.out.println("c");
@@ -210,13 +239,13 @@ public class Activity_Order_Detail extends Activity{
 		b_return_date.setText(TimeHelper.getDateTime_YM(TimeHelper.getTimemis_to_StringTime(Public_Param.order.returnCarDate)));System.out.println("e");
 		b_return_time.setText(TimeHelper.getWeekTime(TimeHelper.getTimemis_to_StringTime(Public_Param.order.returnCarDate)));System.out.println("f");
 
-		c_city.setText(Public_Param.order.takeCarCity);
-		c_r_city.setText(Public_Param.order.returnCarCity);System.out.println("11");
 		
 		if(getIntent().getStringExtra("way").equals("order")){
 			
-			c_address.setText(Public_Param.order.takeCarStore.storeName+"("+Public_Param.order.takeCarStore.storeAddr+")");System.out.println("7");
-			c_r_address.setText(Public_Param.order.returnCarStore.storeName+"("+Public_Param.order.returnCarStore.storeAddr+")");System.out.println("12");
+			c_address.setText(Public_Param.order.takeCarStore.storeName+"("+Public_Param.order.takeCarStore.detailAddress+")");System.out.println("7");
+			if(Public_Param.order.returnCarStore != null){
+				c_r_address.setText(StringHelper.Null2Empty(Public_Param.order.returnCarStore.storeName)+"("+StringHelper.Null2Empty(Public_Param.order.returnCarStore.detailAddress)+")");System.out.println("12");
+			}
 		}else{
 			c_address.setText(Public_Param.order.takeCarAddress);
 			c_r_address.setText(Public_Param.order.returnCarAddress);System.out.println("12");
@@ -240,6 +269,13 @@ public class Activity_Order_Detail extends Activity{
 			d_listview_lin.setVisibility(View.VISIBLE);
 			ServiceAmountList_Adapter adapter = new ServiceAmountList_Adapter(Activity_Order_Detail.this, Public_Param.order.orderValueAddedServiceRelativeShow,Public_Param.order.tenancyDays);
 			listview.setAdapter(adapter);	
+		}
+		
+		/*短租自驾*/
+		if(Public_Param.order.toStoreReduce != null){
+			d_storereduce_lin.setVisibility(View.VISIBLE);
+			d_storereduce.setText("减免"+Public_Param.order.toStoreReduce+"元");
+			d_storereduce_all.setText("￥-"+Public_Param.order.toStoreReduce);
 		}
 		
 		/*加载优惠活动*/
@@ -306,13 +342,16 @@ public class Activity_Order_Detail extends Activity{
 						
 						SubmitDialog.showSubmitDialog(Activity_Order_Detail.this);
 						
-						String api = "api/doorToDoorOrder/"+Public_Param.order.orderId+"/cancelOrder";
-
+						String api = "api/door/clientcanle/"+Public_Param.order.orderId+"/order";
+					
+						new HttpHelper().initData(HttpHelper.Method_Delete, Activity_Order_Detail.this, api, null, null, handler, Cancle_Order, 2, null);		
+						
 						if(getIntent().getStringExtra("way").equals("order")){
 							
-							api = "api/order/"+Public_Param.order.orderId+"/cancelOrder";
+							api = "api/user/order/"+Public_Param.order.orderId+"/cancelOrder";
+							new HttpHelper().initData(HttpHelper.Method_Put, Activity_Order_Detail.this, api, null, null, handler, Cancle_Order, 2, null);		
+							
 						}
-						new HttpHelper().initData(HttpHelper.Method_Put, Activity_Order_Detail.this, api, null, null, handler, Cancle_Order, 2, null);		
 						
 					}
 				});
@@ -401,6 +440,7 @@ public class Activity_Order_Detail extends Activity{
 						}	
 						ToastHelper.showToastShort(Activity_Order_Detail.this, "取消订单失败");
 						break;
+						
 					default:
 						break;
 				}

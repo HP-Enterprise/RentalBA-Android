@@ -202,10 +202,10 @@ public class Activity_Score extends Activity{
 					return;
 				}
 				
-				if(remain  <= 0){
-					ToastHelper.showToastShort(context, "积分不够，无法兑换");
-					return;
-				}
+//				if(remain  <= 0){
+//					ToastHelper.showToastShort(context, "积分不够，无法兑换");
+//					return;
+//				}
 				
 				Intent intent = new Intent(context, Activity_Score_Change.class);//跳转		
 				intent.putExtra("remain", remain);

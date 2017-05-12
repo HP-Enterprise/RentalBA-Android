@@ -25,7 +25,7 @@ public class SQL_Dao {
 	public void insert(SQLiteDatabase db, Object object){
 		
 		Class<?> classType = object.getClass();
-		
+
 		Field[] fs = classType.getDeclaredFields();
 		
 		String Tab_Name = StringHelper.getClassName(classType.getName());

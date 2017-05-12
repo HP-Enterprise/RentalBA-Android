@@ -52,6 +52,11 @@ public class Fragment1_Helper {
 					boolean isFind = false;
 					int index = -1;
 					
+					if(city == null || city.equals("")){
+						HandlerHelper.sendStringObject(handler, what, HandlerHelper.Fail, null);
+						return;
+					}
+					
 					for (int i = 0; i < stu.size(); i++) {
 						System.out.println("城市名" + i + stu.get(i).cityName);
 						//注意：武汉没有搜到时

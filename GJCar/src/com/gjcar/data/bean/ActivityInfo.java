@@ -4,7 +4,8 @@ public class ActivityInfo {
 	
 	public Integer id;	
 	public Integer activityId;
-	public String link;
+//	public String link;
+	public String phoneLink;
 	public String title;
 	public String description;
 	public String image;

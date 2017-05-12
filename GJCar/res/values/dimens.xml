@@ -26,7 +26,7 @@
 	<dimen name="register_edit_top">50dp</dimen>
 	<dimen name="register_edit_middle">16dp</dimen>
 	
-	<!-- 注册 -->
+	<!-- 波纹 -->
 	<dimen name="rippleStrokeWidth">2dp</dimen>
     <dimen name="rippleRadius">12dp</dimen>
 	

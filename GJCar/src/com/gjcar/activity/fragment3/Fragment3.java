@@ -1,10 +1,13 @@
 package com.gjcar.activity.fragment3;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.alibaba.fastjson.TypeReference;
 import com.baidu.mapapi.map.MapView;
 import com.gjcar.activity.fragment1.Activity_City_List;
+import com.gjcar.activity.fragment1.WebActivity;
+import com.gjcar.activity.user.Login_Activity;
 import com.gjcar.annotation.ContentWidget;
 import com.gjcar.app.R;
 import com.gjcar.data.adapter.FreeRide_List_Adapter;
@@ -12,6 +15,7 @@ import com.gjcar.data.bean.CityShow;
 import com.gjcar.data.bean.FreeRide;
 import com.gjcar.data.data.Public_Param;
 import com.gjcar.data.data.Public_SP;
+import com.gjcar.data.service.CityHelper;
 import com.gjcar.framwork.BaiduMapHelper;
 import com.gjcar.utils.AnnotationViewFUtils;
 import com.gjcar.utils.HandlerHelper;
@@ -22,6 +26,7 @@ import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.ToastHelper;
 import com.gjcar.utils.ValidateHelper;
 import com.gjcar.view.dialog.DateTimePickerDialog;
+import com.gjcar.view.dialog.SelectDailog;
 import com.gjcar.view.helper.LoadAnimateHelper;
 
 import android.content.Intent;
@@ -40,7 +45,7 @@ import android.widget.TextView;
 public class Fragment3 extends Fragment{
 	
 	/*控件*/
-	@ContentWidget(id = R.id.image) ImageView image;
+	@ContentWidget(click = "onClick") ImageView image;
 	
 	@ContentWidget(id = R.id.take_city) TextView take_city;
 	@ContentWidget(id = R.id.return_city) TextView return_city;
@@ -58,6 +63,9 @@ public class Fragment3 extends Fragment{
 	/*Handler*/
 	private Handler handler;
 	private final static int Request_City = 1;
+	private boolean isLoadCity = false;
+	
+	private List<CityShow> cityList;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,32 +81,62 @@ public class Fragment3 extends Fragment{
 	
 	public void onClick(View view){
 		
+		/*网络判断*/
+		if(!NetworkHelper.isNetworkAvailable(getActivity())){return;}
+		
 		switch (view.getId()) {
 		
+			case R.id.image:
+				
+				IntentHelper.startActivity_StringExtras(getActivity(), WebActivity.class, new String[]{"title","fragment","url"}, new String[]{"活动详情","action_detail","http://www.b-car.cn/Pages/8.jsp"});
+				break;
+					
 			case R.id.take_city_lin://"id","cityName","latitude","longitude"				
 				IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), this, Activity_City_List.class,RequestCode_Take, new String[]{"loc_cityId","loc_cityName","loc_latitude","loc_longitude"}, new Object[]{SharedPreferenceHelper.getInt(getActivity(), Public_SP.City, "id", -1), SharedPreferenceHelper.getString(getActivity(), Public_SP.City, "cityName"),(double)SharedPreferenceHelper.getFloat(getActivity(), Public_SP.City, "latitude"),(double)SharedPreferenceHelper.getFloat(getActivity(), Public_SP.City, "longitude")}, new int[]{IntentHelper.Type_Int, IntentHelper.Type_String,IntentHelper.Type_Double,IntentHelper.Type_Double});				
 				break;
 				
 			case R.id.return_city_lin:
+				
 				if(getCarCityId == -1){
 					ToastHelper.showToastShort(getActivity(), "请先选择取车城市");
 					return;
 				}
+				
+				if(isLoadCity){
+					return;
+				}
+				
+				isLoadCity = true;
 				
 				new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/freeRide/returnCarCity?getCarCityId="+getCarCityId, null, null, handler, Request_City, 1, new TypeReference<ArrayList<CityShow>>() {});
 				
 				break;
 				
 			case R.id.submit:
-
+				
 				if(!NetworkHelper.isNetworkAvailable(getActivity())){
 					return;
 				}
 				
-				if(!ValidateHelper.Validate(getActivity(), new boolean[]{getCarCityId == -1, returnCityId == -1}, new String[]{"请选择取车城市","请选择还车城市"})){
+				/*判断是否登录*/
+				if (!SharedPreferenceHelper.isLogin(getActivity())) {
+
+//					Public_Param.loginFrom = Public_Param.loginFrom_NotLogin;
+					Intent intent = new Intent(getActivity(), Login_Activity.class);
+					getActivity().startActivity(intent);
+										
 					return;
 				}
-				//IntentHelper.startActivity(getActivity(), Activity_FreeRide_List.class);
+				
+				if(!ValidateHelper.Validate(getActivity(), new boolean[]{getCarCityId == -1}, new String[]{"请选择取车城市"})){
+					return;
+				}
+				
+				if(!return_city.getText().toString().trim().equals("请选择还车城市")){
+					
+					returnCityId = new Integer(return_city.getTag().toString()).intValue();System.out.println("里面选择了城市-----"+returnCityId);
+				}
+				System.out.println("选择了城市-----"+returnCityId);
 				IntentHelper.startActivity_Extra(getActivity(), Activity_FreeRide_List.class, new String[]{"getCarCityId","returnCityId"}, new Object[]{getCarCityId,returnCityId}, new int[]{IntentHelper.Type_Int,IntentHelper.Type_Int});
 				break;
 				
@@ -167,10 +205,16 @@ public class Fragment3 extends Fragment{
 
 					case Request_City:
 						
+						isLoadCity = false;
+						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
 
-							IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), Fragment3.this, Activity_City_List.class,RequestCode_Return, new String[]{"loc_cityId","loc_cityName","loc_latitude","loc_longitude","cityId"}, new Object[]{SharedPreferenceHelper.getInt(getActivity(), Public_SP.City, "id", -1), SharedPreferenceHelper.getString(getActivity(), Public_SP.City, "cityName"),(double)SharedPreferenceHelper.getFloat(getActivity(), Public_SP.City, "latitude"),(double)SharedPreferenceHelper.getFloat(getActivity(), Public_SP.City, "longitude"),getCarCityId}, new int[]{IntentHelper.Type_Int, IntentHelper.Type_String,IntentHelper.Type_Double,IntentHelper.Type_Double,IntentHelper.Type_Int});				
+//							IntentHelper.Fragment_startActivityForResult_Extra(getActivity(), Fragment3.this, Activity_City_List.class,RequestCode_Return, new String[]{"loc_cityId","loc_cityName","loc_latitude","loc_longitude","cityId"}, new Object[]{SharedPreferenceHelper.getInt(getActivity(), Public_SP.City, "id", -1), SharedPreferenceHelper.getString(getActivity(), Public_SP.City, "cityName"),(double)SharedPreferenceHelper.getFloat(getActivity(), Public_SP.City, "latitude"),(double)SharedPreferenceHelper.getFloat(getActivity(), Public_SP.City, "longitude"),getCarCityId}, new int[]{IntentHelper.Type_Int, IntentHelper.Type_String,IntentHelper.Type_Double,IntentHelper.Type_Double,IntentHelper.Type_Int});				
 
+							cityList = (ArrayList<CityShow>)msg.obj;
+							
+							SelectDailog.select(getActivity(), "选择换车城市", return_city, CityHelper.getCityNames(cityList), CityHelper.getCityIds(cityList));
+							
 				           	return;
 						}
 						

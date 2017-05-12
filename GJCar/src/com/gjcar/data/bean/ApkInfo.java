@@ -11,5 +11,5 @@ public class ApkInfo {
 	public Long modifyDate;
 	public String createUser;
 	public String isEnable;
-	
+	public Integer forceUpdate;
 }

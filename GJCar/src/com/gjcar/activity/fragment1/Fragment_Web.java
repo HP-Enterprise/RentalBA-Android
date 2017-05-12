@@ -1,6 +1,7 @@
 package com.gjcar.activity.fragment1;
 
 import com.gjcar.app.R;
+import com.gjcar.data.data.Public_Param;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -110,6 +111,20 @@ public class Fragment_Web extends Fragment{
 		webView.setWebViewClient(new WebViewClient(){
 			
 			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				
+				if (url != null && Public_Param.send_toWeb == 2) {
+
+					Public_Param.send_toWeb = 3;
+					getActivity().finish();
+					
+					return true;
+				}
+				
+				return super.shouldOverrideUrlLoading(view, url);
+			}
+			
+			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
 				super.onPageStarted(view, url, favicon);
 				//开始加载
@@ -138,12 +153,15 @@ public class Fragment_Web extends Fragment{
 		webSet.setJavaScriptEnabled(true);// js是否可用
 		webSet.setBuiltInZoomControls(true);////会出现放大缩小的按钮
 		webSet.setSupportZoom(true);//缩放
-	
+		
+		webSet.setUseWideViewPort(true);//设置此属性，可任意比例缩放。 
+		webSet.setLoadWithOverviewMode(true); //设置webview加载的页面的模式
+
 		webSet.setSupportMultipleWindows(true);
 		webView.setWebChromeClient(new MyWebChromeClient(getActivity()));
-		webView.setInitialScale(160);//为25%，最小缩放等级  
+		webView.setInitialScale(10);//为25%，最小缩放等级  
 		webView.loadUrl(url);
-
+		
 	}
 
 	public class MyWebChromeClient extends WebChromeClient{

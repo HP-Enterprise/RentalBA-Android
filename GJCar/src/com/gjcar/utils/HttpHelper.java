@@ -80,7 +80,7 @@ public class HttpHelper {
 		if(Method_Post.equals(method)){ Post(type);return;}
 		if(Method_Get.equals(method)){ System.out.println("开始");Get(type);return;}
 		if(Method_Put.equals(method)){ Put(type);return;}
-		if(Method_Delete.equals(method)){ return;}
+		if(Method_Delete.equals(method)){ Delete(type);return;}
 
 	}
 
@@ -100,8 +100,8 @@ public class HttpHelper {
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 			}
-			System.out.println("bbb"+url);
-			System.out.println("ccc:"+jsonObject.toString());
+			System.out.println("请求url-----"+url);
+			System.out.println("请求参数:"+jsonObject.toString());
 		}
 		
 		httpClient.post(context, url, requestentity, "application/json", new AsyncHttpResponseHandler() {
@@ -161,7 +161,11 @@ public class HttpHelper {
 			
 			/* 5.处理请求失败  */
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2,Throwable arg3) {System.out.println("失败");
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,Throwable arg3) {
+				if(arg2 != null){
+					System.out.println("失败---"+new String(arg2));
+				}
+				System.out.println("失败");
 				httpClient.cancelAllRequests(true);
 				HandlerHelper.sendString(handler, what, HandlerHelper.DataFail);
 			}
@@ -173,6 +177,8 @@ public class HttpHelper {
 	 * @param <T>
 	 */
 	private <T> void Put(final TypeReference<T> type){
+		HttpHelper.AddCookies(httpClient, context);
+		
 		StringEntity requestentity = null;System.out.println("aaaaaaaaaaaaaaaa");
 		try {
 			
@@ -182,8 +188,88 @@ public class HttpHelper {
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-
+		
 		httpClient.put(context, url, requestentity, "application/json", new AsyncHttpResponseHandler() {
+
+			/* 处理请求成功  */
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] data) {
+				System.out.println("2");
+				if(data==null ||new String(data)==null||new String(data).equals("")){
+					HandlerHelper.sendStringData(handler, what, HandlerHelper.DataFail, "");
+					return;
+				}
+				String databack = new String(data);System.out.println("请求处理成功:" + databack);
+				JSONObject datajobject = JSONObject.parseObject(databack);
+				
+				boolean status = datajobject.getBoolean("status");
+				String message = datajobject.getString("message");
+				System.out.println("22222");  
+				
+				Message msg = new Message();				
+				Bundle bundle = new Bundle();
+				bundle.putString("message", message);
+				msg.setData(bundle);
+				
+				if(String_Object == 1){//解析字符串还是对象
+					
+					if(status){
+						
+						if(message.equals("[]")){
+							HandlerHelper.sendString(handler, what, HandlerHelper.Empty);
+							return;
+						}
+						System.out.println("开始解析");
+						HandlerHelper.sendStringObject(handler, what, HandlerHelper.Ok, JSON.parseObject(message, type));	
+						System.out.println("登陆请求true");
+						
+					}else{	
+						
+						HandlerHelper.sendStringData(handler, what, HandlerHelper.Fail, message);
+						System.out.println("登陆请求false");
+					}
+					
+				}else{
+					
+					if(status){
+						
+						HandlerHelper.sendStringData(handler, what, HandlerHelper.Ok, message);
+						
+						System.out.println("登陆请求true");
+					}else{	
+						HandlerHelper.sendStringData(handler, what, HandlerHelper.Fail, message);
+						System.out.println("登陆请求false");
+					}
+				}
+
+			}
+			
+			/* 5.处理请求失败  */
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,Throwable arg3) {System.out.println("失败");
+				httpClient.cancelAllRequests(true);
+				HandlerHelper.sendString(handler, what, HandlerHelper.DataFail);
+			}
+		});	
+	}
+	/**
+	 * Delete
+	 * @param <T>
+	 */
+	private <T> void Delete(final TypeReference<T> type){
+		HttpHelper.AddCookies(httpClient, context);
+		
+		StringEntity requestentity = null;System.out.println("aaaaaaaaaaaaaaaa");
+		try {
+			
+			if(jsonObject != null){
+				requestentity = new StringEntity(jsonObject.toString(), "utf-8");
+			}
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+	
+		httpClient.delete(context, url, new AsyncHttpResponseHandler() {
 
 			/* 处理请求成功  */
 			@Override
@@ -259,13 +345,13 @@ public class HttpHelper {
 			/* 处理请求成功  */
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, byte[] data) {
-				System.out.println("2");
+				//System.out.println("2");
 				String databack = new String(data);
 				if(databack == null || databack.equals("") || databack.equals("null")){
 					HandlerHelper.sendString(handler, what, HandlerHelper.Empty);
 					return;
 				}
-				System.out.println("请求处理成功:" + databack);
+				//System.out.println("请求处理成功:" + databack);
 				JSONObject datajobject = JSONObject.parseObject(databack);
 				
 				boolean status = datajobject.getBoolean("status");
@@ -321,49 +407,51 @@ public class HttpHelper {
 	
 	
 	 /**
-		 * 获取cookie中的token
-		 */
-		public String getCookie(HttpClient httpClient) {
-			
-			 String token = "";
-			
-			 List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();
+	 * 获取cookie中的token
+	 */
+	public String getCookie(HttpClient httpClient) {
+		
+		 String token = "";
+		
+		 List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();
+		 
+		 for (int i = 0; i < cookies.size(); i++) {
 			 
-			 for (int i = 0; i < cookies.size(); i++) {
-				 
-				 Cookie cookie = cookies.get(i);
-				 String cookieName = cookie.getName();
-				 String cookieValue = cookie.getValue();
-				 System.out.println(cookieName);
-				 System.out.println(cookieValue);
-				 if (!TextUtils.isEmpty(cookieName)&& !TextUtils.isEmpty(cookieValue)) {
-					 if(cookieName.equals("token")){
-						 token = cookieValue;
-						 
-					 }
+			 Cookie cookie = cookies.get(i);
+			 String cookieName = cookie.getName();
+			 String cookieValue = cookie.getValue();
+			 System.out.println(cookieName);
+			 System.out.println(cookieValue);
+			 if (!TextUtils.isEmpty(cookieName)&& !TextUtils.isEmpty(cookieValue)) {
+				 if(cookieName.equals("token")){
+					 token = cookieValue;
+					 
 				 }
 			 }
-			 
-			 return token;
-		}
-		
-		/**
-	     * 增加Cookie
-	     * @param request
-	     */
-	    public static void AddCookies(AsyncHttpClient httpClient,Context context)
-	    {
-	          StringBuilder sb = new StringBuilder();
+		 }
+		 
+		 return token;
+	}
+	
+	/**
+     * 增加Cookie
+     * @param request
+     */
+    public static void AddCookies(AsyncHttpClient httpClient,Context context)
+    {
+    	
+          StringBuilder sb = new StringBuilder();
 
-	          String key = "token";
-	          String val = SharedPreferenceHelper.getString(context, Public_SP.Account, key);
-	          sb.append(key);
-	          sb.append("=");
-	          sb.append(val);
-	          sb.append(";");
+          String key = "token";
+          String val = SharedPreferenceHelper.getString(context, Public_SP.Account, key);
+          sb.append(key);
+          sb.append("=");
+          sb.append(val);
+          sb.append(";");
+  
+          httpClient.addHeader("cookie", sb.toString());
 
-	          httpClient.addHeader("cookie", sb.toString());
-
-	          System.out.println(""+sb);
-	    }
+          System.out.println("添加的cookie------------"+sb.toString());
+    }
+    
 }

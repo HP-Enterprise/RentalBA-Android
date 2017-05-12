@@ -7,7 +7,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
-import android.view.View;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -31,7 +30,6 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
-import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
@@ -41,8 +39,6 @@ import com.gjcar.data.bean.LocationMessage;
 import com.gjcar.data.bean.Point;
 import com.gjcar.utils.HandlerHelper;
 import com.gjcar.utils.NetworkHelper;
-import com.tencent.lbssearch.object.result.SuggestionResultObject;
-import com.tencent.lbssearch.object.result.SuggestionResultObject.SuggestionData;
 
 public class BaiduMapHelper {
 
@@ -119,7 +115,7 @@ public class BaiduMapHelper {
 				}else{
 					System.out.println("地址"+location.getAddrStr());
 				}
-
+				
 				mLocClient.stop();
 				HandlerHelper.sendStringObject(handler, msg, "ok",locationMessage);
 			}
@@ -154,7 +150,7 @@ public class BaiduMapHelper {
 		
 		/*设置监听器*/
 		mSearch.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener(){
-
+			
 			@Override
 			public void onGetGeoCodeResult(GeoCodeResult result) {
 				
@@ -179,16 +175,23 @@ public class BaiduMapHelper {
 					
 					return;
 				}
-				// 获取反向地理编码结果
-				System.out.println("c:城市名称：" + result.getAddressDetail().city);
-				
-				//实际搜索不到时候，会是""字符串
-				if(result.getAddressDetail().city.equals("") || result.getAddressDetail().city == null){
+								
+				if(result.getAddressDetail() == null){
 					HandlerHelper.sendString(handler, what, HandlerHelper.Fail);
 					
 					return;
 				}
-	
+				
+				//实际搜索不到时候，会是""字符串
+				if(result.getAddressDetail().city == null || result.getAddressDetail().equals("")){
+					HandlerHelper.sendString(handler, what, HandlerHelper.Fail);
+					
+					return;
+				}
+				
+				// 获取反向地理编码结果
+				System.out.println("c:城市名称：" + result.getAddressDetail().city);
+				
 				HandlerHelper.sendStringData(handler, what, HandlerHelper.Ok, result.getAddressDetail().city);				
 				
 			}
@@ -203,13 +206,13 @@ public class BaiduMapHelper {
 	 *地图移动
 	 */
 	public void ShowMap(LatLng point, BaiduMap baiduMap) {
-
+		
 
 		// 地图移动到定位处
 		MapStatus.Builder builder = new MapStatus.Builder();
 		builder.target(point)// 经纬度
 				.zoom(12.0f);// 显示缩放的级别
-
+		
 		baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder
 				.build()));
 	}

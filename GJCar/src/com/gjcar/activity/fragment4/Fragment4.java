@@ -107,7 +107,7 @@ public class Fragment4 extends Fragment{
 		
 			case R.id.image:
 				
-				IntentHelper.startActivity_StringExtras(getActivity(), WebActivity.class, new String[]{"title","fragment"}, new String[]{"活动详情","action_detail"});
+				IntentHelper.startActivity_StringExtras(getActivity(), WebActivity.class, new String[]{"title","fragment","url"}, new String[]{"活动详情","action_detail","http://www.b-car.cn/Pages/8.jsp"});
 				break;
 				
 			case R.id.take_city_lin:

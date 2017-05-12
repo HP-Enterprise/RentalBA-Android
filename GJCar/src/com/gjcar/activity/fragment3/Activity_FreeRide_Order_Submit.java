@@ -15,7 +15,9 @@ import com.gjcar.data.adapter.FreeRide_List_Adapter;
 import com.gjcar.data.bean.FreeRide;
 import com.gjcar.data.bean.Model____Vendor_Store_Price;
 import com.gjcar.data.data.Public_Api;
+import com.gjcar.data.data.Public_Data;
 import com.gjcar.data.data.Public_Param;
+import com.gjcar.data.data.Public_Platform;
 import com.gjcar.data.service.CarList_Helper;
 import com.gjcar.data.service.FreeRideHelper;
 import com.gjcar.framwork.BaiduMapHelper;
@@ -81,7 +83,7 @@ public class Activity_FreeRide_Order_Submit extends Activity{
 	private final static int Request_Submit = 1;
 	private final static int Select_Time = 2;
 	private final static int Request_Data = 3;	
-	
+	private final static int Request_Black = 6;
 	/*其它*/
 	private String takeTime = "";
 	private String returnTime = "";
@@ -142,7 +144,8 @@ public class Activity_FreeRide_Order_Submit extends Activity{
 				/*弹出提交对话框*/
 				SubmitDialog.showSubmitDialog(Activity_FreeRide_Order_Submit.this);
 				
-				Request_Submit();
+				new HttpHelper().initData(HttpHelper.Method_Get, this, "api/isBlack/"+SharedPreferenceHelper.getUid(this), null, null, handler, Request_Black, 2, null);
+
 				break;
 	
 			case R.id.take_time_lin:
@@ -207,6 +210,40 @@ public class Activity_FreeRide_Order_Submit extends Activity{
 
 				switch (msg.what) {
 
+					case Request_Black:
+						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
+							
+							SubmitDialog.closeSubmitDialog();//关闭弹窗	
+							ToastHelper.showToastShort(Activity_FreeRide_Order_Submit.this, "系统繁忙");
+						}else{
+							
+							if(HandlerHelper.getString(msg).equals(HandlerHelper.Fail)){
+								
+								Request_Submit();
+								
+							}else{
+								
+								//重新加载
+								new Thread(){
+									
+									public void run() {
+										
+										try {
+											
+											Thread.sleep(2000);
+											new HttpHelper().initData(HttpHelper.Method_Get, Activity_FreeRide_Order_Submit.this, "api/isBlack/"+SharedPreferenceHelper.getUid(Activity_FreeRide_Order_Submit.this), null, null, handler, Request_Black, 2, null);
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+																		
+									};
+								}.start();
+							
+							}
+						}
+					
+					break;
+				
 					case Request_Submit:
 						SubmitDialog.closeSubmitDialog();
 																	
@@ -231,8 +268,15 @@ public class Activity_FreeRide_Order_Submit extends Activity{
 							startActivity(intent);
 
 						}else{
-							//xx定位失败
-							ToastHelper.showToastShort(Activity_FreeRide_Order_Submit.this, "下订单失败");
+							//下单失败
+							if(msg.getData().getString("message").equals(HandlerHelper.Fail)){
+								
+								ToastHelper.showToastShort(Activity_FreeRide_Order_Submit.this, msg.getData().getString("data"));
+							}else{
+								
+								ToastHelper.showToastShort(Activity_FreeRide_Order_Submit.this, "下订单失败");
+							}
+							
 						}
 						break;
 					
@@ -317,7 +361,9 @@ public class Activity_FreeRide_Order_Submit extends Activity{
 		jsonObject.put("userId",SharedPreferenceHelper.getUid(this));System.out.println("userId"+SharedPreferenceHelper.getUid(this));
 		jsonObject.put("vendorId",Public_Param.freeRide.vendorId);
 		
-		jsonObject.put("source","2");
+		jsonObject.put("vehicleId",Public_Param.freeRide.vehicleId);
+		
+		jsonObject.put("source",Public_Platform.P_Android);
 		/*提交*/
 		new HttpHelper().initData(HttpHelper.Method_Post, this, "api/user/"+SharedPreferenceHelper.getUid(this)+"/freeRideOrder", jsonObject, null, handler, Request_Submit, 2, null);
 		

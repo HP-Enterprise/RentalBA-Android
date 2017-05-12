@@ -21,24 +21,23 @@ import com.gjcar.utils.TimeHelper;
 public class AlipayHelper {
 
 	// 商户PID
-	public static final String PARTNER = "2088221353698177";
-	// 商户收款账号
-	public static final String SELLER = "zucheyun@b-car.cn";
-	// 商户私钥，pkcs8格式
-	public static final String RSA_PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALTC/6PbrpCw2IK5pNFwfJ9xmR5tpRkbcLcGHbuu0mB9cBeK5mzvGiCSQp1SYXaaNIsffA1wkKtuwTD2KXYraG1wh2bYNb8WtBTUtwJxLEHaPtMV9/uBrbqDfOtddp96KR+GnQEAF/6HkKsMfxf8mHzfrBv2kyQCbhiAVBrx6PzdAgMBAAECgYB+aYBuD0vdVE+V3E4vSgNdXgw/A17aWB5TYKuafYASiqbBUBolRHF5JdAARYRzdRQZ10LiAz6pJSNmIkCMq36zHXK6WakLn4iNmxKYuwkCvz0Jmk1EBurBIvrcmlESW1IPTp/EFVoD/6m4q133d3XsxjlVUCGZ5AFKX9+9eVWd4QJBANv8D9Af2zzPzhXyIQ4ajQnnC8yHaTWGTFHRk/+Nn114dpZNEfXZNs3Pog4I6epz+VgSw2du/0Dyafgmn2kmKoMCQQDSWwljq7BqYSRcuqvHPjmSRtaSo9WdQ5TnYW9J/mDgByfAMRYFeX0Xpls7BHDjo+MK+7jvth4zUpSnIeyJUx0fAkEAg/dzOQRTTejPlaS6Ja7R2xXqoxi8iap2EEMsiIraBoWkhkfXtWdIFDEx4z9/q/FErIwdAui4YarK3V22FasapwJBAIlLwAIc8mVMiCY59Jpz47G0qKJHaspdbNfkgXXDIUm3gdtwblYeaGZCPzNy/5ekxTDLAXb74BRRZxL7El7DL7MCQAN+bV2TmstYA7Ea2osPloAMZHuKZNhcgPr4gxMNLeWPlKjnnydY7Xg2xFvmmSfJ6Wh5et1wdpleXGeMArsx8YM=";
-	// 支付宝公钥
-	public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";
-//	
-//	// 商户PID
-//	public static final String PARTNER = "2088311106439495";
+//	public static final String PARTNER = "2088221353698177";
 //	// 商户收款账号
-//	public static final String SELLER = "huachen_zulin@163.com";
+//	public static final String SELLER = "zucheyun@b-car.cn";
 //	// 商户私钥，pkcs8格式
-//	//public static final String RSA_PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOEclJmrVzeQp9Hdk7VYvKFSH3UXIav/c/KEGxUt8HchGBYS14GJwhnvc07jGILVbReCS57d+pcZHw2E2RrqvDMyzx8LK5T8g649JTAMhwMwRoM/fbpVB0a95H229YBNhmCv2IHihhkGzYt8tZBbwTLun16AhB2CmqLxVXnyerUpAgMBAAECgYBF8OVSoWOlxfH+SIO+EmX5EVTowlkZ4XKa5OStPeq6eLPNF+mRO8Xs3PLMjc5tx/XvGfJ416smCw4U2zPBIzF5eZKAfsakpsLVXZEhdZlmqoJOiKakFCO18uTU4ve48fKeoyb6X8qxhZLeamA7km3Bjisb5L9Gt2Ak9ddRyBRAAQJBAPboZc4qUtN6JeADkEA56rU1C5H9Eny00pAGdRDDNPpDA4IJ/FecN5hsTlkZOk0ebeFjuvkPnCNb5xXOd/FNoSkCQQDpZrXNcqtF/EecVt4/riBaKp/Y40oyF4nL0VAwXCLr7FSILqgOjwpwaWLKXQWisoK4b6M6rE7/qJbrfaifQvQBAkEAz/uBTkIelN9Oqj22NDPVPqEZRvdbrEqRGBsoX19f7/OlL9QDiTUhK7cH5Eu47Z9VRcfBhu0cRDi1FoxeQph2yQJBAOHF1Aknahwp3I+TzCsnYe42mydvPd9Uu5uoHvyYs8Mped+92h0zKvLwTnrYHtJyAVctzmS8NzLBPzQO+qUMXAECQHSaXCxkfN6/M75BAcnYFgOYntbOekFwKAmTVb8au23Ul6/z6S1F3bQtrwcfj3OTs4tEVVhjUyCvGkhCCfmDGmg=";
-//	  public static final String RSA_PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOEclJmrVzeQp9Hdk7VYvKFSH3UXIav/c/KEGxUt8HchGBYS14GJwhnvc07jGILVbReCS57d+pcZHw2E2RrqvDMyzx8LK5T8g649JTAMhwMwRoM/fbpVB0a95H229YBNhmCv2IHihhkGzYt8tZBbwTLun16AhB2CmqLxVXnyerUpAgMBAAECgYBF8OVSoWOlxfH+SIO+EmX5EVTowlkZ4XKa5OStPeq6eLPNF+mRO8Xs3PLMjc5tx/XvGfJ416smCw4U2zPBIzF5eZKAfsakpsLVXZEhdZlmqoJOiKakFCO18uTU4ve48fKeoyb6X8qxhZLeamA7km3Bjisb5L9Gt2Ak9ddRyBRAAQJBAPboZc4qUtN6JeADkEA56rU1C5H9Eny00pAGdRDDNPpDA4IJ/FecN5hsTlkZOk0ebeFjuvkPnCNb5xXOd/FNoSkCQQDpZrXNcqtF/EecVt4/riBaKp/Y40oyF4nL0VAwXCLr7FSILqgOjwpwaWLKXQWisoK4b6M6rE7/qJbrfaifQvQBAkEAz/uBTkIelN9Oqj22NDPVPqEZRvdbrEqRGBsoX19f7/OlL9QDiTUhK7cH5Eu47Z9VRcfBhu0cRDi1FoxeQph2yQJBAOHF1Aknahwp3I+TzCsnYe42mydvPd9Uu5uoHvyYs8Mped+92h0zKvLwTnrYHtJyAVctzmS8NzLBPzQO+qUMXAECQHSaXCxkfN6/M75BAcnYFgOYntbOekFwKAmTVb8au23Ul6/z6S1F3bQtrwcfj3OTs4tEVVhjUyCvGkhCCfmDGmg=";
-//	
+//	public static final String RSA_PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALTC/6PbrpCw2IK5pNFwfJ9xmR5tpRkbcLcGHbuu0mB9cBeK5mzvGiCSQp1SYXaaNIsffA1wkKtuwTD2KXYraG1wh2bYNb8WtBTUtwJxLEHaPtMV9/uBrbqDfOtddp96KR+GnQEAF/6HkKsMfxf8mHzfrBv2kyQCbhiAVBrx6PzdAgMBAAECgYB+aYBuD0vdVE+V3E4vSgNdXgw/A17aWB5TYKuafYASiqbBUBolRHF5JdAARYRzdRQZ10LiAz6pJSNmIkCMq36zHXK6WakLn4iNmxKYuwkCvz0Jmk1EBurBIvrcmlESW1IPTp/EFVoD/6m4q133d3XsxjlVUCGZ5AFKX9+9eVWd4QJBANv8D9Af2zzPzhXyIQ4ajQnnC8yHaTWGTFHRk/+Nn114dpZNEfXZNs3Pog4I6epz+VgSw2du/0Dyafgmn2kmKoMCQQDSWwljq7BqYSRcuqvHPjmSRtaSo9WdQ5TnYW9J/mDgByfAMRYFeX0Xpls7BHDjo+MK+7jvth4zUpSnIeyJUx0fAkEAg/dzOQRTTejPlaS6Ja7R2xXqoxi8iap2EEMsiIraBoWkhkfXtWdIFDEx4z9/q/FErIwdAui4YarK3V22FasapwJBAIlLwAIc8mVMiCY59Jpz47G0qKJHaspdbNfkgXXDIUm3gdtwblYeaGZCPzNy/5ekxTDLAXb74BRRZxL7El7DL7MCQAN+bV2TmstYA7Ea2osPloAMZHuKZNhcgPr4gxMNLeWPlKjnnydY7Xg2xFvmmSfJ6Wh5et1wdpleXGeMArsx8YM=";
 //	// 支付宝公钥
-//	public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
+//	public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";
+//	
+	// 商户PID
+	public static final String PARTNER = "2088311106439495";
+	// 商户收款账号
+	public static final String SELLER = "huachen_zulin@163.com";
+	// 商户私钥，pkcs8格式
+	
+	public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBALfGjge8qE7k+7aZxRyrDHxynviQSRp1awTt6uuQrYJr6XbVZZJcYf39tOMiRE2AzksZVWlZcq/sQKRUwC9yVqZzNq4Ke2vVdfftkNk+6oNSvG10HSUSTDKhCxDwluO2+NqCoCAQw1P/168V/7YdcyvptOuP1vgPWH2s/X63j7flAgMBAAECgYAC93+ffFozO9scbYsTFWfUMn2CgcHMXYzmvXiHaQSEEH3qXzOOk1M5qHjdGdaEccniyHvqgXkqgePhQ0T+/xeK/Vq3npBMyTPg2BbuFi/fRCErcOpdQOXmtbze/FKsSS0HJ7QeNgLnGjrJ5KhknKQmGNEFjQXBdE+44TDHf11T2QJBAOJQCb5WjhZ2tSz5D3XNtrGf7CFyTLQVFklUS0YABYtXIZ9QPJaZkaNtEMxr8PeEnL462pBhrDnaQlZuvoaulHMCQQDP4g0AL6uJmpdyvApcuMH7gEyNwRCuwKRqNGtdugwuN6k5oLnT56zLQ2Pdl1WX9Kv44JIycFdunWYv7PNz8kRHAkAbcGzeAQyVOKta2o+/TsPZ4XP10i/unafoGCpQQGxrqpLPCCFweQopcG3a+zNqL0/52JTrcIw7L3VfmWnMVpp1AkBdczvu6n8NY65TSI7L8c5aFenUC4dJV5ZRm/Dr+FfDawgqvMLsrIfz8/5vvbkfj0DDp4hxHilfs2gdgUJLzAu/AkAyZj56I8sJ/2DK+e0xRivwDNcNepp7ZbgUTgQSZGl8cNH3gqWmd3CG4MYLrHXZC0vrnNdAhU+lqFcvN3w4TSB/";
+	// 支付宝公钥
+	public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
 	
 	private static final int SDK_PAY_FLAG = 1;	
 	
@@ -167,7 +166,7 @@ public class AlipayHelper {
 
 		// 商品金额
 		orderInfo += "&total_fee=" + "\"" + price + "\"";
-
+		
 		// 服务器异步通知页面路径
 		orderInfo += "&notify_url=" + "\"" + Public_Api.appWebSite+"api/alipay/notify" + "\"";
 		//orderInfo += "&notify_url=" + "\"" + "http://notify.msp.hk/notify.htm" + "\"";
@@ -214,7 +213,6 @@ public class AlipayHelper {
 //		return key;
 		String key = TimeHelper.getTradeCode(orderId);
         return  key;
-
 		
 	}
 	

@@ -23,6 +23,7 @@ import com.gjcar.annotation.ContentWidget;
 import com.gjcar.app.R;
 import com.gjcar.data.adapter.OrderSubmit_ServiceList_Adapter;
 import com.gjcar.data.adapter.TicketList_Adapter;
+import com.gjcar.data.bean.CityShow;
 import com.gjcar.data.bean.OrderPrice;
 import com.gjcar.data.bean.TicketInfo;
 import com.gjcar.data.bean.User;
@@ -121,7 +122,12 @@ public class Activity_Order_Submit extends Activity{
 	@ContentWidget(id = R.id.d_pound_detail) TextView d_pound_detail;
 	@ContentWidget(id = R.id.d_pound_all) TextView d_pound_all;
 	
-	@ContentWidget(id = R.id.d_takereturn_lin) LinearLayout d_takereturn_lin;
+	@ContentWidget(id = R.id.d_storereduce_lin) LinearLayout d_storereduce_lin;	//到店取车
+	@ContentWidget(id = R.id.d_storereduce) TextView d_storereduce;
+	@ContentWidget(id = R.id.d_storereduce_all) TextView d_storereduce_all;
+	
+	@ContentWidget(id = R.id.d_takereturn_lin) LinearLayout d_takereturn_lin;	
+	@ContentWidget(id = R.id.d_take_static) TextView d_take_static;
 	@ContentWidget(id = R.id.d_take_detail) TextView d_take_detail;
 	@ContentWidget(id = R.id.d_take_all) TextView d_take_all;
 	@ContentWidget(id = R.id.d_return_detail) TextView d_return_detail;
@@ -151,6 +157,7 @@ public class Activity_Order_Submit extends Activity{
 	private final static int Request_Ticket = 3;
 	private final static int Click_Ticket = 4;
 	private final static int Click_Activity = 5;
+	private final static int Request_Black = 6;
 	
 	private boolean isRequestPriceOk = false;
 	private boolean isRequestUserOk = false;
@@ -207,7 +214,7 @@ public class Activity_Order_Submit extends Activity{
 
 		/*Handler*/
 		initHandler();
-		
+
 		/*标题*/
 		TitleBarHelper.Back(this, "确认订单", 0);
 		
@@ -216,14 +223,17 @@ public class Activity_Order_Submit extends Activity{
 		
 		/*加载用车人信息*/
 		new HttpHelper().initData(HttpHelper.Method_Get, this, "api/me", null, null, handler, Request_User, 1, new TypeReference<User>() {});
-
+		
 		/*加载费用*/
 		if(Public_Param.order_paramas.activityId.intValue() == 0){
 			Request_AmountDetail(Request_Not_Use);
 		}else{
 			Request_AmountDetail(Request_Use_Activity);
 		}
-				
+		
+		/*员工价*/
+		if(Public_Param.order_paramas.activityHostType == 8){discount_lin.setVisibility(View.GONE);}
+		
 	}
 
 	@Override
@@ -231,12 +241,12 @@ public class Activity_Order_Submit extends Activity{
 		
 		super.onResume();
 		Public_BaiduTJ.pageStart(this, Public_BaiduTJ.Activity_Order_Submit);	
-
+		
 	}
 	
 	@Override
 	protected void onPause() {
-
+		
 		super.onPause();
 		Public_BaiduTJ.pageEnd(this, Public_BaiduTJ.Activity_Order_Submit);	
 	}
@@ -456,10 +466,8 @@ public class Activity_Order_Submit extends Activity{
 					/*弹出提交对话框*/	
 					SubmitDialog.showSubmitDialog(this);
 					
-					new Thread(){
-						public void run() {sendOrderWrite();};
-						
-					}.start();
+					new HttpHelper().initData(HttpHelper.Method_Get, this, "api/isBlack/"+SharedPreferenceHelper.getUid(this), null, null, handler, Request_Black, 2, null);
+
 				}
 
 				break;
@@ -478,6 +486,44 @@ public class Activity_Order_Submit extends Activity{
 				super.handleMessage(msg);
 
 				switch (msg.what) {
+				
+					case Request_Black:
+						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
+							
+							SubmitDialog.closeSubmitDialog();//关闭弹窗	
+							ToastHelper.showToastShort(Activity_Order_Submit.this, "系统繁忙");
+						}else{
+							
+							if(HandlerHelper.getString(msg).equals(HandlerHelper.Fail)){
+								
+								new Thread(){
+									public void run() {sendOrderWrite();};
+								
+								}.start();
+								
+							}else{
+								
+								//重新加载
+								new Thread(){
+									
+									public void run() {
+										
+										try {
+											
+											Thread.sleep(2000);
+											new HttpHelper().initData(HttpHelper.Method_Get, Activity_Order_Submit.this, "api/isBlack/"+SharedPreferenceHelper.getUid(Activity_Order_Submit.this), null, null, handler, Request_Black, 2, null);
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+																		
+									};
+								}.start();
+					
+							}
+						}
+						
+						break;
+				
 					case OK:
 						test.setText("提示\n"+data);
 						isOrderSubmit = false;
@@ -631,7 +677,8 @@ public class Activity_Order_Submit extends Activity{
 									} catch (InterruptedException e) {
 										e.printStackTrace();
 									}
-																	};
+																	
+								};
 							}.start();
 							
 						}
@@ -681,12 +728,10 @@ public class Activity_Order_Submit extends Activity{
 						}					
 						break;
 						
-					case UpdateOk:						
-						new Thread(){
-							public void run() {sendOrderWrite();};
-							
-						}.start();
+					case UpdateOk:	
 						
+						new HttpHelper().initData(HttpHelper.Method_Get, Activity_Order_Submit.this, "api/isBlack/"+SharedPreferenceHelper.getUid(Activity_Order_Submit.this), null, null, handler, Request_Black, 2, null);
+
 						break;
 						
 					case UpdateFail:
@@ -735,16 +780,28 @@ public class Activity_Order_Submit extends Activity{
 		
 		ViewInitHelper.initTextViews(new TextView[]{d_service_detail,d_service_all,d_base_detail,d_base_all,d_other_detail,d_other_all,d_pound_detail,d_pound_all,d_all_all,b_days}, prices);
 		
-		/*门到门费用*/
-		if(Public_Param.order_paramas.isDoorToDoor.intValue() == 1){
-//			d_takereturn_lin.setVisibility(View.VISIBLE);
-			System.out.println("g7*************************");
-//			String[] takecarPrices = new String[]{"￥"+orderPrice.doorToDoor.get(0).details.get(0).price, "￥"+orderPrice.doorToDoor.get(0).details.get(0).price,
-//					"￥"+orderPrice.doorToDoor.get(1).details.get(0).price,"￥"+orderPrice.doorToDoor.get(1).details.get(0).price};
-//			System.out.println("g8*************************");
-//			ViewInitHelper.initTextViews(new TextView[]{d_take_detail,d_take_all,d_return_detail,d_return_all},takecarPrices);System.out.println("g9*************************");
+		/*短租自驾*/
+		if(orderPrice.toStoreReduce != null){
+			d_storereduce_lin.setVisibility(View.VISIBLE);
+			d_storereduce.setText("减免"+orderPrice.toStoreReduce+"元");
+			d_storereduce_all.setText("￥-"+orderPrice.toStoreReduce);
 		}
-		
+		/*门到门费用*/
+//		if(Public_Param.order_paramas.isDoorToDoor.intValue() == 1){
+////			d_takereturn_lin.setVisibility(View.VISIBLE);
+//			System.out.println("g7*************************");
+////			String[] takecarPrices = new String[]{"￥"+orderPrice.doorToDoor.get(0).details.get(0).price, "￥"+orderPrice.doorToDoor.get(0).details.get(0).price,
+////					"￥"+orderPrice.doorToDoor.get(1).details.get(0).price,"￥"+orderPrice.doorToDoor.get(1).details.get(0).price};
+////			System.out.println("g8*************************");
+////			ViewInitHelper.initTextViews(new TextView[]{d_take_detail,d_take_all,d_return_detail,d_return_all},takecarPrices);System.out.println("g9*************************");
+//		}
+		if(orderPrice.doorToDoor != null && orderPrice.doorToDoor.size() == 1){
+			d_takereturn_lin.setVisibility(View.VISIBLE);
+			System.out.println("g7*************************");
+			String[] takecarPrices = new String[]{orderPrice.doorToDoor.get(0).chargeName, "￥"+orderPrice.doorToDoor.get(0).details.get(0).price, "￥"+orderPrice.doorToDoor.get(0).details.get(0).price};
+			System.out.println("g8*************************");
+			ViewInitHelper.initTextViews(new TextView[]{d_take_static,d_take_detail,d_take_all},takecarPrices);System.out.println("g9*************************");
+		}
 		/*可选服务*/
 		if(Public_Param.order_paramas.server_list.size() != 0){System.out.println("g10*************************");
 			System.out.println("size--dd"+Public_Param.order_paramas.server_list.size());
@@ -945,7 +1002,7 @@ public class Activity_Order_Submit extends Activity{
 	
 	/** 发送城市信息  */
 	private void sendOrderWrite() {
-		
+		System.out.println("双击点击-------------------");
 		if(orderPrice == null){
 			ToastHelper.showNoNetworkToast(Activity_Order_Submit.this);
 			return;
@@ -957,45 +1014,50 @@ public class Activity_Order_Submit extends Activity{
 		JSONObject jsonObject = new JSONObject(); //**********************注意json发送数据时，要这样
 			
 		jsonObject.put("averagePrice",orderPrice.averagePrice);System.out.println("averagePrice"+orderPrice.averagePrice);
-		jsonObject.put("basicInsuranceAmount", orderPrice.basicInsuranceAmount);System.out.println("basicInsuranceAmount"+orderPrice.basicInsuranceAmount);//基本保险金额
+		jsonObject.put("basicInsuranceAmount", orderPrice.basicInsuranceAmount);System.out.println("basicInsuranceAmount"+orderPrice.basicInsuranceAmount);//基本保险金额		
 		jsonObject.put("brandId", Public_Param.order_paramas.brandId);System.out.println("brandId"+Public_Param.order_paramas.brandId);//车型ID			
+//		jsonObject.put("couponNumber","");
 		jsonObject.put("modelId", Public_Param.order_paramas.modelId);System.out.println("modelId"+Public_Param.order_paramas.modelId);//车模型ID
+				
 		jsonObject.put("orderState", 1);//订单状态（0：待支付，1：已下单 2：租赁中 3：已还车 4：已完成 5：已取消 6：NoShow）
 		
-		jsonObject.put("orderType", 1);
 		
-		jsonObject.put("payAmount", StringHelper.getMoney(new Float(orderPrice.totalPrice.floatValue() + serviceAllAmount - activityAmount).toString()));System.out.println("payAmount"+orderPrice.totalPrice.floatValue() + serviceAllAmount);//订单总金额
-				
-		jsonObject.put("payWay", Public_Param.order_paramas.payWay.intValue());System.out.println("payAmount"+Public_Param.order_paramas.payWay.intValue());//支付方式（0：门店现金 1：门店POS刷卡 2：在线网银 3：在线支付宝）
-		jsonObject.put("poundageAmount", orderPrice.poundageAmount.details.get(0).price);System.out.println("payAmount"+orderPrice.poundageAmount.details.get(0).price);//手续费
+		jsonObject.put("orderType", Public_Param.order_paramas.isDoorToDoor.intValue() == 1 ? 2 : 1);//门到门2，短租自驾1
+		jsonObject.put("orderValueAddedServiceRelativeShow",new OrderSubmit_Helper().getServiceAmout(orderPrice.daySum.intValue()));System.out.println("orderValueAddedServiceRelativeShow"+new OrderSubmit_Helper().getServiceAmout(orderPrice.daySum.intValue()));
+		jsonObject.put("payAmount", StringHelper.getMoney(new Float(orderPrice.totalPrice.floatValue() + serviceAllAmount - activityAmount).toString()));System.out.println("payAmount"+StringHelper.getMoney(new Float(orderPrice.totalPrice.floatValue() + serviceAllAmount - activityAmount).toString()));//订单总金额				
+		jsonObject.put("payWay", Public_Param.order_paramas.payWay.intValue());System.out.println("payWay"+Public_Param.order_paramas.payWay.intValue());//支付方式（0：门店现金 1：门店POS刷卡 2：在线网银 3：在线支付宝）
+		
+		jsonObject.put("poundageAmount", orderPrice.poundageAmount.details.get(0).price);System.out.println("poundageAmount"+orderPrice.poundageAmount.details.get(0).price);//手续费
+		jsonObject.put("prepay",new Integer(orderPrice.preAuthorization).intValue());System.out.println("prepay"+orderPrice.preAuthorization);//预授权
+		jsonObject.put("reduce",null);
 		jsonObject.put("rentalAmount", orderPrice.totalAmount);System.out.println("rentalAmount"+orderPrice.totalAmount);//租车金额
-
 		jsonObject.put("rentalId", orderPrice.rentalIds);System.out.println("rentalId"+orderPrice.rentalIds);
+		
 		jsonObject.put("returnCarAddress", Public_Param.order_paramas.returnCarAddress);System.out.println("returnCarAddress"+Public_Param.order_paramas.returnCarAddress);
 		jsonObject.put("returnCarCity", Public_Param.order_paramas.returnCarCityId);System.out.println("returnCarCity"+Public_Param.order_paramas.returnCarCityId);
 		jsonObject.put("returnCarDate",Long.parseLong(TimeHelper.getSearchTime_Mis(Public_Param.order_paramas.returnCarDate)));System.out.println("returnCarDate"+Long.parseLong(TimeHelper.getSearchTime_Mis(Public_Param.order_paramas.returnCarDate)));			
 		jsonObject.put("returnCarLatitude",Public_Param.order_paramas.returnCarLatitude);System.out.println("returnCarLatitude"+Public_Param.order_paramas.returnCarLatitude);
 		
 		jsonObject.put("returnCarLongitude",Public_Param.order_paramas.returnCarLongitude);System.out.println("returnCarLongitude"+Public_Param.order_paramas.returnCarLongitude);
-		jsonObject.put("returnCarStoreId",Public_Param.order_paramas.returnCarStoreId);System.out.println("returnCarStoreId"+Public_Param.order_paramas.returnCarStoreId);
-		jsonObject.put("serviceType",0);
+		jsonObject.put("returnCarStoreId",Public_Param.order_paramas.returnCarStoreId);System.out.println("returnCarStoreId"+Public_Param.order_paramas.returnCarStoreId);	
+		jsonObject.put("serviceType", Public_Param.order_paramas.isDoorToDoor.intValue() == 1 ? "3":"0");
+		jsonObject.put("source",new Integer(Public_Platform.P_Android).intValue());
 		jsonObject.put("takeCarAddress",Public_Param.order_paramas.takeCarAddress);System.out.println("takeCarAddress"+Public_Param.order_paramas.takeCarAddress);
-		jsonObject.put("takeCarCity",Public_Param.order_paramas.takeCarCityId);System.out.println("takeCarCity"+Public_Param.order_paramas.takeCarCityId);
 		
+		jsonObject.put("takeCarCity",Public_Param.order_paramas.takeCarCityId);System.out.println("takeCarCity"+Public_Param.order_paramas.takeCarCityId);
 		jsonObject.put("takeCarDate",Long.parseLong(TimeHelper.getSearchTime_Mis(Public_Param.order_paramas.takeCarDate)));System.out.println("takeCarDate"+Long.parseLong(TimeHelper.getSearchTime_Mis(Public_Param.order_paramas.takeCarDate)));
 		jsonObject.put("takeCarLatitude",Public_Param.order_paramas.takeCarLatitude);System.out.println("takeCarLatitude"+Public_Param.order_paramas.takeCarLatitude);
 		jsonObject.put("takeCarLongitude",Public_Param.order_paramas.takeCarLongitude);System.out.println("takeCarLongitude"+Public_Param.order_paramas.takeCarLongitude);
 		jsonObject.put("takeCarStoreId",Public_Param.order_paramas.takeCarStoreId);System.out.println("takeCarStoreId"+Public_Param.order_paramas.takeCarStoreId);
-		jsonObject.put("tenancyDays",orderPrice.daySum);System.out.println("tenancyDays"+orderPrice.daySum);
-		
+	
+		jsonObject.put("tenancyDays",orderPrice.daySum);System.out.println("tenancyDays"+orderPrice.daySum);		
 		jsonObject.put("timeoutPrice",orderPrice.delayAmount);System.out.println("timeoutPrice"+orderPrice.delayAmount);
+		jsonObject.put("toStoreReduce", orderPrice.toStoreReduce);System.out.println("toStoreReduce"+orderPrice.toStoreReduce);
 		jsonObject.put("totalTasicInsuranceAmount",orderPrice.totalBasicInsuranceAmount);System.out.println("totalTasicInsuranceAmount"+orderPrice.totalBasicInsuranceAmount);
 		jsonObject.put("totalTimeoutPrice",orderPrice.totalDelayAmount);System.out.println("totalTimeoutPrice"+orderPrice.totalDelayAmount);
+	
 		jsonObject.put("userId",SharedPreferenceHelper.getUid(this));System.out.println("userId"+SharedPreferenceHelper.getUid(this));
-		jsonObject.put("vendorId","1");System.out.println("vendorId"+Public_Param.order_paramas.vendorId);
-		
-		jsonObject.put("orderValueAddedServiceRelativeShow",new OrderSubmit_Helper().getServiceAmout(orderPrice.daySum.intValue()));
-		System.out.println("orderValueAddedServiceRelativeShow"+new OrderSubmit_Helper().getServiceAmout(orderPrice.daySum.intValue()));
+		jsonObject.put("vendorId",1);
 
 		if(MyFlag == Use_Activity){
 			jsonObject.put("activityId",activityId);
@@ -1006,13 +1068,10 @@ public class Activity_Order_Submit extends Activity{
 				jsonObject.put("couponNumber",couponNumber);
 			}else{
 				jsonObject.put("couponNumber","");
+				jsonObject.put("activityId",0);
 			}
 		}
-		
-		jsonObject.put("source",Public_Platform.P_Android);
-		jsonObject.put("prepay","5000");
-		
-				
+
 		//		"orderValueAddedServiceRelativeShow" : [
 //		                                        {
 //		                                          "description" : "é€è½¦ä¸Šé—¨",
@@ -1030,43 +1089,7 @@ public class Activity_Order_Submit extends Activity{
 //		                                          "serviceId" : 1
 //		                                        }
 //		                                      ]
-//		//参数含义https://github.com/HP-Enterprise/Rental653/issues/731
 
-//		jsonObject.put("averagePrice",111);
-//		jsonObject.put("basicInsuranceAmount", 55);//System.out.println("basicInsuranceAmount"+Public_Parameter.order_store_paramas.basicInsuranceAmount);//基本保险金额
-//		jsonObject.put("brandId", 16);//System.out.println("brandId"+Public_Parameter.order_store_paramas.brandId);//车型ID			
-//		jsonObject.put("modelId", 25);//System.out.println("modelId"+Public_Parameter.order_store_paramas.modelId);//车模型ID
-//		jsonObject.put("orderState", 1);//订单状态（0：待支付，1：已下单 2：租赁中 3：已还车 4：已完成 5：已取消 6：NoShow）
-//		
-//		jsonObject.put("orderType", 1);
-//		jsonObject.put("payAmount", 555);//System.out.println("payAmount"+Public_Parameter.order_store_paramas.prepayAmount);//订单总金额
-//		jsonObject.put("payWay", 1);//支付方式（0：门店现金 1：门店POS刷卡 2：在线网银 3：在线支付宝）
-//		jsonObject.put("poundageAmount", 0);//手续费
-//		jsonObject.put("rentalAmount", 222);//System.out.println("rentalAmount"+Public_Parameter.order_store_paramas.avgAmount);//租车金额
-//
-//		jsonObject.put("rentalId", orderPrice.rentalIds);
-//		jsonObject.put("returnCarAddress", "武汉光谷软件园店");//System.out.println("returnCarAddress"+Public_Parameter.order_store_paramas.returnCarAddress);
-//		jsonObject.put("returnCarCity", "3");//System.out.println("returnCarCity"+Public_Parameter.order_store_paramas.returnCarCity);
-//		jsonObject.put("returnCarDate",Long.parseLong(TimeHelper.getSearchTime_Mis(Public_Param.order_paramas.returnCarDate)));//System.out.println("returnCarDate"+Long.parseLong(TimeHelper.getSearchTime_Mis(Public_Parameter.order_store_paramas.endDate)));			
-//		jsonObject.put("returnCarLatitude","30.598055");
-//		
-//		jsonObject.put("returnCarLongitude","114.305794");
-//		jsonObject.put("returnCarStoreId","1");
-//		jsonObject.put("serviceType",0);
-//		jsonObject.put("takeCarAddress","武汉光谷软件园店");
-//		jsonObject.put("takeCarCity","3");
-//		
-//		jsonObject.put("takeCarDate",Long.parseLong(TimeHelper.getSearchTime_Mis(Public_Param.order_paramas.takeCarDate)));
-//		jsonObject.put("takeCarLatitude","30.598055");
-//		jsonObject.put("takeCarLongitude","114.305794");
-//		jsonObject.put("takeCarStoreId","1");
-//		jsonObject.put("tenancyDays",2);
-//		
-//		jsonObject.put("timeoutPrice",10);
-//		jsonObject.put("totalTasicInsuranceAmount",110);
-//		jsonObject.put("totalTimeoutPrice",0);
-//		jsonObject.put("userId",22);
-//		jsonObject.put("vendorId",1);
 		
 		StringEntity requestentity = null;
 		try {System.out.println("3bbbbbbbbbbbb");
@@ -1084,12 +1107,12 @@ public class Activity_Order_Submit extends Activity{
 		String api = "api/user/"+new Integer(SharedPreferenceHelper.getUid(this)).toString()+"/order";
 		//String api = "api/user/"+"1"+"/order";
 		if(Public_Param.order_paramas.isDoorToDoor.intValue() == 1){
-			api = "api/user/"+new Integer(SharedPreferenceHelper.getUid(this)).toString()+"/doortodoororder";
+			api = "api/door/user/order";
 		}
 		HttpPost httppost = new HttpPost(Public_Api.appWebSite+api);//**********************注意请求方法  
-		
+		System.out.println("api--------------------"+api);
 		httppost.setHeader("Content-Type", "application/json;charset=UTF-8");
-
+		AddCookies(httppost);
 		httppost.setEntity(requestentity);
 		try {
 			System.out.println("6bbbbbbbbbbbb");
@@ -1308,5 +1331,24 @@ public class Activity_Order_Submit extends Activity{
           System.out.println(""+sb);
     }
 	
- 
+    /**
+     * 增加Cookie
+     * @param request
+     */
+    public void AddCookies(HttpPost request)
+    {
+          StringBuilder sb = new StringBuilder();
+
+          String key = "token";
+          String val = SharedPreferenceHelper.getString(this, Public_SP.Account, key);
+          sb.append(key);
+          sb.append("=");
+          sb.append(val);
+          sb.append(";");
+
+          request.addHeader("cookie", sb.toString());
+
+          System.out.println(""+sb);
+    }
+	
 }

@@ -116,5 +116,27 @@ public class CityHelper {
 
 	}
 	
+	public static String[] getCityNames(List<CityShow> cityList){
+		
+		String[] names = new String[cityList.size()];
+		
+		for (int i = 0; i < names.length; i++) {
+			
+			names[i] = cityList.get(i).cityName;
+		}
+		
+		return names;
+	}
 	
+	public static int[] getCityIds(List<CityShow> list){
+		
+		int[] ids = new int[list.size()];
+		
+		for (int i = 0; i < ids.length; i++) {
+			
+			ids[i] = list.get(i).id.intValue();
+		}
+		
+		return ids;
+	}
 }

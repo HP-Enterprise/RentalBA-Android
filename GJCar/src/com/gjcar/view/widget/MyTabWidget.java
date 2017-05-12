@@ -130,7 +130,7 @@ public class MyTabWidget extends LinearLayout {
 	}
 	
 	//设置底部背景和颜色
-	private void setTabTextBg(Context context, int index ){
+	public void setTabTextBg(Context context, int index ){
 		for(int i=0; i<names.length; i++){
 			if(index == i){	
 				textViews.get(i).setTextColor(Color.WHITE);

@@ -68,7 +68,13 @@ public class Activity_FreeRide_List extends Activity{
 		String getCarCityId = new Integer(getIntent().getIntExtra("getCarCityId", -1)).toString();System.out.println("cityId"+getCarCityId);
 		String getReturnId = new Integer(getIntent().getIntExtra("returnCityId", -1)).toString();
 		String api = "api/freeRide?currentPage=1&getCarCityId="+getCarCityId+"&pageSize=5&status=1&returnCarCityId="+getReturnId;
-
+		
+		if(getReturnId.equals("-1")){
+			api = "api/freeRide?currentPage=1&getCarCityId="+getCarCityId+"&pageSize=5&status=1";
+		}else{
+			api = "api/freeRide?currentPage=1&getCarCityId="+getCarCityId+"&pageSize=5&status=1&returnCarCityId="+getReturnId;
+		}
+		
 		new HttpHelper().initData(HttpHelper.Method_Get, this, api, null, null, handler, CarList_Data, 1, new TypeReference<ArrayList<FreeRide>>() {});
 	}
 	

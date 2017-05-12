@@ -15,7 +15,6 @@ public class OrderParams {
 	/*订单详情*/
 	public Integer isDoorToDoor = 0;//0不是，1是门到门服务
 	
-	
 	/*订单详情*/
 	public String picture;
 	public String model;
@@ -31,6 +30,7 @@ public class OrderParams {
 	public ActivityShow activityShow;
 	public List<ActivityShow> activityShowList;
 	public Integer activityId = 0;//活动
+	public Integer activityHostType = 0;//活动类型
 	public boolean isHasActivity = false;
 	
 	/*订单提交参数*/

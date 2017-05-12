@@ -40,6 +40,28 @@ public class SystemUtils {
 		
 	}
 	
+	/**获取当前版本号
+	 * @return */
+	public static int getVersionCode(Context context){
+	
+		if(context == null){
+			
+			return 0;
+		}
+		
+		try {
+			PackageManager manager = context.getPackageManager();
+			PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+			return info.versionCode;
+			
+		} catch (NameNotFoundException e) {
+			
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+	
 	/**获取手机的版本号
 	 * @return
 	 */

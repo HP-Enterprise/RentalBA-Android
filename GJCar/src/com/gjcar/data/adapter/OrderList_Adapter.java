@@ -44,7 +44,7 @@ public class OrderList_Adapter extends BaseAdapter {
 	private boolean isDoorToDoor;
 	
 	public OrderList_Adapter(Context context, ArrayList<Order> orderlist, boolean isDoorToDoor) {
-		// TODO Auto-generated constructor stub
+		
 		this.orderlist = orderlist;
 		this.context = context;
 		this.isDoorToDoor = isDoorToDoor;
@@ -106,36 +106,53 @@ public class OrderList_Adapter extends BaseAdapter {
 //			}				
 //		}		
 		System.out.println("p-"+position);
-		ImageLoader.getInstance().displayImage(Public_Api.appWebSite + orderlist.get(position).picture, holder.a_picture, ImageLoaderHelper.initDisplayImageOptions());
 		
 		holder.orderId.setText(orderlist.get(position).orderId.toString());System.out.println("adapter"+orderlist.get(position).orderId);
 		System.out.println("aaaaaaaaaaa门到门"+isDoorToDoor);
 		System.out.println("aaaaaaaaaaa订单状态"+orderlist.get(position).orderState.intValue());
 		if(isDoorToDoor){
 			
-			holder.state.setText(StringHelper.getStringType(orderlist.get(position).orderState.intValue(), new String[]{"待支付","已下单","已下单","已下单","租赁中", "租赁中 ","租赁中 ","已还车","已完成","已取消"}));			
+			ImageLoader.getInstance().displayImage(Public_Api.appWebSite + orderlist.get(position).vehicleModelShow.picture, holder.a_picture, ImageLoaderHelper.initDisplayImageOptions());
+			holder.state.setText(StringHelper.getStringType(orderlist.get(position).orderState.intValue(), new String[]{"待支付","已下单","已下单","已下单","租赁中", "租赁中 ","租赁中 ","已还车","已完成","已取消"}));				
+			holder.a_model.setText(orderlist.get(position).vehicleModelShow.model);System.out.println("modela");
+			
+			String carGroup = StringHelper.getCarGroup(orderlist.get(position).vehicleModelShow.carGroup);
+			
+			String carTrunk = orderlist.get(position).vehicleModelShow.carTrunk+"厢";
+
+			String seats = orderlist.get(position).vehicleModelShow.seats+"座";
+
+			holder.a_note.setText(carGroup+"/"+carTrunk+"/"+seats);System.out.println("modelb");
+			
+			holder.c_city.setText(orderlist.get(position).takeCarCityName);
+			holder.c_address.setText(orderlist.get(position).returnCarCityName);System.out.println("modelh");
+			
 		}else{
+			
+			ImageLoader.getInstance().displayImage(Public_Api.appWebSite + orderlist.get(position).picture, holder.a_picture, ImageLoaderHelper.initDisplayImageOptions());	
 			holder.state.setText(StringHelper.getStringType(orderlist.get(position).orderState.intValue(), new String[]{"待支付","已下单 ","租赁中","已还车", "已完成 ","已取消 ","NoShow"}));			
-		}
-
-		holder.a_model.setText(orderlist.get(position).model);System.out.println("modela");
+			holder.a_model.setText(orderlist.get(position).model);System.out.println("modela");
 		
-		String carGroup = orderlist.get(position).carGroupstr;
-		if(orderlist.get(position).carGroupstr == null){
-			carGroup = "";
-		}
-		
-		String carTrunk = orderlist.get(position).carTrunkStr;
-		if(orderlist.get(position).carTrunkStr == null){
-			carTrunk = "";
-		}
+			String carGroup = orderlist.get(position).carGroupstr;
+			if(orderlist.get(position).carGroupstr == null){
+				carGroup = "";
+			}
+			
+			String carTrunk = orderlist.get(position).carTrunkStr;
+			if(orderlist.get(position).carTrunkStr == null){
+				carTrunk = "";
+			}
 
-		String seats = orderlist.get(position).seatsStr;
-		if(orderlist.get(position).seatsStr == null){
-			seats = "";
-		}
+			String seats = orderlist.get(position).seatsStr;
+			if(orderlist.get(position).seatsStr == null){
+				seats = "";
+			}
 
-		holder.a_note.setText(carGroup+"/"+carTrunk+"/"+seats);System.out.println("modelb");
+			holder.a_note.setText(carGroup+"/"+carTrunk+"/"+seats);System.out.println("modelb");
+			
+			holder.c_city.setText(orderlist.get(position).takeCarCity);
+			holder.c_address.setText(orderlist.get(position).returnCarCity);System.out.println("modelh");
+		}
 
 		holder.b_take_date.setText(TimeHelper.getDateTime_YM(TimeHelper.getTimemis_to_StringTime(orderlist.get(position).takeCarDate)));System.out.println("modelc");
 		holder.b_take_time.setText(TimeHelper.getWeekTime(TimeHelper.getTimemis_to_StringTime(orderlist.get(position).takeCarDate)));System.out.println("modeld");
@@ -145,10 +162,7 @@ public class OrderList_Adapter extends BaseAdapter {
 		holder.b_days.setText(orderlist.get(position).tenancyDays.toString());	System.out.println("modele");	
 		holder.b_return_date.setText(TimeHelper.getDateTime_YM(TimeHelper.getTimemis_to_StringTime(orderlist.get(position).returnCarDate)));System.out.println("modelf");
 		holder.b_return_time.setText(TimeHelper.getWeekTime(TimeHelper.getTimemis_to_StringTime(orderlist.get(position).returnCarDate)));System.out.println("modelg");
-		
-		holder.c_city.setText(orderlist.get(position).takeCarCity);
-		holder.c_address.setText(orderlist.get(position).returnCarCity);System.out.println("modelh");
-		
+
 		return convertView;
 		
 	}

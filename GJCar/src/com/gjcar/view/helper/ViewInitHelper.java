@@ -21,10 +21,8 @@ public class ViewInitHelper {
 	/**
 	 * f1:初始化选时间
 	 */
-	public static void init_f1_DateTime(TextView[] views,String mytime){//如果时间小于10:00，就把时间默认为10:00
-		
-		String time = TimeHelper.getInitTime_10(mytime);
-		
+	public static void init_f1_DateTime(TextView[] views,String time){//如果时间小于10:00，就把时间默认为10:00
+
 		views[0].setText(TimeHelper.getDateTime_MD_XDays(1));//选车日期
 		views[1].setText(TimeHelper.getDateTime_WT_XDays2(1,time));//选车时间：并且保存选车时间字符串
 		views[2].setText(TimeHelper.getDateTime_MD_XDays(3));
@@ -35,15 +33,39 @@ public class ViewInitHelper {
 				
 	}
 	
-	public static void init_f1_DateTime_return(TextView[] views,String mytime){//如何小于10：00，默认10:00
+	/**
+	 * f1:初始化选时间
+	 */
+	public static void init_f1_ChangeDateTime(TextView[] views,String startTime, String endTime){//如果时间小于10:00，就把时间默认为10:00
 		
-		String time = TimeHelper.getInitTime_10(mytime);
+		String takeTime = TimeHelper.getStoreHourTime(views[1]);
+		String returnTime = TimeHelper.getStoreHourTime(views[3]);
 		
-		views[0].setText(TimeHelper.getDateTime_MD_XDays(3));//还车
-		views[1].setText(TimeHelper.getDateTime_WT_XDays2(3,time));		
+		String takeHourtime = TimeHelper.getInitTime_8_20(takeTime, startTime, endTime);
+		String returnHourtime = TimeHelper.getInitTime_8_20(returnTime, startTime, endTime);
 		
-		views[1].setTag(TimeHelper.getDateTime_YMD(3) + " " + time);
-				
+		views[0].setText(TimeHelper.getStoreShowTime(views[1]));
+		views[1].setText(TimeHelper.getStoreWeekTime(takeHourtime,views[1]));//选车时间：并且保存选车时间字符串
+		views[2].setText(TimeHelper.getStoreShowTime(views[3]));
+		views[3].setText(TimeHelper.getStoreWeekTime(returnHourtime,views[3]));		
+		
+		views[1].setTag(TimeHelper.getStoreTagTime(takeHourtime,views[1]));
+		views[3].setTag(TimeHelper.getStoreTagTime(returnHourtime,views[3]));
+		
+		System.out.println("取车时间"+views[1].getTag().toString());	
+		System.out.println("还车时间"+views[3].getTag().toString());	
+	}
+	
+	public static void init_f1_DateTime_ChangeReturn(TextView[] views,String startTime, String endTime){//如何小于10：00，默认10:00
+		
+		String returnTime = TimeHelper.getStoreHourTime(views[1]);
+		String returnHourtime = TimeHelper.getInitTime_8_20(returnTime, startTime, endTime);
+		
+		views[0].setText(TimeHelper.getStoreShowTime(views[1]));//还车
+		views[1].setText(TimeHelper.getStoreWeekTime(returnHourtime,views[1]));		
+		
+		views[1].setTag(TimeHelper.getStoreTagTime(returnHourtime,views[1]));
+		System.out.println("还车门店时间"+views[1].getTag().toString());			
 	}
 	
 	public static void init_take(int start, int end){

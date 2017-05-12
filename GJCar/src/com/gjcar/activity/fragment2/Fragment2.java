@@ -149,7 +149,7 @@ public class Fragment2 extends Fragment{
 				getCarCityId = show.id.intValue();
 				take_city.setText(show.cityName);
 				break;
-			
+				
 			case RequestCode_Return:
 				if(!data.hasExtra("cityShow")){
 					return;

@@ -13,7 +13,7 @@ public class ScoreChangeHelper {
 		
 		for (ScoreChange scoreChange : list) {
 			
-			if(scoreChange.applySource.equals("2")){
+			if(scoreChange.applySource.equals("2") || scoreChange.applySource.equals("0")){
 				mylist.add(scoreChange);
 			}
 		}

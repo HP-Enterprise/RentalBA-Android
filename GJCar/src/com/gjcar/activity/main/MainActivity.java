@@ -6,6 +6,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.gjcar.activity.fragment1.Fragment1;
 import com.gjcar.app.R;
 import com.gjcar.data.bean.ApkInfo;
 import com.gjcar.data.bean.CityShow;
@@ -198,7 +199,7 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 								if(str.length == 2){
 									System.out.println("10aaaaaaaaaaaaaaaaa+");
 									Public_Param.Version_Name = str[0];
-									update(Public_Api.appWebSite+apkInfo.appAddress,str[1]);System.out.println("下载地址"+Public_Api.appWebSite+apkInfo.appAddress);
+									update(Public_Api.appWebSite+apkInfo.appAddress,str[1], apkInfo.forceUpdate.intValue() == 0 ? false : true);System.out.println("下载地址"+Public_Api.appWebSite+apkInfo.appAddress);
 									System.out.println("aaaaaaaaaaaaaaaaaaaaa_apksize"+str[1]);
 								}
 								//update(Public_Api.appWebSite+apkInfo.appAddress);System.out.println("下载地址"+Public_Api.appWebSite+apkInfo.appAddress);
@@ -218,8 +219,8 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 
 	
 	/** 更新*/
-	private void update(String url,String size){
-		UpdateUtils update = new UpdateUtils(this, url, size);
+	private void update(String url,String size, boolean isFourceUpdate){
+		UpdateUtils update = new UpdateUtils(this, url, size, isFourceUpdate);
 		update.setListener(this);
 		update.UpdateManager_do();
 	}

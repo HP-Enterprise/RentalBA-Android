@@ -309,11 +309,9 @@
                             android:focusableInTouchMode="false"
                             android:hint=""
                             android:inputType="none"
-                            android:lines="1"
                             android:paddingBottom="6dp"
                             android:paddingLeft="12dp"
                             android:paddingTop="6dp"
-                            android:singleLine="true"
                             android:textColor="@color/page_text_normal1"
                             android:textColorHint="@color/page_text_normal1"
                             android:textSize="14dp" />
@@ -431,11 +429,9 @@
                             android:focusableInTouchMode="false"
                             android:hint=""
                             android:inputType="none"
-                            android:lines="1"
                             android:paddingBottom="6dp"
                             android:paddingLeft="12dp"
                             android:paddingTop="6dp"
-                            android:singleLine="true"
                             android:textColor="@color/page_text_normal1"
                             android:textColorHint="@color/page_text_normal1"
                             android:textSize="14dp" />
@@ -517,9 +513,7 @@
                             android:layout_weight="5"
                             android:background="@android:color/transparent"
                             android:hint="请输入姓名"
-                            android:lines="1"
                             android:paddingLeft="12dp"
-                            android:singleLine="true"
                             android:textColor="@color/page_text_normal"
                             android:textColorHint="@color/page_text_normal"
                             android:textCursorDrawable="@drawable/register_edit_corsor"
@@ -958,6 +952,62 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/d_storereduce_lin"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp" >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="到店取车"
+                            android:textColor="@color/page_text_normal2"
+                            android:textSize="14dp" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="12dp"
+                            android:background="@color/page_line1" />
+
+                        <TextView
+                            android:id="@+id/d_storereduce"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="left"
+                            android:text=""
+                            android:textColor="@color/page_text_normal2"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:id="@+id/d_storereduce_all"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="right"
+                            android:text=""
+                            android:textColor="@color/page_text_select"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/page_line1" />
+                </LinearLayout>
+                
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -1046,6 +1096,7 @@
                         android:paddingTop="8dp" >
 
                         <TextView
+                            android:id="@+id/d_take_static"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
@@ -1081,52 +1132,59 @@
                             android:textSize="14dp" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/page_line1" />
-
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:paddingBottom="8dp"
-                        android:paddingTop="8dp" >
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="上门取车费"
-                            android:textColor="@color/page_text_normal2"
-                            android:textSize="14dp" />
+                        android:paddingTop="8dp"
+                        android:visibility="gone" >
 
                         <View
-                            android:layout_width="1dp"
-                            android:layout_height="fill_parent"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
                             android:background="@color/page_line1" />
 
-                        <TextView
-                            android:id="@+id/d_return_detail"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3"
-                            android:gravity="left"
-                            android:text=""
-                            android:textColor="@color/page_text_normal2"
-                            android:textSize="14dp" />
+                            android:orientation="horizontal" >
 
-                        <TextView
-                            android:id="@+id/d_return_all"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:gravity="right"
-                            android:text=""
-                            android:textColor="@color/page_text_select"
-                            android:textSize="14dp" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="上门取车费"
+                                android:textColor="@color/page_text_normal2"
+                                android:textSize="14dp" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="fill_parent"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@color/page_line1" />
+
+                            <TextView
+                                android:id="@+id/d_return_detail"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/page_text_normal2"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:id="@+id/d_return_all"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="right"
+                                android:text=""
+                                android:textColor="@color/page_text_select"
+                                android:textSize="14dp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1136,8 +1194,8 @@
                     android:id="@+id/d_activity_lin"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" 
-                    android:visibility="gone">
+                    android:orientation="vertical"
+                    android:visibility="gone" >
 
                     <View
                         android:layout_width="fill_parent"
