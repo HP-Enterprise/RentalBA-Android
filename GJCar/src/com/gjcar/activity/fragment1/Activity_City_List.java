@@ -143,10 +143,10 @@ public class Activity_City_List extends Activity{
 
 	private void initData() {System.out.println("1");
 
-		new HttpHelper().initData(HttpHelper.Method_Get, this, "api/china/cityHasStore?isHot=1", null, null, handler, Request_Hot, 1, new TypeReference<ArrayList<CityShow>>() {});
+		new HttpHelper().initData(HttpHelper.Method_Get, this, "api/china/cityHasStore?isHot=1&available=1&isLocation=1", null, null, handler, Request_Hot, 1, new TypeReference<ArrayList<CityShow>>() {});
 		
-		new HttpHelper().initData(HttpHelper.Method_Get, this, "api/china/cityHasStore", null, null, handler, Request_City, 1, new TypeReference<ArrayList<CityShow>>() {});
-		System.out.println("w");
+		new HttpHelper().initData(HttpHelper.Method_Get, this, "api/china/cityHasStore?available=1&isLocation=1", null, null, handler, Request_City, 1, new TypeReference<ArrayList<CityShow>>() {});
+		System.out.println("ÍøÖ·Äã¶®µÃ");
 	}
 	
 	private void initHandler() {
@@ -161,9 +161,11 @@ public class Activity_City_List extends Activity{
 					case Request_City:
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
-								
+						
 							citys_all = (ArrayList<CityShow>)msg.obj;
 								
+							citys_history = getCityHistory(citys_history,citys_all);
+							
 				           	request_count++;
 				           		
 				           	handler.sendEmptyMessage(Data_Show);
@@ -405,5 +407,24 @@ public class Activity_City_List extends Activity{
 		
 		cityInfo.id = cityInfo.cityId;
 		return cityInfo;
+	}
+	
+	public ArrayList<CityShow> getCityHistory(List<CityShow> list_history, ArrayList<CityShow> list_all){
+		
+		ArrayList<CityShow> list = new ArrayList<CityShow>();
+		
+		for (int i = 0; i < list_history.size(); i++) {
+			
+			for (int j = 0; j < list_all.size(); j++) {
+				
+				if(list_history.get(i).cityName.equals(list_all.get(j).cityName)){
+					
+					list.add(list_history.get(i));
+				}
+			}
+			
+		}
+		
+		return list;
 	}
 }

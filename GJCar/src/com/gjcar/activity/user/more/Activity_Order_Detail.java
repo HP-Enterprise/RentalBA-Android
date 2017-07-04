@@ -344,7 +344,7 @@ public class Activity_Order_Detail extends Activity{
 						
 						String api = "api/door/clientcanle/"+Public_Param.order.orderId+"/order";
 					
-						new HttpHelper().initData(HttpHelper.Method_Delete, Activity_Order_Detail.this, api, null, null, handler, Cancle_Order, 2, null);		
+						//new HttpHelper().initData(HttpHelper.Method_Delete, Activity_Order_Detail.this, api, null, null, handler, Cancle_Order, 2, null);		
 						
 						if(getIntent().getStringExtra("way").equals("order")){
 							
@@ -433,12 +433,12 @@ public class Activity_Order_Detail extends Activity{
 						SubmitDialog.closeSubmitDialog();
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
-							ToastHelper.showToastShort(Activity_Order_Detail.this, "取消订单成功");
+							ToastHelper.showToastShort(Activity_Order_Detail.this, "取消订单成功");System.out.println("取消订单-ok");
 							finish();
 							
 				           	return;
 						}	
-						ToastHelper.showToastShort(Activity_Order_Detail.this, "取消订单失败");
+						ToastHelper.showToastShort(Activity_Order_Detail.this, "取消订单失败");System.out.println("取消订单-false");
 						break;
 						
 					default:

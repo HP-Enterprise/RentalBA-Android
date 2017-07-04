@@ -99,14 +99,15 @@ public class ServiceAmountList_Adapter extends BaseAdapter {
 		if(list.get(position).serviceId.intValue() == 1){
 			holder.amount.setText(list.get(position).serviceAmount.toString()+"元/次，共1次");
 		}else{
-			if(list.get(position).serviceId.intValue() == 2){
-				holder.amount.setText("均价"+list.get(position).serviceAmount.intValue()/day.intValue()+"元/天(上限7天)，共"+day.toString()+"天");
+			if(list.get(position).serviceId.intValue() == 2){//均价50元/天(上限7天,每30天一周期)，共65天
+				
+				int numday = day.intValue() / 30 * 7  +  (day.intValue() % 30 > 7 ? 7 : day.intValue() % 30); 
+				holder.amount.setText("均价"+list.get(position).serviceAmount.intValue()/numday+"元/天(上限7天,每30天一周期)，共"+day.toString()+"天");
 			}else{
 				holder.amount.setText("￥"+list.get(position).serviceAmount.toString());
 			}
 		}
-		
-		
+				
 		holder.all.setText("￥"+list.get(position).serviceAmount.toString());System.out.println("6***********");
 		return convertView;
 	}

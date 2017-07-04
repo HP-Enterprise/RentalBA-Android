@@ -93,20 +93,23 @@ public class OrderSubmit_ServiceList_Adapter extends BaseAdapter {
 	
 		holder.name.setText(list.get(position).chargeName);	
 		
-		if(list.get(position).chargeName.equals("不计免赔")){
-			holder.amount.setText("均价"+list.get(position).details.get(0).price.toString()+"元/天,共"+days+"天(上限7天)");
+		if(list.get(position).chargeName.equals("不计免赔")){//均价50元/天(上限7天,每30天一周期)，共65天
+			holder.amount.setText("均价"+list.get(position).details.get(0).price.toString()+"元/天(上限7天,每30天一周期),共"+days+"天");
+//			holder.amount.setText("");
 		}else{
 			holder.amount.setText("￥"+list.get(position).details.get(0).price.toString());
 		}
 		
 		if(list.get(position).chargeName.equals("不计免赔")){
 			
-			if(days > 7){
-				holder.all.setText("￥"+list.get(position).details.get(0).price.intValue()*7+"元");
-			}else{
-				holder.all.setText("￥"+list.get(position).details.get(0).price.intValue()*days+"元");
-			}
+//			if(days > 7){
+//				holder.all.setText("￥"+list.get(position).details.get(0).price.intValue()*7+"元");
+//			}else{
+//				holder.all.setText("￥"+list.get(position).details.get(0).price.intValue()*days+"元");
+//			}
+			int numday = days / 30 * 7  +  (days % 30 > 7 ? 7 : days % 30);  	
 			
+			holder.all.setText("￥"+list.get(position).details.get(0).price.intValue()*numday+"元");
 		}else{
 			holder.all.setText("￥"+list.get(position).details.get(0).price.toString());
 		}

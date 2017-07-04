@@ -209,13 +209,15 @@ public class Fragment1 extends Fragment  {
 				return_cityId = show.id.intValue();
 				return_cityName = show.cityName;
 				
-				take_latitude = show.latitude;
-				take_longitude = show.longitude;
-				new BaiduMapHelper().ShowMap(new LatLng(take_latitude, take_longitude), mapView.getMap());//地图显示取车城市
-				
-				return_latitude = show.latitude;
-				return_longitude = show.longitude;
-				
+				if(show.latitude != null){
+					
+					take_latitude = show.latitude;
+					take_longitude = show.longitude;
+					new BaiduMapHelper().ShowMap(new LatLng(take_latitude, take_longitude), mapView.getMap());//地图显示取车城市
+					return_latitude = show.latitude;
+					return_longitude = show.longitude;
+				}
+
 				takeCarStoreId = "-1";
 				takeCarAddress = "";
 				takeCarAddress_Store = "";
@@ -225,7 +227,7 @@ public class Fragment1 extends Fragment  {
 
 				/*搜索门到门服务范围*/
 				new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+show.id.intValue(), null, null, handler, Request_Loc_Points, 1, new TypeReference<CityPointBounds>() {});								
-
+	
 //				if(take_ok.isChecked()){
 //					
 //					/*搜索门到门服务范围*/
@@ -420,11 +422,11 @@ public class Fragment1 extends Fragment  {
 							
 							SharedPreferenceHelper.putBean(getActivity(), Public_SP.City, new String[]{"id","cityName","latitude","longitude"}, new Object[]{loc_cityId,loc_cityName,(float)loc_latlng.latitude,(float)loc_latlng.longitude}, new int[]{SharedPreferenceHelper.Type_Int,SharedPreferenceHelper.Type_String,SharedPreferenceHelper.Type_Float,SharedPreferenceHelper.Type_Float});
 							
-							/*搜索门到门服务范围*/
+							/*搜索门到门服务范围：默认是不开启的，所以，不需要判断是否选择了门到门*/
 							new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+loc_cityId, null, null, handler, Request_Loc_Points, 1, new TypeReference<CityPointBounds>() {});								
 
 							System.out.println("f1---保存定位的城市--成功");
-//							if(take_ok.isChecked()){
+//							if(take_ok.isChecked()){//用户可能这个时候点击
 //								
 //								/*搜索门到门服务范围*/
 //								new HttpHelper().initData(HttpHelper.Method_Get, getActivity(), "api/serviceCity/view?cityId="+loc_cityId, null, null, handler, Request_Loc_Points, 1, new TypeReference<CityPointBounds>() {});								
@@ -447,8 +449,8 @@ public class Fragment1 extends Fragment  {
 						}
 						break;
 						
-					case Request_Loc_Points:
-						if(msg.getData().getString("message").equals(HandlerHelper.Ok)){
+					case Request_Loc_Points://msg.getData().getString("message").equals(HandlerHelper.Ok)
+						if(false){
 																					
 							List<Point> points = ((CityPointBounds)msg.obj).serveScope;
 						    
@@ -495,9 +497,17 @@ public class Fragment1 extends Fragment  {
 								take_ok.setChecked(false);
 								
 								Request_Store();//加载门店
+
 						    }    
 							
 						}else{
+							
+							take_time.setText("");
+							return_time.setText("");
+							
+							take_address.setText("请选择门店");
+							return_address.setText("请选择门店");
+							
 							take_doortodoor_lin.setVisibility(View.GONE);
 							take_ok.setChecked(false);
 							
@@ -617,15 +627,15 @@ public class Fragment1 extends Fragment  {
 		}
 		
 		switch (view.getId()) {
-		case R.id.menu_out:
-			
-			final SlidingPaneLayout slidingPaneLayout = (SlidingPaneLayout)getActivity().findViewById(R.id.slidingpanellayout);
-			if(slidingPaneLayout.isOpen()){
-				slidingPaneLayout.closePane();
-			}else{
-				slidingPaneLayout.openPane();
-			}			
-			break;
+			case R.id.menu_out:
+				
+				final SlidingPaneLayout slidingPaneLayout = (SlidingPaneLayout)getActivity().findViewById(R.id.slidingpanellayout);
+				if(slidingPaneLayout.isOpen()){
+					slidingPaneLayout.closePane();
+				}else{
+					slidingPaneLayout.openPane();
+				}			
+				break;
 			
 			case R.id.taketime_lin:
 				

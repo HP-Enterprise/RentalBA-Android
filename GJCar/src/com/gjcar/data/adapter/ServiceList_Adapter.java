@@ -114,12 +114,14 @@ public class ServiceList_Adapter extends BaseAdapter {
 		
 		if(list.get(position).chargeName.equals("不计免赔")){
 			
-			if(day <= 7){
-				holder.amount.setText("￥"+list.get(position).details.get(0).price.toString()+"X"+day+"天=￥"+list.get(position).details.get(0).price.intValue()*day+"(上限7天)");
-			}else{
-				holder.amount.setText("￥"+list.get(position).details.get(0).price.toString()+"X"+7+"天=￥"+list.get(position).details.get(0).price.intValue()*7+"(上限7天)");
-			}
-			
+//			if(day <= 7){
+//				holder.amount.setText("￥"+list.get(position).details.get(0).price.toString()+"X"+day+"天=￥"+list.get(position).details.get(0).price.intValue()*day+"(上限7天)");
+//			}else{
+//				holder.amount.setText("￥"+list.get(position).details.get(0).price.toString()+"X"+7+"天=￥"+list.get(position).details.get(0).price.intValue()*7+"(上限7天)");
+//			}
+			int numday = day / 30 * 7  +  (day % 30 > 7 ? 7 : day % 30);  System.out.println("day-------"+day);
+			System.out.println("day-------"+day);
+			holder.amount.setText("￥"+list.get(position).details.get(0).price.intValue()*numday);
 		}else{
 			
 			holder.amount.setText("￥"+list.get(position).details.get(0).price.toString());

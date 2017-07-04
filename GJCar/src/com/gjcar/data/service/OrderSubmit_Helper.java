@@ -47,11 +47,13 @@ public class OrderSubmit_Helper {
 			
 			if(Public_Param.order_paramas.all_list.get(i).chargeName.equals("²»¼ÆÃâÅâ")){
 				
-				if(days > 7){
-					map.put("serviceAmount", Public_Param.order_paramas.all_list.get(i).details.get(0).price.intValue()*7);
-				}else{
-					map.put("serviceAmount", Public_Param.order_paramas.all_list.get(i).details.get(0).price.intValue()*days);
-				}
+				int numday = days / 30 * 7  +  (days % 30 > 7 ? 7 : days % 30); 
+//				if(days > 7){
+//					map.put("serviceAmount", Public_Param.order_paramas.all_list.get(i).details.get(0).price.intValue()*7);
+//				}else{
+//					map.put("serviceAmount", Public_Param.order_paramas.all_list.get(i).details.get(0).price.intValue()*days);
+//				}
+				map.put("serviceAmount", Public_Param.order_paramas.all_list.get(i).details.get(0).price.intValue()*numday);
 				
 			}else{
 				map.put("serviceAmount", Public_Param.order_paramas.all_list.get(i).details.get(0).price);

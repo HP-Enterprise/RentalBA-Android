@@ -121,7 +121,7 @@ public class Activity_Order_List extends Activity{
 		System.out.println("--------------"+getIntent().getStringExtra("way"));
 		if(getIntent().getStringExtra("way").equals("order")){
 			
-			String api = "api/user/"+userId+"/order?currentPage=1&pageSize=100";
+			String api = "api/user/"+userId+"/order?currentPage=1&pageSize=20";
 			Request_Code = Request_door;
 			new HttpHelper().initData(HttpHelper.Method_Get, this, api, null, null, handler, Request_Code, 1, new TypeReference<ArrayList<Order>>() {});
 			

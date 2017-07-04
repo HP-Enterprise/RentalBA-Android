@@ -668,7 +668,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="车辆租赁及门店服务费"
+                            android:text="车辆租金"
                             android:textColor="@color/page_text_normal2"
                             android:textSize="14dp" />
 
@@ -904,7 +904,8 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingBottom="8dp"
-                            android:paddingTop="8dp" >
+                            android:paddingTop="8dp"
+                            android:gravity="center_vertical" >
 
                             <TextView
                                 android:id="@+id/d_activity_name"

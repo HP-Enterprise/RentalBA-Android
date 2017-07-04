@@ -88,7 +88,7 @@
                         android:layout_height="32dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="10dp"
-                        android:src="@drawable/main_menu_userinfo" />
+                        android:src="@drawable/deskicon" />
                 </LinearLayout>
             </LinearLayout>
 

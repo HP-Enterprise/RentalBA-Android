@@ -38,7 +38,7 @@ public class CarList_Helper {
 		AsyncHttpClient httpClient = new AsyncHttpClient();
 		httpClient.setTimeout(100000);
 		
-		String url = Public_Api.appWebSite + api;
+		String url = Public_Api.appWebSite + api;System.out.println("http_ur:"+url);
 		
 		HttpHelper.AddCookies(httpClient, context);
 		

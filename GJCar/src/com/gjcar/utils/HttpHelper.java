@@ -70,7 +70,7 @@ public class HttpHelper {
 		httpClient.setTimeout(Timeout);
 		
 		this.context = context;
-		this.url = Public_Api.appWebSite + api;
+		this.url = Public_Api.appWebSite + api;System.out.println("http-url:"+url);
 		this.jsonObject = jsonObject;
 		this.params = params;
 		this.handler = handler;

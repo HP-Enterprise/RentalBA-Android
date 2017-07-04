@@ -70,7 +70,7 @@ public class CarList_Adapter extends BaseAdapter {
 	private MyGridView[] myGridList;
 	private boolean[] openList;
 	private boolean[] isLoadingList;//是否正在加载中：加载中，就不能点击加载下一个月的
-	private int[] LoadingMonthList;//正在加载哪个月的：默认是当前月，范围是当前月，及后2个月：例如0，1，2
+	private int[] LoadingMonthList;//正在加载哪个月的：默认是当前月，范围是当前月，及后2个月：例如-2，-1，0，1，2
 	
 	/*选择了第几个活动*/
 //	private int activit_position = -1;
@@ -212,9 +212,9 @@ public class CarList_Adapter extends BaseAdapter {
 			@Override
 			public void onClick(View arg0) {
 
-				if(LoadingMonthList[position] > 1){//不让加载
-					return;
-				}
+//				if(LoadingMonthList[position] > 1){//不让加载
+//					return;
+//				}
 				
 				if(isLoadingList[position]){//正在加载前一个就不让它执行
 					return;
@@ -240,9 +240,9 @@ public class CarList_Adapter extends BaseAdapter {
 			@Override
 			public void onClick(View arg0) {
 				
-				if(LoadingMonthList[position] < 1){//不让加载
-					return;
-				}
+//				if(LoadingMonthList[position] < 0){//不让加载
+//					return;
+//				}
 				
 				if(isLoadingList[position]){//正在加载前一个就不让它执行
 					return;

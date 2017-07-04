@@ -1,25 +1,19 @@
 package com.gjcar.activity.main;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.Header;
-
 import com.alibaba.fastjson.TypeReference;
-import com.gjcar.activity.fragment3.Activity_FreeRide_Order_Submit;
 import com.gjcar.activity.user.Login_Activity;
 import com.gjcar.activity.user.User_Activity;
 import com.gjcar.activity.user.more.Activity_Level;
 import com.gjcar.activity.user.more.Activity_Order_List;
-import com.gjcar.activity.user.more.Activity_Order_Ok;
 import com.gjcar.activity.user.more.Activity_Score;
 import com.gjcar.activity.user.more.Activity_Ticket;
 import com.gjcar.app.R;
 import com.gjcar.data.bean.Order;
 import com.gjcar.data.data.Public_BaiduTJ;
 import com.gjcar.data.data.Public_Data;
-import com.gjcar.data.data.Public_Msg;
 import com.gjcar.data.data.Public_Param;
 import com.gjcar.data.data.Public_SP;
 import com.gjcar.data.service.CarList_Helper;
@@ -30,35 +24,22 @@ import com.gjcar.utils.IntentHelper;
 import com.gjcar.utils.NetworkHelper;
 import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.SystemUtils;
-import com.gjcar.utils.TimeHelper;
-import com.gjcar.utils.ToastHelper;
-import com.gjcar.view.dialog.SubmitDialog;
 import com.gjcar.view.widget.CustomDialog;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 public class Fragment_Menu extends Fragment implements OnClickListener{
 

@@ -59,6 +59,26 @@ public class PageIndicatorHelper {
 					}
 				}
 			});
+			
+			/*≥ı ºªØ*/
+			if(i==0){
+				tv.setTextColor(context.getResources().getColor(colorSelect));
+				view.setVisibility(View.VISIBLE);
+				
+				System.out.println("∑¢ÀÕ"+index);
+				for (int k = 0; k < notSelectTvs.size(); k++) {
+					notSelectTvs.get(k).setTextColor(context.getResources().getColor(colorNormal));
+					notSelectViews.get(k).setVisibility(View.GONE);
+				}
+				
+				for (int j = 0; j < notSelectViews.size(); j++) {
+					System.out.println(""+notSelectViews.get(j).getVisibility());
+				}
+			}
 		}
+		
+		
 	}
+	
+	
 }

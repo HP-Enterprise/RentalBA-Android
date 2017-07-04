@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp" >
+    android:paddingTop="8dp"
+    android:gravity="center_vertical" >
 
     <TextView
         android:id="@+id/name"

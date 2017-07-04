@@ -12,4 +12,6 @@ public class ApkInfo {
 	public String createUser;
 	public String isEnable;
 	public Integer forceUpdate;
+	
+	public String updateContent;
 }

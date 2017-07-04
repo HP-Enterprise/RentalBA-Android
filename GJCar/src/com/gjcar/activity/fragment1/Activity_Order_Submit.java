@@ -130,6 +130,7 @@ public class Activity_Order_Submit extends Activity{
 	@ContentWidget(id = R.id.d_take_static) TextView d_take_static;
 	@ContentWidget(id = R.id.d_take_detail) TextView d_take_detail;
 	@ContentWidget(id = R.id.d_take_all) TextView d_take_all;
+	@ContentWidget(id = R.id.d_return_static) TextView d_return_static;	
 	@ContentWidget(id = R.id.d_return_detail) TextView d_return_detail;
 	@ContentWidget(id = R.id.d_return_all) TextView d_return_all;
 	
@@ -299,7 +300,8 @@ public class Activity_Order_Submit extends Activity{
 		
 		String activityId = Public_Param.order_paramas.activityId.toString();
 		
-		String isDoorToDoor = Public_Param.order_paramas.isDoorToDoor.toString();
+		/*0：门店 1：门店-地址 2：地址-门店 3：地址-地址*/
+		String isDoorToDoor = Public_Param.order_paramas.isDoorToDoor.intValue() == 0 ? "0" : "3";
 		
 		String startDate = TimeHelper.getSearchTime_Mis(Public_Param.order_paramas.takeCarDate);
 		String endDate = TimeHelper.getSearchTime_Mis(Public_Param.order_paramas.returnCarDate);
@@ -795,13 +797,19 @@ public class Activity_Order_Submit extends Activity{
 ////			System.out.println("g8*************************");
 ////			ViewInitHelper.initTextViews(new TextView[]{d_take_detail,d_take_all,d_return_detail,d_return_all},takecarPrices);System.out.println("g9*************************");
 //		}
-		if(orderPrice.doorToDoor != null && orderPrice.doorToDoor.size() == 1){
+		if(orderPrice.doorToDoor != null && orderPrice.doorToDoor.size() > 0){
 			d_takereturn_lin.setVisibility(View.VISIBLE);
 			System.out.println("g7*************************");
 			String[] takecarPrices = new String[]{orderPrice.doorToDoor.get(0).chargeName, "￥"+orderPrice.doorToDoor.get(0).details.get(0).price, "￥"+orderPrice.doorToDoor.get(0).details.get(0).price};
 			System.out.println("g8*************************");
 			ViewInitHelper.initTextViews(new TextView[]{d_take_static,d_take_detail,d_take_all},takecarPrices);System.out.println("g9*************************");
+			
+			String[] returncarPrices = new String[]{orderPrice.doorToDoor.get(1).chargeName, "￥"+orderPrice.doorToDoor.get(1).details.get(0).price, "￥"+orderPrice.doorToDoor.get(1).details.get(0).price};
+			System.out.println("g8*************************");
+			ViewInitHelper.initTextViews(new TextView[]{d_return_static,d_return_detail,d_return_all},takecarPrices);System.out.println("g9*************************");
+			
 		}
+		
 		/*可选服务*/
 		if(Public_Param.order_paramas.server_list.size() != 0){System.out.println("g10*************************");
 			System.out.println("size--dd"+Public_Param.order_paramas.server_list.size());
@@ -810,17 +818,21 @@ public class Activity_Order_Submit extends Activity{
 			listview.setAdapter(adapter);	System.out.println("g11*************************");
 		}
 		
-		/*可选服务的费用统计*/
-		
+		/*可选服务的费用统计*/	
 		serviceAllAmount = 0;
 		if(Public_Param.order_paramas.server_list.size() != 0){System.out.println("g12*************************");
 			for (int i = 0; i < Public_Param.order_paramas.server_list.size(); i++) {
 				if(Public_Param.order_paramas.server_list.get(i).chargeName.equals("不计免赔")){
-					if(orderPrice.daySum.intValue() > 7){
-						serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue() * 7;
-					}else{
-						serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue() * orderPrice.daySum.intValue();
-					}
+//					if(orderPrice.daySum.intValue() > 7){
+//						serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue() * 7;
+//					}else{
+//						serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue() * orderPrice.daySum.intValue();
+//					}
+					int day = orderPrice.daySum.intValue();
+					int numday = day / 30 * 7  +  (day % 30 > 7 ? 7 : day % 30);  
+					serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue() * numday;
+			
+					
 				}else{
 					serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue();
 				}
