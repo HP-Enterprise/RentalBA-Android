@@ -272,7 +272,7 @@ public class Activity_Ticket extends Activity{
 		Display display = windowManager.getDefaultDisplay();  
 		WindowManager.LayoutParams lp = updateDialog.getWindow().getAttributes();  
 		
-		 final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
+		final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
 	                .getDisplayMetrics());//≈‘±ﬂµƒmargin
 		
 		lp.width = (int)(display.getWidth()-pageMargin); //…Ë÷√øÌ∂»  

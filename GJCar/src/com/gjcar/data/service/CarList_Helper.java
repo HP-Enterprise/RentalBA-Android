@@ -38,7 +38,7 @@ public class CarList_Helper {
 		AsyncHttpClient httpClient = new AsyncHttpClient();
 		httpClient.setTimeout(100000);
 		
-		String url = Public_Api.appWebSite + api;System.out.println("http_ur:"+url);
+		final String url = Public_Api.appWebSite + api;System.out.println("http_ur:"+url);
 		
 		HttpHelper.AddCookies(httpClient, context);
 		
@@ -57,7 +57,7 @@ public class CarList_Helper {
 					return;
 				}
 				
-				System.out.println("请求处理成功:" + databack);
+				System.out.println("请求处理成功:"+url+"--" + databack);
 				JSONObject datajobject = JSONObject.parseObject(databack);
 
 				boolean status = datajobject.getBoolean("status");

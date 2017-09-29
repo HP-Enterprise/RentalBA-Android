@@ -20,7 +20,7 @@ public class StoreShows {
 	public	String	maxGetCarTime;	/*Object:null*/
 	public	String	minGetCarTime;	/*Object£ºnull*/
 	public	String	detailAddress;	/*detailAddress*/
-	
+
 	public Integer pid;
 	public Integer tid;
 	public String manager;

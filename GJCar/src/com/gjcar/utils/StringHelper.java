@@ -332,4 +332,15 @@ public class StringHelper {
 		}
 
 	}
+    
+	/**Integer为null时的处理*/
+	public static Integer isIntegerNull(Integer i){
+    	if(i == null || i.toString().equals("null") || i.toString().equals("")){
+    		
+    		return new Integer(0);
+    	}else{
+    		
+    		return i;
+    	}
+    }
 }

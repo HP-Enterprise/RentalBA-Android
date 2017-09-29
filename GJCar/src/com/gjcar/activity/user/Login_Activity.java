@@ -65,6 +65,7 @@ public class Login_Activity extends Activity{
 	private Handler handler;
 	
 	private final static int Login = 1;//登录请求失败
+	private final static int SetAlias = 2;//设置Alias
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class Login_Activity extends Activity{
 		initListener();
 		
 		initHander(); 
-
+		
 	}
 
 	@Override
@@ -130,13 +131,34 @@ public class Login_Activity extends Activity{
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
 							System.out.println("登录成功了");
-							
+							Loginhelper.setAlias(Login_Activity.this, SharedPreferenceHelper.getString(Login_Activity.this, Public_SP.Account, "phone"), handler, SetAlias);System.out.println("登录成功了"+SharedPreferenceHelper.getString(Login_Activity.this, Public_SP.Account, "phone"));//设置Alias							
+							setResult(RESULT_OK);
 							finish();
 							//保存用户信息
 							return;            
 						}
 						ToastHelper.showToastShort(Login_Activity.this, "用户名不存在或密码错误");
 						break;
+						
+					case SetAlias:
+						
+						/*设置成功*/
+						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
+							System.out.println("设置别名成功");
+							
+							return;            
+						}
+						
+						/*设置失败*/
+						this.postDelayed(new Runnable() {
+							
+							@Override
+							public void run() {
+								Loginhelper.setAlias(Login_Activity.this, SharedPreferenceHelper.getString(Login_Activity.this, Public_SP.Account, "phone"), handler, SetAlias);//设置Alias								
+							}
+						}, 1000*60);
+						
+						break;	
 						
 					default:
 						break;

@@ -29,6 +29,7 @@ public class ActivityShow {
 	public String createUser;
 	public String isEnable;
 	
+	public Integer isSdew;//=1,默认选择不计免赔
 	
 	public String activityDescription;
 	public ActivityTypeShow activityTypeShow;

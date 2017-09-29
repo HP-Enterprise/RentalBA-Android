@@ -22,8 +22,6 @@ import com.gjcar.annotation.ContentView;
 import com.gjcar.annotation.ContentWidget;
 import com.gjcar.app.R;
 import com.gjcar.data.adapter.OrderSubmit_ServiceList_Adapter;
-import com.gjcar.data.adapter.TicketList_Adapter;
-import com.gjcar.data.bean.CityShow;
 import com.gjcar.data.bean.OrderPrice;
 import com.gjcar.data.bean.TicketInfo;
 import com.gjcar.data.bean.User;
@@ -51,11 +49,7 @@ import com.gjcar.view.listview.MyListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -103,7 +97,7 @@ public class Activity_Order_Submit extends Activity{
 	@ContentWidget(id = R.id.user_number) EditText user_number;
 	
 	@ContentWidget(click = "onClick") LinearLayout discount_lin;
-	@ContentWidget(id = R.id.discount_activity_lin) LinearLayout discount_activity_lin;
+	@ContentWidget(click = "onClick") LinearLayout discount_activity_lin;
 	@ContentWidget(click = "onClick") LinearLayout discount_ticket_lin;
 	@ContentWidget(click = "onClick") LinearLayout discount_notuse_lin;
 	@ContentWidget(id = R.id.discount_activity_ok) TextView discount_activity_ok;
@@ -233,7 +227,7 @@ public class Activity_Order_Submit extends Activity{
 		}
 		
 		/*员工价*/
-		if(Public_Param.order_paramas.activityHostType == 8){discount_lin.setVisibility(View.GONE);}
+//		if(Public_Param.order_paramas.activityHostType == 8){discount_lin.setVisibility(View.GONE);}
 		
 	}
 
@@ -250,6 +244,15 @@ public class Activity_Order_Submit extends Activity{
 		
 		super.onPause();
 		Public_BaiduTJ.pageEnd(this, Public_BaiduTJ.Activity_Order_Submit);	
+	}
+	
+	@Override
+	protected void onDestroy() {
+		System.out.println("ggg-onDestroy");
+		System.out.println("ggg-activityId-"+Public_Param.order_paramas.activityId.intValue());
+		Public_Param.isUseActivity = Public_Param.order_paramas.activityId.intValue() == 0 ? false : true;
+		System.out.println("ggg-"+Public_Param.isUseActivity);
+		super.onDestroy();
 	}
 	
 	private void initView(){System.out.println("订单确认1");
@@ -316,7 +319,7 @@ public class Activity_Order_Submit extends Activity{
 		String returnStoreId = Public_Param.order_paramas.returnCarStoreId;
 		String takeCityId = Public_Param.order_paramas.takeCarCityId;
 		
-		String api = "api/searchAmountDetail?userId="+userId+"&activityId="+activityId+"&isDoorToDoor="+isDoorToDoor+"&endDate="+endDate+"&modelId="+modelId+"&startDate="+startDate+"&storeId="+takeCarStoreId+"&returnCityId="+returnCityId+"&returnStoreId="+returnStoreId+"&takeCityId="+takeCityId;
+		String api = "api/searchAmountDetail?userId="+userId+"&activityId="+activityId+"&isDoorToDoor="+isDoorToDoor+"&endDate="+endDate+"&modelId="+modelId+"&startDate="+startDate+"&storeId="+takeCarStoreId+"&returnCityId="+returnCityId+"&returnStoreId="+returnStoreId+"&takeCityId="+takeCityId+"&nonDeducitible="+Public_Param.order_paramas.isServiceOk;
 		
 		if(Public_Param.order_paramas.isDoorToDoor.intValue() == 1){System.out.println("门到门");
 			api = api+"&latitude="+latitude+"&longitude="+longitude;
@@ -337,16 +340,21 @@ public class Activity_Order_Submit extends Activity{
 						/*要选中活动栏*/
 						MyFlag = Use_Activity_Cancle_Use_Activity;
 						init_Actions(Use_Activity_Cancle_Use_Activity);
-							
-						if(Public_Param.order_paramas.activityShowList != null && Public_Param.order_paramas.activityShowList.size() > 0){
-							new OrderSubmit_Helper().initActivityDialog(this, Public_Param.order_paramas.activityShowList,handler, Click_Activity);
-						}
+						
+						Public_Param.order_paramas.activityId = Public_Param.order_paramas.activityShowList.get(0).id;							
+						Request_AmountDetail(Request_Use_Activity);
+//						if(Public_Param.order_paramas.activityShowList != null && Public_Param.order_paramas.activityShowList.size() > 0){
+//							new OrderSubmit_Helper().initActivityDialog(this, Public_Param.order_paramas.activityShowList,handler, Click_Activity);
+//						}
 					}else{//如果上一次不是使用优惠活动，就无需重新加载费用
 							
 						if(MyFlag == Use_Activity || MyFlag == Use_Activity_Cancle_Use_Activity){//自己
 							
 							if(Public_Param.order_paramas.activityShowList != null && Public_Param.order_paramas.activityShowList.size() > 0){
-								new OrderSubmit_Helper().initActivityDialog(this, Public_Param.order_paramas.activityShowList,handler, Click_Activity);
+								
+								Public_Param.order_paramas.activityId = Public_Param.order_paramas.activityShowList.get(0).id;							
+								Request_AmountDetail(Request_Use_Activity);
+//								new OrderSubmit_Helper().initActivityDialog(this, Public_Param.order_paramas.activityShowList,handler, Click_Activity);
 							}else{
 								//这种情况是不存在的
 							}
@@ -376,8 +384,7 @@ public class Activity_Order_Submit extends Activity{
 					}
 				}
 				break;	
-			
-				
+							
 			case R.id.discount_notuse_lin:
 
 				if(isRequestPriceOk){
@@ -575,12 +582,13 @@ public class Activity_Order_Submit extends Activity{
 							isRequestPriceOk = true;
 							orderPrice = (OrderPrice)msg.obj;
 							test.setText(data());
+
+							/*显示活动*/
+							MyFlag = Not_Use;System.out.println("不计免赔-点击notuse-"+MyFlag);
 							
 							/*显示价格*/
-							init_View_Price(orderPrice);System.out.println("size"+orderPrice.averagePrice);	 
-				           	 
-							/*显示活动*/
-							MyFlag = Not_Use;
+							init_View_Price(orderPrice);System.out.println("size"+orderPrice.averagePrice);	
+														
 				           	init_Actions(MyFlag);
 				           	
 				           	return;
@@ -597,11 +605,12 @@ public class Activity_Order_Submit extends Activity{
 							orderPrice = (OrderPrice)msg.obj;
 							test.setText(data());
 							
+							MyFlag = Use_Activity;
+							
 							/*显示价格*/
 							init_View_Price(orderPrice);System.out.println("size"+orderPrice.averagePrice);	 
 				           	 
-							/*显示活动*/
-							MyFlag = Use_Activity;
+							/*显示活动*/							
 				           	init_Actions(MyFlag);
 				           					           	
 				           	return;
@@ -618,11 +627,12 @@ public class Activity_Order_Submit extends Activity{
 							orderPrice = (OrderPrice)msg.obj;
 							test.setText(data());
 							
+							MyFlag = Use_Ticket_Cancle_Use_Tickets;
+							
 							/*显示价格*/
 							init_View_Price(orderPrice);System.out.println("size"+orderPrice.averagePrice);	 
 				           	 
-							/*显示优惠券:要显示没有使用优惠券*/
-							MyFlag = Use_Ticket_Cancle_Use_Tickets;
+							/*显示优惠券:要显示没有使用优惠券*/							
 							init_Actions(Use_Ticket_Cancle_Use_Tickets);
 							
 							/*显示优惠券*/
@@ -819,7 +829,7 @@ public class Activity_Order_Submit extends Activity{
 		}
 		
 		/*可选服务的费用统计*/	
-		serviceAllAmount = 0;
+		serviceAllAmount = 0;System.out.println("不计免赔不添加-第几-"+MyFlag);
 		if(Public_Param.order_paramas.server_list.size() != 0){System.out.println("g12*************************");
 			for (int i = 0; i < Public_Param.order_paramas.server_list.size(); i++) {
 				if(Public_Param.order_paramas.server_list.get(i).chargeName.equals("不计免赔")){
@@ -830,9 +840,15 @@ public class Activity_Order_Submit extends Activity{
 //					}
 					int day = orderPrice.daySum.intValue();
 					int numday = day / 30 * 7  +  (day % 30 > 7 ? 7 : day % 30);  
-					serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue() * numday;
-			
 					
+					if(Public_Param.order_paramas.isSdew == 1 && MyFlag == Use_Activity){//如果=1，就不添加
+					
+						System.out.println("不计免赔不添加");
+					}else{
+						System.out.println("不计免赔不添加--t");
+						serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue() * numday;
+						
+					}
 				}else{
 					serviceAllAmount = serviceAllAmount + Public_Param.order_paramas.server_list.get(i).details.get(0).price.intValue();
 				}
@@ -905,10 +921,17 @@ public class Activity_Order_Submit extends Activity{
 				
 				/*优惠活动和不使用优惠的处理*/	
 				if(Public_Param.order_paramas.isHasActivity){
+					
+					discount_activity_lin.setVisibility(View.VISIBLE);
+					discount_activity_name.setText("");	
+					discount_activity_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
+				}else{
+					
 					discount_activity_lin.setVisibility(View.GONE);
 					discount_activity_name.setText("");	
 					discount_activity_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
 				}
+				
 				discount_notuse_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
 								
 				/*费用显示*/
@@ -931,10 +954,16 @@ public class Activity_Order_Submit extends Activity{
 				
 				/*优惠活动和不使用优惠的处理*/	
 				if(Public_Param.order_paramas.isHasActivity){
+					discount_activity_lin.setVisibility(View.VISIBLE);
+					discount_activity_name.setText("");	
+					discount_activity_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
+				}else{
+					
 					discount_activity_lin.setVisibility(View.GONE);
 					discount_activity_name.setText("");	
 					discount_activity_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
 				}
+				
 				discount_notuse_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
 								
 				/*费用显示*/
@@ -951,10 +980,16 @@ public class Activity_Order_Submit extends Activity{
 				
 				/*优惠活动和不使用优惠的处理*/	
 				if(Public_Param.order_paramas.isHasActivity){
+					discount_activity_lin.setVisibility(View.VISIBLE);
+					discount_activity_name.setText("");	
+					discount_activity_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
+				}else{
+					
 					discount_activity_lin.setVisibility(View.GONE);
 					discount_activity_name.setText("");	
 					discount_activity_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
 				}
+				
 				discount_notuse_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
 								
 				/*费用显示*/
@@ -971,6 +1006,11 @@ public class Activity_Order_Submit extends Activity{
 				discount_ticket_name.setText("");	
 				discount_ticket_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
 				if(Public_Param.order_paramas.isHasActivity){
+					discount_activity_lin.setVisibility(View.VISIBLE);
+					discount_activity_name.setText("");	
+					discount_activity_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
+				}else{
+					
 					discount_activity_lin.setVisibility(View.GONE);
 					discount_activity_name.setText("");	
 					discount_activity_ok.setBackgroundResource(R.drawable.ordersubmit2_reader_nol);
@@ -1032,8 +1072,7 @@ public class Activity_Order_Submit extends Activity{
 		jsonObject.put("modelId", Public_Param.order_paramas.modelId);System.out.println("modelId"+Public_Param.order_paramas.modelId);//车模型ID
 				
 		jsonObject.put("orderState", 1);//订单状态（0：待支付，1：已下单 2：租赁中 3：已还车 4：已完成 5：已取消 6：NoShow）
-		
-		
+				
 		jsonObject.put("orderType", Public_Param.order_paramas.isDoorToDoor.intValue() == 1 ? 2 : 1);//门到门2，短租自驾1
 		jsonObject.put("orderValueAddedServiceRelativeShow",new OrderSubmit_Helper().getServiceAmout(orderPrice.daySum.intValue()));System.out.println("orderValueAddedServiceRelativeShow"+new OrderSubmit_Helper().getServiceAmout(orderPrice.daySum.intValue()));
 		jsonObject.put("payAmount", StringHelper.getMoney(new Float(orderPrice.totalPrice.floatValue() + serviceAllAmount - activityAmount).toString()));System.out.println("payAmount"+StringHelper.getMoney(new Float(orderPrice.totalPrice.floatValue() + serviceAllAmount - activityAmount).toString()));//订单总金额				

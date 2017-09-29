@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.gjcar.activity.fragment1.Fragment1;
+import com.gjcar.activity.fragment1.WebActivity;
 import com.gjcar.app.R;
 import com.gjcar.data.bean.ApkInfo;
 import com.gjcar.data.bean.CityShow;
@@ -19,12 +20,15 @@ import com.gjcar.data.data.Public_Param;
 import com.gjcar.utils.HandlerHelper;
 import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.ImageLoaderHelper;
+import com.gjcar.utils.IntentHelper;
 import com.gjcar.utils.SQL_OpenHelper;
 import com.gjcar.utils.SQL_Dao;
 import com.gjcar.utils.SQL_TableHelper;
 import com.gjcar.utils.SystemUtils;
+import com.gjcar.utils.TimeHelper;
 import com.gjcar.utils.UpdateUtils;
 import com.gjcar.utils.UpdateUtils.Update_Notify;
+import com.gjcar.view.dialog.ShareImageDialog;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -65,6 +69,10 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		setContentView(R.layout.activity_main);
 		
+		if (System.currentTimeMillis() > TimeHelper.stringToLong("2017-09-30 00:00:00") && System.currentTimeMillis() < TimeHelper.stringToLong("2017-10-08 00:00:00")){
+			showShareDialog();
+		}
+		
 		initConfig();
 		
 		initView();
@@ -73,7 +81,7 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 		
 		initHandler();
 		
-		/*°æ±¾¼ì²â*/
+		/*ç‰ˆæœ¬æ£€æµ‹*/
 		new HttpHelper().initData(HttpHelper.Method_Get, this, "api/appManage/latest?appType=0", null, null, handler, Request_Version, 1, new TypeReference<ApkInfo>() {});
 		
 	}
@@ -127,7 +135,7 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 			
 			if(System.currentTimeMillis() - currenttime > 2000){
 				currenttime = System.currentTimeMillis();
-				Toast.makeText(this, "ÔÙ°´Ò»´ÎÍË³ö³ÌĞò", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "å†æŒ‰ä¸€æ¬¡é€€å‡ºç¨‹åº", Toast.LENGTH_SHORT).show();
 			}else{
 
 				finish();
@@ -186,7 +194,7 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 							}
 							
 							System.out.println("4aaaaaaaaaaaaaaaaa+");
-								System.out.println("°æ±¾ĞÅÏ¢£º"+apkInfo.appAddress);
+								System.out.println("ç‰ˆæœ¬ä¿¡æ¯ï¼š"+apkInfo.appAddress);
 								
 								
 							if(!(apkInfo.appAddress == null || apkInfo.appAddress.equals(""))){
@@ -196,19 +204,19 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 								Public_Param.Version_Content = apkInfo.updateContent;
 								
 								System.out.println("6aaaaaaaaaaaaaaaaa+"+str[0]);
-								System.out.println("7aaaaaaaaaaaaaaaaaÊÖ»ú°æ±¾+"+SystemUtils.getVersion(MainActivity.this));
+								System.out.println("7aaaaaaaaaaaaaaaaaæ‰‹æœºç‰ˆæœ¬+"+SystemUtils.getVersion(MainActivity.this));
 								if(isUp(str[0], SystemUtils.getVersion(MainActivity.this))){System.out.println("8aaaaaaaaaaaaaaaaa+");
 									
 									if(str.length == 2){
 										System.out.println("10aaaaaaaaaaaaaaaaa+");
 										Public_Param.Version_Name = str[0];
-										update(Public_Api.appWebSite+apkInfo.appAddress,str[1], apkInfo.forceUpdate.intValue() == 0 ? false : true);System.out.println("ÏÂÔØµØÖ·"+Public_Api.appWebSite+apkInfo.appAddress);
+										update(Public_Api.appWebSite+apkInfo.appAddress,str[1], apkInfo.forceUpdate.intValue() == 0 ? false : true);System.out.println("ä¸‹è½½åœ°å€"+Public_Api.appWebSite+apkInfo.appAddress);
 										System.out.println("aaaaaaaaaaaaaaaaaaaaa_apksize"+str[1]);
 									}
 								}
 								System.out.println("9aaaaaaaaaaaaaaaaa+");
 								
-								//update(Public_Api.appWebSite+apkInfo.appAddress);System.out.println("ÏÂÔØµØÖ·"+Public_Api.appWebSite+apkInfo.appAddress);
+								//update(Public_Api.appWebSite+apkInfo.appAddress);System.out.println("ä¸‹è½½åœ°å€"+Public_Api.appWebSite+apkInfo.appAddress);
 							}
 
 				           	return;
@@ -224,7 +232,7 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 	}
 
 	
-	/** ¸üĞÂ*/
+	/** æ›´æ–°*/
 	private void update(String url,String size, boolean isFourceUpdate){
 		UpdateUtils update = new UpdateUtils(this, url, size, isFourceUpdate);
 		update.setListener(this);
@@ -238,7 +246,7 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 
 	@Override
 	public void closeApp() {
-		System.out.println("Ç¿ÖÆ¸üĞÂÍÆ³öxxxxxxxxxxxxxx");
+		System.out.println("å¼ºåˆ¶æ›´æ–°æ¨å‡ºxxxxxxxxxxxxxx");
 		finish();				
 	}
 	
@@ -277,4 +285,22 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 		return isUp;
 		
 	}
+	
+	/**
+	 * æ´»åŠ¨å¼¹æ¡†
+	 */
+	private void showShareDialog(){
+		final ShareImageDialog dialog = new ShareImageDialog(MainActivity.this);
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.setListener(new ShareImageDialog.ClickListener() {
+			@Override
+			public void allClick() {
+				IntentHelper.startActivity_StringExtras(MainActivity.this, WebActivity.class, new String[]{"title","fragment","url"}, new String[]{"æ´»åŠ¨è¯¦æƒ…","action_detail",Public_Api.appWebSite_Share+"activity/mobile/nationalDay/index.html"});
+				Public_Param.send_toWeb = 2;
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
+	}
+
 }

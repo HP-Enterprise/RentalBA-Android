@@ -1275,4 +1275,21 @@ public class TimeHelper {
 		}
 
 	}
+	
+	/**
+	 * string类型日期字符串转long
+	 * @param dateStr	string日期字符串
+	 * @return	毫秒数
+     */
+	public static long stringToLong(String dateStr){
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = simpleDateFormat.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date.getTime();
+	}
+
 }

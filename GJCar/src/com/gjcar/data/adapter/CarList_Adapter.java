@@ -182,11 +182,11 @@ public class CarList_Adapter extends BaseAdapter {
 		
 		/*打折优惠*/
 		holder.activity_show.setVisibility(View.GONE);//清理之前的数据
-		if(list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow != null){
+		if(list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows != null){
 			
 			if(activity_position[position] == -1){
 				activity_position[position] = 0;
-				activity_type[position] = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow.activityTypeShow.hostType;
+				activity_type[position] = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).activityTypeShow.hostType;
 			}
 			
 			holder.activity_show.setVisibility(View.VISIBLE);
@@ -301,6 +301,7 @@ public class CarList_Adapter extends BaseAdapter {
 				List<ActivityShow> mylist = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows;
 				
 				if(mylist != null && mylist.size()>1){
+					
 					initActivityDialog(mylist,holder.activity_title,position);
 				}
 				
@@ -406,13 +407,14 @@ public class CarList_Adapter extends BaseAdapter {
 			Public_Param.order_paramas.carGroup = list.get(position).vehicleModelShow.carGroup;
 			
 			/*订单活动*/
-			if(list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow != null){
+			if(list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows != null){
 				
 				/*注意*/
 				//Public_Param.order_paramas.activityId = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow.id;	
 				Public_Param.order_paramas.activityId = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).id;
 				Public_Param.order_paramas.activityHostType = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).activityTypeShow.hostType;
 				Public_Param.order_paramas.isHasActivity = true;
+				Public_Param.order_paramas.isSdew = StringHelper.isIntegerNull(list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).isSdew);
 				
 				//Public_Param.order_paramas.activityShow = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow;
 				System.out.println("activit_position*************************************"+activity_position[position]);
@@ -423,6 +425,8 @@ public class CarList_Adapter extends BaseAdapter {
 				Public_Param.order_paramas.activityId = 0;	
 				Public_Param.order_paramas.activityHostType = 0;
 				Public_Param.order_paramas.isHasActivity = false;
+				Public_Param.order_paramas.isSdew = 0;
+				
 			}
 				
 			/*订单提交*/

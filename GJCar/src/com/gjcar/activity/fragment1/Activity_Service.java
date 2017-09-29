@@ -70,7 +70,8 @@ public class Activity_Service extends Activity{
 	private Handler handler;
 	private final static int Request_MustData = 1;	
 	private final static int Request_ServiceData = 2;
-	private final static int ToggleChanged = 3;
+	private final static int ToggleChanged = 3;	
+	private final static int Flush = 4;	
 	
 	private boolean isRequestPriceOk = false;	
 	private OrderPrice orderPrice = null;
@@ -80,6 +81,7 @@ public class Activity_Service extends Activity{
 	
 	/*其它*/
 	private int payWay = 0;//支付方式（0：门店现金 1：门店POS刷卡 2：在线网银 3：在线支付宝）
+	private int position_service = 0;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +101,32 @@ public class Activity_Service extends Activity{
 	}
 
 	@Override
+	protected void onRestart() {
+		System.out.println("ggg-onRestart");
+		System.out.println("ggg-"+Public_Param.isUseActivity+"-"+Public_Param.order_paramas.isSdew.intValue());
+		
+		new Thread(){
+			
+			public void run() {
+				
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				handler.sendEmptyMessage(Flush);
+			};
+		}.start();		
+		
+		super.onRestart();
+	}
+	
+	@Override
 	protected void onResume() {
 		
+		System.out.println("ggg2");
 		super.onResume();
 		Public_BaiduTJ.pageStart(this, Public_BaiduTJ.Activity_Service);	
 
@@ -108,7 +134,8 @@ public class Activity_Service extends Activity{
 	
 	@Override
 	protected void onPause() {
-
+		
+		System.out.println("ggg3");
 		super.onPause();
 		Public_BaiduTJ.pageEnd(this, Public_BaiduTJ.Activity_Service);	
 	}
@@ -132,6 +159,8 @@ public class Activity_Service extends Activity{
 				Public_Param.order_paramas.all_list.add(orderPrice.poundageAmount);
 				
 				/*可选服务:不计免赔，异地换车*/
+				
+				Public_Param.order_paramas.isServiceOk = false;
 				if(service_list != null && service_list.size() != 0){
 					
 					for (int i = 0; i < checks.length; i++) {System.out.println("e6");
@@ -139,6 +168,11 @@ public class Activity_Service extends Activity{
 						if(checks[i]){
 							Public_Param.order_paramas.server_list.add(service_list.get(i));
 							Public_Param.order_paramas.all_list.add(service_list.get(i));
+							if(service_list.get(i).chargeName.equals("")){
+								
+								Public_Param.order_paramas.isServiceOk = true;
+								
+							}
 						}
 					}
 					
@@ -201,7 +235,7 @@ public class Activity_Service extends Activity{
 		String latitude = new Double(Public_Param.order_paramas.takeCarLatitude).toString();
 		String longitude = new Double(Public_Param.order_paramas.takeCarLongitude).toString();
 		
-		String api = "api/searchAmountDetail?userId="+userId+"&activityId="+activityId+"&isDoorToDoor="+isDoorToDoor+"&endDate="+endDate+"&modelId="+modelId+"&startDate="+startDate+"&storeId="+takeCarStoreId+"&returnCityId="+returnCityId+"&returnStoreId="+returnStoreId+"&takeCityId="+takeCityId;
+		String api = "api/searchAmountDetail?userId="+userId+"&activityId="+activityId+"&isDoorToDoor="+isDoorToDoor+"&endDate="+endDate+"&modelId="+modelId+"&startDate="+startDate+"&storeId="+takeCarStoreId+"&returnCityId="+returnCityId+"&returnStoreId="+returnStoreId+"&takeCityId="+takeCityId+"&nonDeducitible="+false;
 		
 		if(Public_Param.order_paramas.isDoorToDoor.intValue() == 1){System.out.println("门到门");
 			api = api+"&latitude="+latitude+"&longitude="+longitude;
@@ -221,6 +255,7 @@ public class Activity_Service extends Activity{
 		new HttpHelper().initData(HttpHelper.Method_Get, this, api, null, null, handler, Request_ServiceData, 1, new TypeReference<ArrayList<ServiceAmount>>() {});
 		
 	}
+	
 	private void initHandler() {
 
 		handler = new Handler() {
@@ -229,11 +264,27 @@ public class Activity_Service extends Activity{
 				super.handleMessage(msg);
 
 				switch (msg.what) {
+					
+					case  Flush:
 
+						if(Public_Param.isUseActivity && Public_Param.order_paramas.isSdew.intValue() == 1){
+														
+							ServiceList_Adapter adapter = new ServiceList_Adapter(Activity_Service.this, service_list, handler, ToggleChanged,orderPrice.daySum.intValue(),Public_Param.order_paramas.isSdew.intValue());
+							listview.setAdapter(adapter);
+						}else{
+							
+							checks[service_list.size() > position_service ? position_service : 0] = false;
+							
+							ServiceList_Adapter adapter = new ServiceList_Adapter(Activity_Service.this, service_list, handler, ToggleChanged,orderPrice.daySum.intValue(),0);
+							listview.setAdapter(adapter);
+						}
+						break;
+						
 					case Request_MustData:
 						
+						System.out.println("rrr-1");
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
-							isRequestPriceOk = true;
+							isRequestPriceOk = true;System.out.println("rrr-2");
 							orderPrice = (OrderPrice)msg.obj;
 							init_View_Price(orderPrice);
 				           	System.out.println("size"+orderPrice.averagePrice);	  
@@ -248,27 +299,42 @@ public class Activity_Service extends Activity{
 						break;
 						
 					case Request_ServiceData:
-								
+						
+						System.out.println("rrr-3");
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
-							service_list = (ArrayList<ServiceAmount>)msg.obj;
-										
-							if(service_list != null && service_list.size() != 0){
+							service_list = (ArrayList<ServiceAmount>)msg.obj;System.out.println("rrr-4");
+							System.out.println("service"+service_list.size());	System.out.println("rrr-5");		
+							if(service_list != null && service_list.size() != 0){System.out.println("rrr-6");	
 																
-								if(Public_Param.order_paramas.activityHostType.intValue() == 8){
-									mustAmount_lin.setVisibility(View.GONE);         
-								}else{
-									mustAmount_lin.setVisibility(View.VISIBLE);
-								}
+//								if(Public_Param.order_paramas.activityHostType.intValue() == 8){
+//									mustAmount_lin.setVisibility(View.GONE);         
+//								}else{
+//									mustAmount_lin.setVisibility(View.VISIBLE);
+//								}
+								mustAmount_lin.setVisibility(View.VISIBLE);
 								
-								ServiceList_Adapter adapter = new ServiceList_Adapter(Activity_Service.this, service_list, handler, ToggleChanged,orderPrice.daySum.intValue());
+								ServiceList_Adapter adapter = new ServiceList_Adapter(Activity_Service.this, service_list, handler, ToggleChanged,orderPrice.daySum.intValue(),Public_Param.order_paramas.isSdew.intValue());
 								listview.setAdapter(adapter);
-								
-								checks = new boolean[service_list.size()];
-								for (int i = 0; i < service_list.size(); i++) {
-									checks[i] = false;
+								System.out.println("rrr-7-a");
+								checks = new boolean[service_list.size()];System.out.println("rrr-7-b");
+								for (int i = 0; i < service_list.size(); i++) {System.out.println("rrr-7-c");
+									
+									if(service_list.get(i).chargeName.equals("不计免赔")){System.out.println("rrr-7-d");
+										
+										position_service = i;
+									}
+									
+									if(service_list.get(i).chargeName.equals("不计免赔") && Public_Param.order_paramas.isSdew.intValue() == 1){
+										System.out.println("rrr-7-e");
+										checks[i] = true;
+									}else{// && Public_Param.order_paramas.activityId.intValue() == 0
+										System.out.println("rrr-7-f");
+										checks[i] = false;
+									}
+									
 								}
 							}
-														
+							System.out.println("rrr-7");							
 				           	return;
 						}
 						//Request_AmountDetail();		
@@ -321,6 +387,7 @@ public class Activity_Service extends Activity{
 	}
 	
 	private void init_View_Price(OrderPrice orderPrice) {
+		
 		money_baoxian_detail.setText("￥"+orderPrice.basicInsuranceAmount.intValue()+"X"+orderPrice.daySum);
 		money_baoxian_count.setText("￥"+orderPrice.basicInsuranceAmount.intValue()*orderPrice.daySum);
 		

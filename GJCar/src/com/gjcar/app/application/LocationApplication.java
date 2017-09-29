@@ -4,7 +4,11 @@ package com.gjcar.app.application;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.baidu.mapapi.SDKInitializer;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 
 import android.app.Activity;
 import android.app.Application;
@@ -36,8 +40,21 @@ public class LocationApplication extends Application {
         /* 初始化定位sdk，建议在Application中创建*/
         SDKInitializer.initialize(getApplicationContext());  
        
+        
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
+        
+        initUMShare();
     }
     
+    /**
+	 * 初始化友盟分享
+	 */
+	private void initUMShare() {
+		
+		UMShareAPI.get(this);
+		PlatformConfig.setWeixin("wx1c969569e3fce1c1", "3d4945a2fb14e5971353594855418bd1");
+	}
     
 /**退出app******************************************************************/    
 	public void addActivity(Activity activity)

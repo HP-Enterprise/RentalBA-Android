@@ -74,4 +74,6 @@ public class Public_Param {
 	public static boolean isRegisterOk = false;
 	public static String phone = "";
 	public static String password = "";
+	
+	public static boolean isUseActivity = false;
 }

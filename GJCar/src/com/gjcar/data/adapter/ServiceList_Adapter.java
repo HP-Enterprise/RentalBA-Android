@@ -44,16 +44,18 @@ public class ServiceList_Adapter extends BaseAdapter {
 	private Handler handler;
 	private int what;
 	private int day;
+	private int isSdew;
 	
-	public ServiceList_Adapter(Context context, List<ServiceAmount> list, Handler handler, int what,int day) {
-
-		this.list = list;
+	public ServiceList_Adapter(Context context, List<ServiceAmount> list, Handler handler, int what,int day,int isSdew) {
+		System.out.println("rrr-7-0");
+		this.list = list;System.out.println("rrr-7-1");
 		this.context = context;
 		
 		this.handler = handler;
 		this.what = what;
 		
 		this.day = day;
+		this.isSdew = isSdew;System.out.println("rrr-8");
 	}
 
 	@Override
@@ -80,9 +82,9 @@ public class ServiceList_Adapter extends BaseAdapter {
 		Holder holder;
 		if (convertView == null) {
 			
-			holder = new Holder();
+			holder = new Holder();System.out.println("rrr-9");
 			convertView = View.inflate(context, R.layout.service_listview_item, null);
-			System.out.println("3******************");
+			System.out.println("Service显示****************");
 			
 			holder.name = (TextView) convertView.findViewById(R.id.name);		
 			holder.amount = (TextView) convertView.findViewById(R.id.amount);
@@ -91,7 +93,7 @@ public class ServiceList_Adapter extends BaseAdapter {
 			
 			System.out.println("4******************");
 			convertView.setTag(holder);
-			System.out.println("5******************");
+			System.out.println("5******************");System.out.println("rrr-10");
 			
 			holder.ok.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				
@@ -111,8 +113,8 @@ public class ServiceList_Adapter extends BaseAdapter {
 		/*初始化数据*/
 	
 		holder.name.setText(list.get(position).chargeName);	
-		
-		if(list.get(position).chargeName.equals("不计免赔")){
+		System.out.println("rrr-11");
+		if(list.get(position).chargeName.equals("不计免赔")){System.out.println("rrr-12");
 			
 //			if(day <= 7){
 //				holder.amount.setText("￥"+list.get(position).details.get(0).price.toString()+"X"+day+"天=￥"+list.get(position).details.get(0).price.intValue()*day+"(上限7天)");
@@ -122,11 +124,21 @@ public class ServiceList_Adapter extends BaseAdapter {
 			int numday = day / 30 * 7  +  (day % 30 > 7 ? 7 : day % 30);  System.out.println("day-------"+day);
 			System.out.println("day-------"+day);
 			holder.amount.setText("￥"+list.get(position).details.get(0).price.intValue()*numday);
+			System.out.println("rrr-13");
+			if(isSdew == 1){
+				
+				holder.ok.setChecked(true);
+				holder.ok.setEnabled(false);
+			}else{
+				
+				holder.ok.setChecked(false);
+				holder.ok.setEnabled(true);
+			}
 		}else{
-			
+			System.out.println("rrr-14");
 			holder.amount.setText("￥"+list.get(position).details.get(0).price.toString());
 		}
-		
+		System.out.println("rrr-15");
 		return convertView;
 	}
 

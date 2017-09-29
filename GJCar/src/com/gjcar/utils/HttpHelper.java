@@ -351,7 +351,7 @@ public class HttpHelper {
 					HandlerHelper.sendString(handler, what, HandlerHelper.Empty);
 					return;
 				}
-				//System.out.println("请求处理成功:" + databack);
+				System.out.println("请求处理成功:" + url+"--"+ databack);
 				JSONObject datajobject = JSONObject.parseObject(databack);
 				
 				boolean status = datajobject.getBoolean("status");

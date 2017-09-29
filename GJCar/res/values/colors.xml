@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    <color name="close_color">#FDFDFE</color>
+    
     <!-- 常用顏色 -->
     <color name="white">#ffffff</color>
     <color name="transparent">#ffffff</color>

@@ -15,16 +15,23 @@ import com.gjcar.data.adapter.CarList_Adapter;
 import com.gjcar.data.bean.ActivityInfo;
 import com.gjcar.data.bean.Model____Vendor_Store_Price;
 import com.gjcar.data.data.Public_Param;
+import com.gjcar.data.data.Public_SP;
 import com.gjcar.data.service.CarList_Helper;
 import com.gjcar.framwork.BaiduMapHelper;
 import com.gjcar.utils.AnnotationViewFUtils;
 import com.gjcar.utils.HandlerHelper;
 import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.IntentHelper;
+import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.TimeHelper;
 import com.gjcar.utils.ToastHelper;
 import com.gjcar.view.dialog.DateTimePickerDialog;
 import com.gjcar.view.helper.LoadAnimateHelper;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +47,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Fragment6 extends Fragment{
 
@@ -79,7 +87,7 @@ public class Fragment6 extends Fragment{
 					
 					IntentHelper.startActivity_StringExtras(getActivity(), WebActivity.class, new String[]{"title","fragment","url"}, new String[]{"活动详情","action_detail",list.get(position).phoneLink});
 					Public_Param.send_toWeb = 2;
-				
+//					showSharePop("http://www.baidu.com");
 				}
 				
 			}
@@ -141,4 +149,49 @@ public class Fragment6 extends Fragment{
 			}
 		};
 	}
+	
+	 /**
+     * 分享
+     *
+     * @param url
+     */
+    public void showSharePop(String url) {
+        UMImage thumb = new UMImage(getActivity(), R.drawable.deskicon);
+
+        UMWeb web = new UMWeb(url);
+        web.setTitle("high玩国庆");
+        web.setDescription("国庆宅在家？" + SharedPreferenceHelper.getString(getActivity(), Public_SP.Account, "phone") + "分享给你红包，快点出来high~");
+        web.setThumb(thumb);
+        new ShareAction(getActivity())
+//				.withTitle(getString(R.string.app_name))
+//				.withText("测试")
+//				.withTargetUrl("")
+                .withMedia(web)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                .setCallback(new UMShareListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onResult(SHARE_MEDIA share_media) {
+                        
+                        Toast.makeText(getActivity(), "分享成功", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media) {
+//                        webView.loadUrl("javascript:shareStatus(false)");//分享取消回调
+                        Toast.makeText(getActivity(), "分享取消", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                      
+                        Toast.makeText(getActivity(), "分享失败" + throwable.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }).open();
+    }
+
 }

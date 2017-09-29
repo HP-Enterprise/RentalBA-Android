@@ -14,6 +14,7 @@ import com.gjcar.utils.AnnotationViewUtils;
 import com.gjcar.utils.HandlerHelper;
 import com.gjcar.utils.IntentHelper;
 import com.gjcar.utils.ListenerHelper;
+import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.view.helper.ListViewHelper;
 import com.gjcar.view.helper.LoadAnimateHelper;
 import com.gjcar.view.helper.TitleBarHelper;
@@ -47,7 +48,7 @@ public class Activity_Area extends Activity{
 		AnnotationViewUtils.injectObject(this, this);
 
 		Public_Param.list_area_activity.add(this);
-		
+
 		/*handler*/
 		initHandler();
 		

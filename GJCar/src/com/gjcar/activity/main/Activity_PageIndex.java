@@ -16,6 +16,8 @@ import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
@@ -61,13 +63,17 @@ public class Activity_PageIndex extends Activity{
 		
 		super.onResume();
 		Public_BaiduTJ.pageStart(this, Public_BaiduTJ.Activity_PageIndex);	
+		
+		JPushInterface.onResume(this);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 		Public_BaiduTJ.pageEnd(this, Public_BaiduTJ.Activity_PageIndex);	
+		
+		JPushInterface.onPause(this);
 	}
 	
 	private void initHandler() {

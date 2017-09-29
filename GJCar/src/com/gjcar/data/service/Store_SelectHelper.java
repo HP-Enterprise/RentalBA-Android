@@ -20,6 +20,7 @@ import com.gjcar.app.R;
 import com.gjcar.data.bean.StoreShows;
 import com.gjcar.data.bean.TradeAreaShow;
 import com.gjcar.utils.HandlerHelper;
+import com.gjcar.utils.StringHelper;
 
 public class Store_SelectHelper {
 
@@ -31,7 +32,9 @@ public class Store_SelectHelper {
 		for (int i = 0; i < mylist.size(); i++) {
 			
 			Map<String,Object> map = new HashMap<String ,Object>();
-			map.put(keys[0], mylist.get(i).storeName);System.out.println("name"+mylist.get(i).storeName);
+			
+			String phone = "("+mylist.get(i).phone+")";
+			map.put(keys[0], mylist.get(i).storeName+phone);System.out.println("name"+mylist.get(i).storeName);
 			map.put(keys[1], mylist.get(i).detailAddress);System.out.println("address"+mylist.get(i).detailAddress);
 			
 			list.add(map);

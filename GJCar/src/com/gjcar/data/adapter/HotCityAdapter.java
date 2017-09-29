@@ -57,7 +57,7 @@ public class HotCityAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
+		
 		Holder holder;
 		if (convertView == null) {
 			holder = new Holder();

@@ -19,8 +19,8 @@ public class AvgShow {
 //	public String modifyUser;
 //	public String isEnable;//"isEnable": "1"
 	
-	public ActivityShow activityShow;//1:满减  2:满折  3:满赠 4:一口价   5:抹零 6.月租
-	public List<ActivityShow> activityShows;
+//	public ActivityShow activityShow;
+	public List<ActivityShow> activityShows;//1:满减  2:满折  3:满赠 4:一口价   5:抹零 6.月租
 	
 	public Integer getStoreId() {
 		return storeId;

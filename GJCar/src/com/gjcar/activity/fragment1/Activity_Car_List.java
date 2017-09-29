@@ -25,8 +25,9 @@ import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.IntentHelper;
 import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.TimeHelper;
+import com.gjcar.utils.ToastHelper;
 import com.gjcar.view.helper.ListViewHelper;
-import com.gjcar.view.helper.LoadAnimateHelper;
+import com.gjcar.view.helper.LoadAnimateHelper1;
 import com.gjcar.view.helper.TitleBarHelper;
 
 import android.app.Activity;
@@ -70,7 +71,7 @@ public class Activity_Car_List extends Activity{
 		TitleBarHelper.Back(this, "车型列表", 0);
 		
 		/*加载动画*/
-		LoadAnimateHelper.Search_Animate(this, R.id.activity, handler, 0, true,true,1);
+		LoadAnimateHelper1.Search_Animate(this, R.id.activity, handler, 0, true,true,1);
 		
 //		new Thread(){
 //			public void run() {
@@ -169,16 +170,19 @@ public class Activity_Car_List extends Activity{
 						}
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Empty)){
-							LoadAnimateHelper.load_empty_animation();
+							LoadAnimateHelper1.load_empty_animation("抱歉，没有搜索到车型");
+							ToastHelper.showToastShort(Activity_Car_List.this, "抱歉，没有搜索到车型");
 				           	System.out.println("请求失败");	            
 						}
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Fail)){
-							LoadAnimateHelper.load_fail_animation();
+							LoadAnimateHelper1.load_fail_animation(msg.getData().getString("data"));
+							ToastHelper.showToastShort(Activity_Car_List.this, msg.getData().getString("data"));
 				           	System.out.println("请求失败");	            
 						}
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.DataFail)){
-							LoadAnimateHelper.load_fail_animation();
+							LoadAnimateHelper1.load_fail_animation("抱歉，服务器异常");
+							ToastHelper.showToastShort(Activity_Car_List.this, "抱歉，服务器异常");
 				           	System.out.println("请求失败");	            
 						}
 						
@@ -187,11 +191,11 @@ public class Activity_Car_List extends Activity{
 					case CarList_Show:
 						CarList_Adapter adapter = new CarList_Adapter(Activity_Car_List.this, list);
 						listview.setAdapter(adapter);
-						LoadAnimateHelper.load_success_animation();
+						LoadAnimateHelper1.load_success_animation();
 						break;
 						
 					case Show_Msg:
-						LoadAnimateHelper.load_success_animation();
+						LoadAnimateHelper1.load_success_animation();
 						show_msg.setVisibility(View.VISIBLE);
 						break;	
 					
