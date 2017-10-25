@@ -69,9 +69,9 @@ public class MainActivity extends FragmentActivity implements Update_Notify{
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		setContentView(R.layout.activity_main);
 		
-		if (System.currentTimeMillis() > TimeHelper.stringToLong("2017-09-30 00:00:00") && System.currentTimeMillis() < TimeHelper.stringToLong("2017-10-08 00:00:00")){
-			showShareDialog();
-		}
+//		if (System.currentTimeMillis() > TimeHelper.stringToLong("2017-09-30 00:00:00") && System.currentTimeMillis() < TimeHelper.stringToLong("2017-10-08 00:00:00")){
+//			showShareDialog();
+//		}
 		
 		initConfig();
 		

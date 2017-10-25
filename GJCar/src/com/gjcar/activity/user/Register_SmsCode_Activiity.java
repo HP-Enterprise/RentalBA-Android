@@ -112,9 +112,6 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register_smscode);
-//		LocationApplication.getInstance().addActivity(this);
-//		Public_Parameter.list_login_activity.clear();
-//		Public_Parameter.list_login_activity.add(this);
 		
 		initSmsConfig();
 		
@@ -170,6 +167,9 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 
 	}
 	
+	/**
+	 * 初始化控件
+	 */
 	private void initView() {
 				
 		code_phone = (EditText)findViewById(R.id.code_phone);		 
@@ -186,6 +186,9 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 		code_next = (Button)findViewById(R.id.code_next);
 	}
 
+	/**
+	 * 初始化监听器
+	 */
 	private void initListener() {
 
 		/*监听点击事件*/
@@ -694,7 +697,7 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
     			if(message.length >= 2){
     				System.out.println(message[1].trim());
     				phone = code_phone.getText().toString();
-    				code_code.setText(StringHelper.getBusNumber(message[1].trim()));//获取到短信之后，记住号码，并且next可点击****************************************************
+    				code_code.setText(StringHelper.getBusNumber(message[1].trim()));//获取到短信之后，记住号码，并且next可点击
     				code_next.setEnabled(true);
     			}
     			
@@ -704,74 +707,6 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 	
 	/** 发送验证码  
 	 * @throws org.json.JSONException */
-	private void next(){
-		
-//		Intent intent = new Intent(Register_SmsCode_Activiity.this, Register_Activity.class);
-//		intent.putExtra("phone", code_phone.getText().toString());
-//		intent.putExtra("code", code_code.getText().toString());
-//		startActivity(intent);
-//		/*弹出对话框*/
-//		DialogHelper.submitDialogThread(handler);
-//		
-//		/*  获取登陆信息  */
-//		String phone = this.phone;
-//		String code = code_code.getText().toString();
-//		
-//		/*  向服务器登陆  */
-//		AsyncHttpClient httpClient = new AsyncHttpClient();
-//		httpClient.setTimeout(Integer.parseInt(getResources().getString(R.string.app_connection_timeout)));
-//					
-//		RequestParams params = new RequestParams();//设置请求参数
-//		
-//		String url = PublicData.appWebSite + PublicData.api_smsCodeValidate + phone + "/"+ "validate" + "/" + code;//设置请求的url	
-//
-//		httpClient.get(url, params, new AsyncHttpResponseHandler() {
-//			
-//			/* 处理请求成功  */
-//			@Override
-//			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-//					
-//				String smsData = new String(arg2);
-//				System.out.println("验证码请求处理成功:"+smsData);
-//				JSONObject jobject;
-//				try {
-//					
-//					jobject = new JSONObject(smsData);
-//					boolean status = jobject.getBoolean("status");
-//					String message = jobject.getString("message");
-//					
-//					if(status){
-//						
-//						//发送验证码成功	
-//						handler.sendEmptyMessage(sendSmsOk);
-//						System.out.println("发送成功");
-//						
-//					}else{
-//						
-//						//发送验证码失败
-//						handler.sendEmptyMessage(sendSmsFail);
-//						Notifycation.showToastLong(Register_SmsCode_Activiity.this, message);//显示发送失败的原因
-//					}	
-//					
-//				} catch (JSONException e) {
-//					
-//					e.printStackTrace();
-//				}		
-//				
-//			}
-//						
-//			/* 5.处理请求失败  */
-//			@Override
-//			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-//
-////				System.out.println("登陆请求处理失败");
-//				arg3.printStackTrace();
-//				handler.sendEmptyMessage(sendSmsDataFail);
-////				String errors = new String(arg2);
-////				Toast.makeText(LoginActivity.this, "注册失败"+errors, 3000).show();
-//			}
-//		});
-	}
 	
 	private void getCode(){		
 		
@@ -781,7 +716,7 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 		// 创建默认的客户端实例  
 		HttpClient httpCLient = new DefaultHttpClient();
 
-		JSONObject jsonObject = new JSONObject(); //**********************注意json发送数据时，要这样
+		JSONObject jsonObject = new JSONObject(); //
 		jsonObject.put("target", phone);
 		jsonObject.put("channel", "sms");
 		jsonObject.put("purpose", "register");
@@ -797,7 +732,7 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
 		requestentity.setContentType("application/json");
 
 		// 创建get请求实例  
-		HttpPost httppost = new HttpPost(Public_Api.appWebSite + Public_Api.api_smsCode);//**********************注意请求方法  
+		HttpPost httppost = new HttpPost(Public_Api.appWebSite + Public_Api.api_smsCode);// 
 
 		httppost.setHeader("Content-Type", "application/json;charset=UTF-8");
 
@@ -887,9 +822,9 @@ public class Register_SmsCode_Activiity extends Activity implements OnClickListe
                          
 //            jsonObject.put("registerWay", Public_Platform.P_Android);
 //           jsonObject.put("terminalType", "1"); 
-System.out.println("phone"+phone);
-System.out.println("code"+code_code.getText().toString());
-System.out.println("password:"+StringHelper.encryption(register_pwd2.getText().toString()));
+			System.out.println("phone"+phone);
+			System.out.println("code"+code_code.getText().toString());
+			System.out.println("password:"+StringHelper.encryption(register_pwd2.getText().toString()));
 			StringEntity requestentity = null;
 			try {
 				requestentity = new StringEntity(jsonObject.toString(), "utf-8");

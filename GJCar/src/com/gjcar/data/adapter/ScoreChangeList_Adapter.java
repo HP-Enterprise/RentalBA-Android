@@ -17,6 +17,7 @@ import com.gjcar.utils.NetworkHelper;
 import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.StringHelper;
 import com.gjcar.utils.TimeHelper;
+import com.gjcar.view.widget.CircularProgressBar;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
@@ -71,9 +72,12 @@ public class ScoreChangeList_Adapter extends BaseAdapter {
 			holder = new Holder();
 			convertView = View.inflate(context, R.layout.listview_scorechange_item, null);
 			System.out.println("3******************");
-
+			
+			holder.progress_circular = (CircularProgressBar) convertView.findViewById(R.id.progress_circular);
+			holder.progress_present = (TextView) convertView.findViewById(R.id.progress_present);
+			
 			holder.accumulate = (TextView) convertView.findViewById(R.id.accumulate);
-			holder.remainNum = (TextView) convertView.findViewById(R.id.remainNum);
+//			holder.remainNum = (TextView) convertView.findViewById(R.id.remainNum);
 			holder.title = (TextView) convertView.findViewById(R.id.title);
 			holder.time = (TextView) convertView.findViewById(R.id.time);
 			System.out.println("4******************");
@@ -84,11 +88,24 @@ public class ScoreChangeList_Adapter extends BaseAdapter {
 		}
 		
 		/*初始化数据*/
+		
+		Float percent = list.get(position).percent == null ? 0 : list.get(position).percent;
+		holder.progress_circular.setMax(1000);
+		int percent_int = (int) (percent * 1000);
+		
+		holder.progress_circular.setProgress(percent_int);	
+		
+		String show_percent = (percent_int%10 == 0) ? ((int)(percent_int/10))+"" : ((float)percent_int)/10+"";//为10的倍数，则不显示小数
+		holder.progress_present.setText(show_percent+"%");
 		holder.accumulate.setText(list.get(position).accumulate.toString());	
-		holder.remainNum.setText("剩余"+list.get(position).remainNum.toString()+"张");	
+//		holder.remainNum.setText("剩余"+list.get(position).remainNum.toString()+"张");	
 		holder.title.setText(list.get(position).title);	
-		holder.time.setText(TimeHelper.getTimemis_to_StringTime(list.get(position).validityBegin.toString())+"-"+TimeHelper.getTimemis_to_StringTime(list.get(position).validityEnd.toString()));
-
+		
+		if(list.get(position).validityBegin == null || list.get(position).validityEnd == null){
+			holder.time.setText("");
+		}else{
+			holder.time.setText(TimeHelper.getTimemis_to_StringTime(list.get(position).validityBegin.toString())+"至\n"+TimeHelper.getTimemis_to_StringTime(list.get(position).validityEnd.toString()));
+		}
 		return convertView;
 	}
 
@@ -98,6 +115,8 @@ public class ScoreChangeList_Adapter extends BaseAdapter {
 		private TextView remainNum;
 		private TextView title;
 		private TextView time;
+		private CircularProgressBar progress_circular;
+		private TextView progress_present;
 	}
 
 }

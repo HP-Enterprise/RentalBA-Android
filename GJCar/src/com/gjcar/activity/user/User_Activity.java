@@ -489,7 +489,5 @@ public class User_Activity extends Activity implements OnClickListener{
 
           System.out.println(""+sb);
     }
-    
-    
- 
+
 }

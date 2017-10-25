@@ -15,4 +15,6 @@ public class ScoreChange {
 	public Integer remainNum;//剩余数量1
 	
 	public String applySource;
+	
+	public Float percent;//积分200	
 }

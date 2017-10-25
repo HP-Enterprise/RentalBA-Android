@@ -11,7 +11,8 @@ public class OrderParams {
 	/*订单服务费*/
 	public List<ServiceAmount> server_list = new ArrayList<ServiceAmount>();
 	public List<ServiceAmount> all_list = new ArrayList<ServiceAmount>();//总的费用
-	public boolean isServiceOk = false;//是否添加了服务费
+	public boolean isServiceOk = false;//是否添加了不计免赔
+	public ServiceAmount serviceAmount;//不计免赔活动
 	
 	/*订单详情*/
 	public Integer isDoorToDoor = 0;//0不是，1是门到门服务

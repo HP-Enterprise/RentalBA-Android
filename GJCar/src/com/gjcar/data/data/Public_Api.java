@@ -18,9 +18,9 @@ public class Public_Api {
 	//public static String appWebSite = "http://10.0.12.178:41234/";
 //	public static String appWebSite = "http://www.feeling.hpecar.com/";
 //	public static String appWebSite = "http://www.gjcar.com/";
-//	public static String appWebSite = "http://182.61.22.80/";
-	public static String appWebSite = "http://182.61.22.80:8082/";
-	public static String appWebSite_Share = "http://182.61.22.80:8082/";//"http://m.gjcar.com/";
+	public static String appWebSite = "http://182.61.22.80/";
+//	public static String appWebSite = "http://www.gjcar.com/";
+	public static String appWebSite_Share = "http://m.gjcar.com/";//"http://182.61.22.80:8082/";
 	
 //	public static String appWebSite = "http://121.40.157.200:41234/";
 //	public static String appWebSite = "http://192.168.20.12/";

@@ -20,4 +20,7 @@ public class TicketInfo {
 	public Integer state;
 	public String orderId;
 	public String useTime;
+	
+	public String genre;// genre:  subRental ¿Û¼õ×â½ð subTotal¿Û¼õ×Ü½ð¶î 
+
 }

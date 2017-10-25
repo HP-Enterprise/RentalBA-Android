@@ -1,55 +1,38 @@
 package com.gjcar.activity.user;
 
-
-import java.sql.Date;
-
-import com.alibaba.fastjson.JSONObject;
 import com.gjcar.annotation.ContentView;
 import com.gjcar.annotation.ContentWidget;
 import com.gjcar.app.R;
 import com.gjcar.data.data.Public_BaiduTJ;
 import com.gjcar.data.data.Public_Param;
-import com.gjcar.data.data.Public_Platform;
 import com.gjcar.data.data.Public_SP;
 import com.gjcar.data.helper.Loginhelper;
 import com.gjcar.data.service.JSONHelper;
 import com.gjcar.utils.AnnotationViewUtils;
 import com.gjcar.utils.HandlerHelper;
-import com.gjcar.utils.HttpHelper;
 import com.gjcar.utils.IntentHelper;
 import com.gjcar.utils.NetworkHelper;
-import com.gjcar.utils.SQL_Dao;
-import com.gjcar.utils.SQL_OpenHelper;
-import com.gjcar.utils.SQL_TableHelper;
 import com.gjcar.utils.SharedPreferenceHelper;
 import com.gjcar.utils.StringHelper;
-import com.gjcar.utils.SystemUtils;
 import com.gjcar.utils.ToastHelper;
 import com.gjcar.view.dialog.SubmitDialog;
 import com.gjcar.view.helper.EditTextHelper;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * 1.登录：保存账户信息
- *     a.只保存登录的一个账户，就不用保存多个登录的账号了
- * 
- *
- */
+/**登录*/
 @ContentView(R.layout.activity_login)
 public class Login_Activity extends Activity{
 
-	/*初始化控件*/
+	/*控件*/
 	@ContentWidget(id = R.id.login_phone) EditText login_phone;
 	@ContentWidget(id = R.id.login_phone_delete) ImageView login_phone_delete;
 
@@ -83,10 +66,13 @@ public class Login_Activity extends Activity{
 	protected void onResume() {
 		
 		super.onResume();
+		
+		/*百度统计*/
 		Public_BaiduTJ.pageStart(this, Public_BaiduTJ.Activity_Login);	
 		
+		/*注册返回*/
 		if(Public_Param.isRegisterOk){
-			System.out.println("注册");
+			
 			Public_Param.isRegisterOk = false;
 			login_phone.setText(Public_Param.phone);
 			login_pwd.setText(Public_Param.password);
@@ -94,7 +80,7 @@ public class Login_Activity extends Activity{
 			/*弹出提交对话框*/
 			SubmitDialog.showSubmitDialog(this);
 			
-			/*发送请求*///new Object[]{"15827653951",StringHelper.encryption("q12345678"),"android"}
+			/*发送请求*/
             new Loginhelper().login(Login_Activity.this, JSONHelper.getJSONObject(new String[]{"phone","password","agent"}, new Object[]{login_phone.getText().toString().trim(),StringHelper.encryption(login_pwd.getText().toString().trim()),"android"}), 
             		handler, Login);
 			           
@@ -106,9 +92,12 @@ public class Login_Activity extends Activity{
 	protected void onPause() {
 
 		super.onPause();
+		
+		/*百度统计*/
 		Public_BaiduTJ.pageEnd(this, Public_BaiduTJ.Activity_Login);	
 	}
 	
+	/**监听器*/
 	private void initListener() {
 		
 		new EditTextHelper().setEditText_Clear(login_phone, login_phone_delete);
@@ -116,6 +105,7 @@ public class Login_Activity extends Activity{
 		new EditTextHelper().setEditText_Password(login_pwd, login_pwd_delete, login_pwd_show, new int[]{R.drawable.register_pwd_show, R.drawable.register_pwd_hide});
 	}
 
+	/**初始化Handler*/
 	private void initHander() {
 		
 		handler = new Handler(){
@@ -126,20 +116,22 @@ public class Login_Activity extends Activity{
 				
 				switch (msg.what) {
 				
+					/*登录*/
 					case Login:
 						SubmitDialog.closeSubmitDialog();
 						
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
-							System.out.println("登录成功了");
+							
 							Loginhelper.setAlias(Login_Activity.this, SharedPreferenceHelper.getString(Login_Activity.this, Public_SP.Account, "phone"), handler, SetAlias);System.out.println("登录成功了"+SharedPreferenceHelper.getString(Login_Activity.this, Public_SP.Account, "phone"));//设置Alias							
 							setResult(RESULT_OK);
 							finish();
-							//保存用户信息
+							
 							return;            
 						}
 						ToastHelper.showToastShort(Login_Activity.this, "用户名不存在或密码错误");
 						break;
-						
+					
+					/*激光推送*/	
 					case SetAlias:
 						
 						/*设置成功*/
@@ -202,7 +194,7 @@ public class Login_Activity extends Activity{
 				/*弹出提交对话框*/
 				SubmitDialog.showSubmitDialog(this);
 				
-				/*发送请求*///new Object[]{"15827653951",StringHelper.encryption("q12345678"),"android"}
+				/*发送请求*/
 	            new Loginhelper().login(Login_Activity.this, JSONHelper.getJSONObject(new String[]{"phone","password","agent"}, new Object[]{login_phone.getText().toString().trim(),StringHelper.encryption(login_pwd.getText().toString().trim()),"android"}), 
 	            		handler, Login);
 								

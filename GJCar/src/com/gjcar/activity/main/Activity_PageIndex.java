@@ -47,13 +47,17 @@ public class Activity_PageIndex extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pageindex);	
-		System.out.println("版本aaaaaaaaaaaaaaaaa+"+SystemUtils.getVersion(Activity_PageIndex.this));
+		
+		/*初始化Handler*/
 		initHandler();
 		
+		/*token登录*/
 		initData();
 		
+		/*飓风广告*/
 		Request_Submit();
 		
+		/*百度统计r*/
 		Public_BaiduTJ.start(this);
 		
 	}
@@ -62,14 +66,17 @@ public class Activity_PageIndex extends Activity{
 	protected void onResume() {
 		
 		super.onResume();
+		
+		/*百度统计r*/
 		Public_BaiduTJ.pageStart(this, Public_BaiduTJ.Activity_PageIndex);	
 		
+		/*激光推送*/
 		JPushInterface.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
+		
 		super.onPause();
 		Public_BaiduTJ.pageEnd(this, Public_BaiduTJ.Activity_PageIndex);	
 		
@@ -85,12 +92,14 @@ public class Activity_PageIndex extends Activity{
 
 				switch (msg.what) {
 
+					/*token登录*/
 					case Request_Login:
 						if(HandlerHelper.getString(msg).equals(HandlerHelper.Ok)){
-							/*token没过期*/
-							Jump();System.out.println("token登录成功");
+							
+							Jump();
 						}else{ 
-							/*token过期，清空本地文件*/System.out.println("token登录失败");
+							
+							/*token过期，清空本地文件*/
 							SharedPreferences sp = getSharedPreferences(Public_SP.Account, Context.MODE_PRIVATE);
 							Editor editor = sp.edit();
 							editor.clear();
@@ -109,9 +118,7 @@ public class Activity_PageIndex extends Activity{
 
 	}
 
-	/**
-	 * 页面跳转
-	 */
+	/*** 页面跳转*/
 	private void Jump(){
 		
 		new Thread(){
@@ -132,6 +139,7 @@ public class Activity_PageIndex extends Activity{
 			
 	}
 	
+	/*token登录*/
 	private void initData(){
 		
 		/*判断是否有网络*/
@@ -161,7 +169,7 @@ public class Activity_PageIndex extends Activity{
 		String channel = Public_Platform.C_JuFeng;
 		
 		/*参数*/
-		JSONObject jsonObject = new JSONObject(); //**********************注意json发送数据时，要这样
+		JSONObject jsonObject = new JSONObject(); //
 		
 		jsonObject.put("mediaId", mediaId);
 		jsonObject.put("deviceId", deviceId);

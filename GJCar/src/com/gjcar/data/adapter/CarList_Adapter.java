@@ -411,7 +411,7 @@ public class CarList_Adapter extends BaseAdapter {
 				
 				/*зЂвт*/
 				//Public_Param.order_paramas.activityId = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShow.id;	
-				Public_Param.order_paramas.activityId = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).id;
+				Public_Param.order_paramas.activityId = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).id;System.out.println("activityId--"+Public_Param.order_paramas.activityId);
 				Public_Param.order_paramas.activityHostType = list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).activityTypeShow.hostType;
 				Public_Param.order_paramas.isHasActivity = true;
 				Public_Param.order_paramas.isSdew = StringHelper.isIntegerNull(list.get(position).vendorStorePriceShowList.get(0).avgShow.activityShows.get(activity_position[position]).isSdew);

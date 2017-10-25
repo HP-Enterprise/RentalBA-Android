@@ -166,9 +166,10 @@ public class Activity_Service extends Activity{
 					for (int i = 0; i < checks.length; i++) {System.out.println("e6");
 						System.out.println("名称"+checks[i]);
 						if(checks[i]){
+							
 							Public_Param.order_paramas.server_list.add(service_list.get(i));
 							Public_Param.order_paramas.all_list.add(service_list.get(i));
-							if(service_list.get(i).chargeName.equals("")){
+							if(service_list.get(i).chargeName.equals("不计免赔")){
 								
 								Public_Param.order_paramas.isServiceOk = true;
 								
@@ -177,6 +178,18 @@ public class Activity_Service extends Activity{
 					}
 					
 				}
+				
+				/*不计免赔：单独出来*/
+				if(service_list != null && service_list.size() != 0){
+					for (int i = 0; i < service_list.size(); i++) {
+						
+						if(service_list.get(i).chargeName.equals("不计免赔")){
+							
+							Public_Param.order_paramas.serviceAmount = service_list.get(i);
+						}
+					}
+				}
+				
 				
 				/*异店异地*/
 				if(orderPrice.doorToDoor != null && orderPrice.doorToDoor.size() != 0){
